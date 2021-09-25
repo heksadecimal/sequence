@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1119</width>
-    <height>873</height>
+    <width>1114</width>
+    <height>868</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,15 +23,15 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>70</y>
-       <width>171</width>
+       <x>460</x>
+       <y>80</y>
+       <width>181</width>
        <height>151</height>
       </rect>
      </property>
@@ -48,8 +48,8 @@
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>270</y>
+       <x>440</x>
+       <y>260</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -60,15 +60,24 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string>Profile</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>350</y>
+       <x>440</x>
+       <y>330</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -86,8 +95,8 @@
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>430</y>
+       <x>440</x>
+       <y>400</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -105,8 +114,8 @@
     <widget class="QPushButton" name="pushButton_5">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>500</y>
+       <x>440</x>
+       <y>470</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -124,8 +133,8 @@
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>580</y>
+       <x>440</x>
+       <y>540</y>
        <width>231</width>
        <height>51</height>
       </rect>
@@ -140,19 +149,172 @@
       <string>Exit</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="page_2">
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>230</y>
-       <width>201</width>
-       <height>111</height>
+       <x>0</x>
+       <y>0</y>
+       <width>1121</width>
+       <height>871</height>
       </rect>
      </property>
      <property name="text">
-      <string>PAGE 2</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../img/main_bg.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1121</width>
+       <height>871</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0, 0, 0, 120);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="openExternalLinks">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <zorder>label_2</zorder>
+    <zorder>label_3</zorder>
+    <zorder>label</zorder>
+    <zorder>pushButton</zorder>
+    <zorder>pushButton_3</zorder>
+    <zorder>pushButton_4</zorder>
+    <zorder>pushButton_5</zorder>
+    <zorder>pushButton_6</zorder>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1121</width>
+       <height>871</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../img/main_bg.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1121</width>
+       <height>871</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0, 0, 0, 120);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>-10</x>
+       <y>50</y>
+       <width>1121</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>36</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+     </property>
+     <property name="text">
+      <string>AWARDS</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>160</y>
+       <width>91</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make Your First Sequence&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../img/awards/chicken.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>260</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>12</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+border: 5px solid black;
+background-color: rgb(107, 107, 107);</string>
+     </property>
+     <property name="text">
+      <string>Baby Chick</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
