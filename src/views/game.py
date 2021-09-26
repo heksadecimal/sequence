@@ -40,6 +40,7 @@ class Clickable_Label(QLabel):
 class Game_Renderer:
     def __init__(self, window) -> None:
         self.window = window
+    
         self.game = Game()
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
