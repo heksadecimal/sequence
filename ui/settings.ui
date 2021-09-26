@@ -23,6 +23,17 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>EXIT</string>
     </property>
@@ -35,6 +46,18 @@
       <width>191</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>AR PL UKai CN</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
     </property>
     <property name="text">
      <string>TUTORIAL</string>
@@ -49,8 +72,21 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>SOUND</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -62,8 +98,21 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>VIBRATE</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QSlider" name="horizontalSlider">
@@ -74,6 +123,9 @@
       <width>160</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -92,6 +144,32 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1101</width>
+      <height>821</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../img/main_bg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>label_3</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>pushButton_4</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>horizontalSlider</zorder>
+   <zorder>horizontalSlider_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -99,7 +177,7 @@
      <x>0</x>
      <y>0</y>
      <width>1109</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

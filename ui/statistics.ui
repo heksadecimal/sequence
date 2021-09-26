@@ -33,6 +33,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>STATISTICS</string>
     </property>
@@ -48,6 +51,16 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
     </property>
     <property name="text">
      <string>GAMES PLAYED :</string>
@@ -65,6 +78,16 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>GAMES WON :</string>
     </property>
@@ -80,6 +103,16 @@
       <width>191</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
     </property>
     <property name="text">
      <string>GAMES DRAW :</string>
@@ -97,6 +130,16 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>WIN PERCENT :</string>
     </property>
@@ -113,6 +156,16 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>SEQUENCES :</string>
     </property>
@@ -120,6 +173,32 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1121</width>
+      <height>801</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../img/main_bg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>label_7</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_4</zorder>
+   <zorder>label_5</zorder>
+   <zorder>label_6</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -127,7 +206,7 @@
      <x>0</x>
      <y>0</y>
      <width>1130</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

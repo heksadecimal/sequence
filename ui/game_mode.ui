@@ -23,6 +23,18 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>AR PL UKai CN</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <item>
      <property name="text">
       <string>ONE VS ONE</string>
@@ -73,8 +85,34 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>AR PL UMing CN</family>
+      <pointsize>24</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(250, 220, 120);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>5</number>
+    </property>
     <property name="text">
      <string>MODE</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::RichText</enum>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -88,6 +126,17 @@
       <width>311</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>AR PL UMing CN</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
     </property>
     <property name="text">
      <string>SELECT TIME FOR EACH TURN</string>
@@ -105,6 +154,17 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>AR PL UMing CN</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);</string>
+    </property>
     <property name="text">
      <string>NUMBER OF SEQUENCE</string>
     </property>
@@ -121,6 +181,17 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>1</string>
     </property>
@@ -134,8 +205,19 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
-     <string>6</string>
+     <string>2</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
@@ -146,6 +228,17 @@
       <width>100</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
     </property>
     <property name="text">
      <string>3</string>
@@ -160,6 +253,20 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>30 sec</string>
     </property>
@@ -172,6 +279,17 @@
       <width>100</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
     </property>
     <property name="text">
      <string>45 sec</string>
@@ -186,6 +304,17 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>60 sec</string>
     </property>
@@ -198,6 +327,17 @@
       <width>100</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
     </property>
     <property name="text">
      <string>75 sec</string>
@@ -212,6 +352,17 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>90 sec</string>
     </property>
@@ -225,10 +376,60 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+    </property>
     <property name="text">
      <string>120 sec</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1121</width>
+      <height>841</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 120);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../img/main_bg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <zorder>label_4</zorder>
+   <zorder>comboBox</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>pushButton_4</zorder>
+   <zorder>pushButton_5</zorder>
+   <zorder>pushButton_6</zorder>
+   <zorder>pushButton_7</zorder>
+   <zorder>pushButton_8</zorder>
+   <zorder>pushButton_9</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -236,7 +437,7 @@
      <x>0</x>
      <y>0</y>
      <width>1118</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
