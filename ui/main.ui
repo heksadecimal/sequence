@@ -222,7 +222,7 @@
     <widget class="QLabel" name="awardBM">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>0</y>
        <width>1191</width>
        <height>1061</height>
@@ -3061,7 +3061,6 @@ background-color: rgb(125, 125, 125);</string>
      </property>
      <property name="font">
       <font>
-       <family>Comfortaa</family>
        <pointsize>14</pointsize>
        <bold>true</bold>
        <underline>false</underline>
@@ -3114,7 +3113,6 @@ background-color: rgb(125, 125, 125);</string>
      </property>
      <property name="font">
       <font>
-       <family>Comfortaa</family>
        <pointsize>14</pointsize>
        <bold>true</bold>
        <underline>false</underline>
@@ -3174,7 +3172,6 @@ background-color: rgb(125, 125, 125);</string>
      </property>
      <property name="font">
       <font>
-       <family>Comfortaa</family>
        <pointsize>14</pointsize>
        <bold>true</bold>
       </font>
@@ -3197,7 +3194,6 @@ background-color: rgb(125, 125, 125);</string>
      </property>
      <property name="font">
       <font>
-       <family>Comfortaa</family>
        <pointsize>14</pointsize>
        <bold>true</bold>
       </font>
@@ -3233,7 +3229,6 @@ background-color: rgb(125, 125, 125);</string>
      </property>
      <property name="font">
       <font>
-       <family>Comfortaa</family>
        <pointsize>14</pointsize>
        <bold>true</bold>
       </font>
