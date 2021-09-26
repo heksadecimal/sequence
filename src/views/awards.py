@@ -1,10 +1,17 @@
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt
 from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QMainWindow,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class Award_Renderer:
-    def __init__(self, window) -> None:
+    def __init__(self, window: QMainWindow) -> None:
         self.window = window
 
         self.animation = QParallelAnimationGroup()
@@ -20,7 +27,7 @@ class Award_Renderer:
 
         self.awardBG.setGeometry(QRect(0, 0, 1191, 1001))
 
-        self.awardBG.setPixmap(QPixmap("../ui/../img/main_bg.png"))
+        self.awardBG.setPixmap(QPixmap("./img/main_bg.png"))
 
         self.awardBG.setScaledContents(True)
 
@@ -28,7 +35,7 @@ class Award_Renderer:
 
         self.awardBM.setGeometry(QRect(0, 0, 1191, 1061))
 
-        self.awardBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
+        self.awardBM.setStyleSheet("background-color: rgba(0, 0, 0, 200);")
 
         self.awardBM.setScaledContents(False)
 
@@ -52,21 +59,25 @@ class Award_Renderer:
             ["bulb", "grandmaster", "legend"],
         ]
 
-        self.frame_2 = QFrame(self.mainPage)
+        self.awardsLayoutParent = QLabel(self.mainPage)
 
-        self.frame_2.setGeometry(QRect(130, 210, 931, 751))
+        self.awardsLayoutParent.setGeometry(
+            QRect(0, 90, self.window.width(), self.window.height() - 100)
+        )
 
-        self.frame_2.setStyleSheet("background-color: rgba(0, 0, 0, 100);")
+        self.awardsLayoutParent.setStyleSheet("background-color: transparent;")
 
         layout = QVBoxLayout()
 
-        self.frame_2.setLayout(layout)
+        self.awardsLayoutParent.setLayout(layout)
 
         for row in awardsMap:
             hlayout = QHBoxLayout()
 
             for value in row:
-                image = QLabel(self.frame_2)
+                l = QVBoxLayout()
+
+                image = QLabel()
 
                 image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
 
@@ -74,7 +85,31 @@ class Award_Renderer:
 
                 image.setScaledContents(True)
 
-                hlayout.addWidget(image)
+                image.setAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                )
+
+                l.addWidget(image)
+
+                name = QLabel()
+
+                name.setFixedHeight(50)
+
+                name.setFixedWidth(160)
+
+                name.setStyleSheet(
+                    "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase"
+                )
+
+                name.setText(value.replace("_", " ").replace("super", ""))
+
+                name.setAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                )
+
+                l.addWidget(name)
+
+                hlayout.addLayout(l)
 
             layout.addLayout(hlayout)
 
@@ -89,4 +124,10 @@ class Award_Renderer:
 
         self.mainPage.setGeometry(
             QRect(0, 0, self.window.width(), self.window.height())
+        )
+
+        self.header.setGeometry(QRect(0, 70, self.window.width(), 50))
+
+        self.awardsLayoutParent.setGeometry(
+            QRect(0, 90, self.window.width(), self.window.height() - 90)
         )

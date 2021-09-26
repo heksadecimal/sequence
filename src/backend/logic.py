@@ -50,30 +50,22 @@ class Game:
     def setBox(self, who, x, y):
         current = ["botBox", "playerBox"][who]
         opponent = ["botBox", "playerBox"][1 - who]
+        currentCard = ["botCards", "playerCards"][who]
 
         if eval(f"self.{current}[{x}][{y}] == 1"):
             return False
 
         if eval(f"self.{opponent}[{x}][{y}] == 1"):
-            if who:
-                if "JC" in self.playerCards:
-                    eval(f"self.{opponent}[{x}][{y}] = 0")
-                    self.playerCards.remove("JC")
-                elif "JD" in self.playerCards:
-                    eval(f"self.{opponent}[{x}][{y}] = 0")
-                    self.playerCards.remove("JD")
-                else:
-                    return False
-
+            # if who:
+            if eval(f""""JC" in self.{currentCard}"""):
+                eval(f"self.{opponent}[{x}][{y}] = 0")
+                eval(f"""self.{currentCard}.remove("JC")""")
+            elif "JD" in self.playerCards:
+                eval(f"self.{opponent}[{x}][{y}] = 0")
+                self.playerCards.remove("JD")
             else:
-                if "JC" in self.botCards:
-                    eval(f"self.{current}[{x}][{y}] = 1")
-                    self.botCards.remove("JC")
-                elif "JD" in self.botCards:
-                    eval(f"self.{current}[{x}][{y}] = 1")
-                    self.botCards.remove("JD")
-                else:
-                    return False
+                return False
+
 
         else:
             if who:
