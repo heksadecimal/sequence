@@ -23,10 +23,10 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="page">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lableLogo">
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -45,7 +45,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButtonProfile">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -73,7 +73,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButtonNewGame">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -92,7 +92,7 @@
       <string>New Game</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="pushButtonLoadSavedGames">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -111,7 +111,7 @@
       <string>Load Saved Games</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="pushButtonSettings">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -130,7 +130,7 @@
       <string>Settings</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="pushButtonExit">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -192,20 +192,20 @@
     </widget>
     <zorder>mainBG</zorder>
     <zorder>mainBM</zorder>
-    <zorder>label</zorder>
-    <zorder>pushButton</zorder>
-    <zorder>pushButton_3</zorder>
-    <zorder>pushButton_4</zorder>
-    <zorder>pushButton_5</zorder>
-    <zorder>pushButton_6</zorder>
+    <zorder>lableLogo</zorder>
+    <zorder>pushButtonProfile</zorder>
+    <zorder>pushButtonNewGame</zorder>
+    <zorder>pushButtonLoadSavedGames</zorder>
+    <zorder>pushButtonSettings</zorder>
+    <zorder>pushButtonExit</zorder>
    </widget>
    <widget class="QWidget" name="page_2">
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="awardBG">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1251</width>
+       <width>1191</width>
        <height>1001</height>
       </rect>
      </property>
@@ -219,12 +219,12 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="awardBM">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1261</width>
+       <width>1191</width>
        <height>1061</height>
       </rect>
      </property>
@@ -238,7 +238,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="labelAward">
      <property name="geometry">
       <rect>
        <x>-10</x>
@@ -292,7 +292,7 @@ background-color: rgb(125, 125, 125);</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body style = &quot;width: 100px&quot;&gt;&lt;p style = &quot;color: red&quot;&gt;CHICKEN&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make Your First Sequence&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -785,7 +785,7 @@ background-color: rgb(107, 107, 107);</string>
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1200</width>
+       <width>1191</width>
        <height>1001</height>
       </rect>
      </property>
@@ -805,7 +805,7 @@ background-color: rgb(107, 107, 107);</string>
        <x>0</x>
        <y>-1</y>
        <width>1250</width>
-       <height>1361</height>
+       <height>1354</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -2922,6 +2922,328 @@ background-color: rgb(107, 107, 107);</string>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_4">
+    <widget class="QLabel" name="profileBG">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>1001</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../img/main_bg.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>1001</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0, 0, 0, 120);</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>1121</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>26</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+     </property>
+     <property name="text">
+      <string>STATISTICS</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_5">
+    <widget class="QLabel" name="settingsBG">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>1001</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../img/main_bg.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="settingsBM">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>1001</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0, 0, 0, 120);</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>1121</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>26</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+     </property>
+     <property name="text">
+      <string>SETTINGS</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>250</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);</string>
+     </property>
+     <property name="text">
+      <string>In Game Volume</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>250</y>
+       <width>341</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>1060</x>
+       <y>960</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>In Game Volume</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>340</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);</string>
+     </property>
+     <property name="text">
+      <string>Music</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_2">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>340</y>
+       <width>341</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_133">
+     <property name="geometry">
+      <rect>
+       <x>950</x>
+       <y>960</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);</string>
+     </property>
+     <property name="text">
+      <string>Music</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_134">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>440</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);</string>
+     </property>
+     <property name="text">
+      <string>Audio</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>440</y>
+       <width>291</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Casino Night Beta</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Casino Night Zone</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Casino Night Alpha</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>670</y>
+       <width>271</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comfortaa</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(220, 220, 0);
+background-color: rgb(125, 125, 125);</string>
+     </property>
+     <property name="text">
+      <string>Return to main menu</string>
      </property>
     </widget>
    </widget>
