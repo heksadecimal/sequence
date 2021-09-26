@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QGraphicsColorizeEffect, QGraphicsDropShadowEffect, 
 from PyQt6.QtCore import QParallelAnimationGroup, QPropertyAnimation, Qt, pyqtProperty, pyqtSignal
 
 class QButton(QLabel):
-    click = pyqtSignal()
+    clicked = pyqtSignal()
 
     def __init__(self , window):
         super().__init__(window)
@@ -79,6 +79,6 @@ class QButton(QLabel):
 
     def mousePressEvent(self, ev: QMouseEvent) -> None:
         if(ev.button() == Qt.MouseButton.LeftButton):
-            self.click.emit()
+            self.clicked.emit()
 
         return super().mousePressEvent(ev)

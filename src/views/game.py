@@ -1,5 +1,12 @@
 from backend.logic import Game
-from PyQt6.QtCore import QPropertyAnimation, QRect, Qt, pyqtSignal
+from PyQt6.QtCore import (
+    QParallelAnimationGroup,
+    QPoint,
+    QPropertyAnimation,
+    QRect,
+    Qt,
+    pyqtSignal,
+)
 from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -30,13 +37,11 @@ class Clickable_Label(QLabel):
         return super().mousePressEvent(ev)
 
 
-
-
-
 class Game_Renderer:
     def __init__(self, window) -> None:
         self.window = window
         self.game = Game()
+        self.animation = QParallelAnimationGroup()
         self.board = self.game.board
 
     def render(self) -> QWidget:
@@ -69,7 +74,7 @@ class Game_Renderer:
             for value in row:
                 card = Clickable_Label(self.mainPage)
 
-                card.setGeometry(QRect(x, y, 61, 90))
+                card.setGeometry(QRect(500, 0, 50, 70))
 
                 card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
 
@@ -79,18 +84,30 @@ class Game_Renderer:
 
                 card.clicked.connect(partial(self.click, card))
 
-                x += 80
+                animation = QPropertyAnimation(card, b"pos")
+
+                animation.setStartValue(QPoint(500, 0))
+
+                animation.setEndValue(QPoint(x, y))
+
+                animation.setDuration(300)
+
+                self.animation.addAnimation(animation)
+
+                x += 70
 
             x = 500
 
-            y += 100
+            y += 80
+
+        self.animation.start()
 
         return self.mainPage
 
     def click(self, card: QLabel):
         self.coin = QLabel(self.window)
 
-        self.coin.setFixedSize(50, 50)
+        self.coin.setFixedSize(40, 40)
 
         self.coin.setScaledContents(True)
 
@@ -98,7 +115,7 @@ class Game_Renderer:
 
         self.coin.setPixmap(QPixmap(self.game.getPlayerCoin()))
 
-        self.coin.move(card.pos().x() + 5, card.pos().y() + 20)
+        self.coin.move(card.pos().x() + 5, card.pos().y() + 15)
 
         # opacity = QGraphicsOpacityEffect()
 

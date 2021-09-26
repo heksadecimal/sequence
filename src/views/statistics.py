@@ -2,22 +2,25 @@ from assets.charts import QBarChart
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries
 from PyQt6.QtCore import QPoint, QRect, Qt
 from PyQt6.QtGui import QColor, QFont, QPen, QPixmap
-from PyQt6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QFrame, QLabel, QMainWindow, QVBoxLayout, QWidget
+
 
 class Statistics_Renderer:
-    def __init__(self, window) -> None:
+    def __init__(self, window: QMainWindow) -> None:
         self.window = window
 
     def render(self):
         self.mainPage = QWidget()
 
+        self.mainPage.resizeEvent = lambda event: self.responser(
+            self.mainPage.geometry()
+        )
+
         self.profileBG = QLabel(self.mainPage)
 
         self.profileBG.setGeometry(QRect(0, 0, 1191, 1001))
 
-        self.profileBG.setText("")
-
-        self.profileBG.setPixmap(QPixmap("../ui/../img/main_bg.png"))
+        self.profileBG.setPixmap(QPixmap("./img/main_bg.png"))
 
         self.profileBG.setScaledContents(True)
 
@@ -27,32 +30,25 @@ class Statistics_Renderer:
 
         self.label.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
 
-        self.label_2 = QLabel(self.mainPage)
+        self.header = QLabel(self.mainPage)
 
-        self.label_2.setGeometry(QRect(60, 50, 1121, 71))
+        self.header.setGeometry(QRect(0, 70, self.window.width(), 50))
 
-        font = QFont()
-
-        font.setPointSize(26)
-
-        font.setBold(True)
-
-        self.label_2.setFont(font)
-
-        self.label_2.setStyleSheet(
-            "color: rgb(220, 220, 0);\n" "background-color: rgb(125, 125, 125);"
+        self.header.setStyleSheet(
+            "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #88C0D0"
         )
 
-        self.label_2.setText("Statistics")
+        self.header.setText("Statistics")
 
-        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        chart = QBarChart(self.mainPage)
-
-        chart.addInEntry("Apple" , 0)
-
-        # chart.addInEntry("Apple" , 0)
-
-        # chart.addInEntry("Apple" , 0)
+        self.header.setAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+        )
 
         return self.mainPage
+
+    def responser(self, geometry: QRect):
+        self.profileBG.setGeometry(geometry)
+
+        self.profileBG.move(QPoint(0, 0))
+
+        self.label.setGeometry(self.profileBG.geometry())

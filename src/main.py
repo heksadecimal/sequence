@@ -12,7 +12,7 @@ class Main:
 
     def create(self):
         # Profile Render
-        # self.window.setCentralWidget(Profile_Renderer(self.window).render())
+        self.window.setCentralWidget(Profile_Renderer(self.window).render())
 
         # Awards Render
         # self.window.setCentralWidget(Award_Renderer(self.window).render())
@@ -24,7 +24,7 @@ class Main:
         # self.window.setCentralWidget(Settings_Renderer(self.window).render())
 
         # Game Render
-        self.window.setCentralWidget(Game_Renderer(self.window).render())
+        # self.window.setCentralWidget(Game_Renderer(self.window).render())
 
 
 if __name__ == "__main__":
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     window = QMainWindow()
 
-    # window.setStyleSheet("background-color: #2E3440")
+    window.setStyleSheet("background-color: #2E3440")
 
     renderer = Main(window)
 

@@ -3,9 +3,16 @@ from PyQt6.QtWidgets import QGraphicsOpacityEffect, QWidget
 
 class Animation:
     def fade(self , widget: QWidget):
-        opacity = QGraphicsOpacityEffect()
+        opacity = widget.graphicsEffect()
 
-        widget.setGraphicsEffect(opacity)
+        if(opacity == None):
+            opacity = QGraphicsOpacityEffect()
+
+            widget.setGraphicsEffect(opacity)
+
+        else:
+
+            opacity.setOpacity(1)
 
         animation = QPropertyAnimation(opacity , b"opacity")
 
@@ -13,14 +20,21 @@ class Animation:
 
         animation.setEndValue(0)
 
-        animation.setDuration(800)
+        animation.setDuration(500)
 
         return animation
     
     def unfade(self , widget: QWidget):
-        opacity = QGraphicsOpacityEffect()
+        opacity = widget.graphicsEffect()
 
-        widget.setGraphicsEffect(opacity)
+        if(opacity == None):
+            opacity = QGraphicsOpacityEffect()
+
+            widget.setGraphicsEffect(opacity)
+
+        else:
+
+            opacity.setOpacity(0)
 
         animation = QPropertyAnimation(opacity , b"opacity")
 
@@ -28,7 +42,7 @@ class Animation:
 
         animation.setEndValue(1)
 
-        animation.setDuration(800)
+        animation.setDuration(500)
 
         return animation
 

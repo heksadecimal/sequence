@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
+from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt
 from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QFrame, QLabel, QWidget
+from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 
 class Award_Renderer:
@@ -32,27 +32,25 @@ class Award_Renderer:
 
         self.awardBM.setScaledContents(False)
 
-        self.labelAward = QLabel(self.mainPage)
+        self.header = QLabel(self.mainPage)
 
-        self.labelAward.setGeometry(QRect(-10, 50, 1201, 71))
+        self.header.setGeometry(QRect(0, 70, self.window.width(), 50))
 
-        self.labelAward.setText("Awards")
-
-        font = QFont()
-
-        font.setPointSize(36)
-
-        font.setBold(True)
-
-        self.labelAward.setFont(font)
-
-        self.labelAward.setStyleSheet(
-            "color: rgb(220, 220, 0);\n" "background-color: rgb(125, 125, 125);"
+        self.header.setStyleSheet(
+            "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #D8DEE9"
         )
 
-        self.labelAward.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.header.setText("Awards")
 
-        self.labelAward.setObjectName("labelAward")
+        self.header.setAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+        )
+
+        awardsMap = [
+            ["chicken", "milk", "two"],
+            ["super_strength", "oops", "rising_star"],
+            ["bulb", "grandmaster", "legend"],
+        ]
 
         self.frame_2 = QFrame(self.mainPage)
 
@@ -60,21 +58,25 @@ class Award_Renderer:
 
         self.frame_2.setStyleSheet("background-color: rgba(0, 0, 0, 100);")
 
-        self.frame_2.setObjectName("frame_2")
+        layout = QVBoxLayout()
 
-        self.label_7 = QLabel(self.frame_2)
+        self.frame_2.setLayout(layout)
 
-        self.label_7.setGeometry(QRect(70, 30, 91, 91))
+        for row in awardsMap:
+            hlayout = QHBoxLayout()
 
-        self.label_7.setStyleSheet("")
+            for value in row:
+                image = QLabel(self.frame_2)
 
-        self.label_7.setText("")
+                image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
 
-        self.label_7.setPixmap(QPixmap("../ui/../img/awards/chicken.png"))
+                image.setFixedSize(QSize(100, 100))
 
-        self.label_7.setScaledContents(True)
+                image.setScaledContents(True)
 
-        self.label_7.setObjectName("label_7")
+                hlayout.addWidget(image)
+
+            layout.addLayout(hlayout)
 
         return self.mainPage
 
