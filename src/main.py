@@ -38,6 +38,6 @@ if __name__ == "__main__":
 
     renderer.create()
     
-    window.show()
+    window.show(                  )
 
     exit(app.exec())

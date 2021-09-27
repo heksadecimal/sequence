@@ -33,7 +33,7 @@ class Award_Renderer:
 
         self.awardBM = QLabel(self.mainPage)
 
-        self.awardBM.setGeometry(QRect(0, 0, 1191, 1061))
+        self.awardBM.setGeometry(QRect(0, 0, 1191, 1001))
 
         self.awardBM.setStyleSheet("background-color: rgba(0, 0, 0, 200);")
 
@@ -55,8 +55,8 @@ class Award_Renderer:
 
         awardsMap = [
             ["chicken", "milk", "two"],
-            ["super_strength", "oops", "rising_star"],
-            ["bulb", "grandmaster", "legend"],
+            ["super", "oops", "rising_star"],
+            ["bulb", "master", "legend"],
         ]
 
         self.awardsLayoutParent = QLabel(self.mainPage)
@@ -80,31 +80,31 @@ class Award_Renderer:
                 image = QLabel()
 
                 image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
-
                 image.setFixedSize(QSize(100, 100))
 
                 image.setScaledContents(True)
 
                 image.setAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                    Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignCenter
                 )
 
                 l.addWidget(image)
+                # l.setGeometry(imageGeometry)
 
                 name = QLabel()
 
                 name.setFixedHeight(50)
 
-                name.setFixedWidth(160)
+                name.setFixedWidth(130)
 
                 name.setStyleSheet(
-                    "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase"
+                    "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase;border-size: 5px"
                 )
 
-                name.setText(value.replace("_", " ").replace("super", ""))
+                name.setText(value.replace("_", " "))
 
                 name.setAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                    Qt.AlignmentFlag.AlignLeading | Qt.AlignmentFlag.AlignBottom
                 )
 
                 l.addWidget(name)
