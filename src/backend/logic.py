@@ -2,6 +2,7 @@ import random
 from collections import defaultdict
 import backend.player
 
+
 class Game:
     def __init__(self):
         self.deck = [
@@ -90,7 +91,7 @@ class Game:
         c = 1
         if x > 1 and x < 10:
             for i in range(1, 10):
-                if obj.playerBox[x][i] == obj.playerBox[x][i-1]:
+                if obj.playerBox[x][i] == obj.playerBox[x][i - 1]:
                     c += 1
                 else:
                     c = 1
@@ -99,7 +100,7 @@ class Game:
                     break
         else:
             for i in range(2, 9):
-                if obj.playerBox[x][i] == obj.playerBox[x][i-1]:
+                if obj.playerBox[x][i] == obj.playerBox[x][i - 1]:
                     c += 1
                 else:
                     c = 1
@@ -113,7 +114,7 @@ class Game:
         c = 1
         if y > 1 and y < 10:
             for i in range(1, 10):
-                if obj.playerBox[i][y] == obj.playerBox[i-1][y]:
+                if obj.playerBox[i][y] == obj.playerBox[i - 1][y]:
                     c += 1
                 else:
                     c = 1
@@ -121,8 +122,8 @@ class Game:
                     obj.playerScore = 1
                     break
         else:
-            for i in range(2, 9):
-                if obj.playerBox[i][y] == obj.playerBox[i-1][y]:
+            for i in range(2, 10):
+                if obj.playerBox[i][y] == obj.playerBox[i - 1][y]:
                     c += 1
                 else:
                     c = 1
@@ -136,45 +137,43 @@ class Game:
         total = 0
         a = c = x
         b = d = y
-        while a>0 and b>0:
-            if obj.playerBox[a][b] == obj.playerBox[a-1][b-1]:
-                total+=1
+        while a and b:
+            if obj.playerBox[a][b]:
+                total += 1
             else:
                 break
-            a-=1
-            b-=1
+            a -= 1
+            b -= 1
 
-        while c<9 and b<9:
-            if obj.playerBox[c][d] == obj.playerBox[c+1][d+1]:
-                total+=1
+        while c < 10 and b < 10:
+            if obj.playerBox[c][d]:
+                total += 1
             else:
                 break
-            c+=1
-            d+=1    
+            c += 1
+            d += 1
 
-        if total>=4:
-            obj.playerScore=1    
+        obj.playerScore += total >= 4
 
         # check right - diagonal
 
         total = 0
         a = c = x
         b = d = y
-        while a>0 and b<9:
-            if obj.playerBox[a][b] == obj.playerBox[a-1][b+1]:
-                total+=1
+        while a and b < 9:
+            if obj.playerBox[a][b]:
+                total += 1
             else:
                 break
-            a-=1
-            b+=1
+            a -= 1
+            b += 1
 
-        while c<9 and d>0:
-            if obj.playerBox[c][d] == obj.playerBox[c+1][d-1]:
-                total+=1
+        while c < 9 and d:
+            if obj.playerBox[c][d] == obj.playerBox[c + 1][d - 1]:
+                total += 1
             else:
                 break
-            c+=1
-            d-=1    
+            c += 1
+            d -= 1
 
-        if total>=4:
-            obj.playerScore=1    
+        obj.playerScore += total >= 4
