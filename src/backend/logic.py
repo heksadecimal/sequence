@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-
+import backend.player
 
 class Game:
     def __init__(self):
@@ -47,15 +47,15 @@ class Game:
         for _ in range(5):
             self.playerOne.addCard()
         for _ in range(5):
-            self.playerTwo.addCard()
+            self.playerTwo.addCard(self.deck.pop())
 
-    def setBox(self, who, x, y):
+    def setBox(self, player, x, y):
         current = ["botBox", "playerBox"][who]
         opponent = ["botBox", "playerBox"][1 - who]
         currentCard = ["botCards", "playerCards"][who]
 
         if eval(f"self.{current}[{x}][{y}] == 1"):
-            return False
+           return False 
 
         if eval(f"self.{opponent}[{x}][{y}] == 1"):
             # if who:
@@ -86,7 +86,7 @@ class Game:
         self.checkSequence(x, y)
         return True
 
-    def getNewCard(self):
+    def getNewCard(self,player):
         while self.deck:
             newCard = self.deck.pop()
             if not self.used[newCard] == 2:
@@ -98,7 +98,7 @@ class Game:
     def declareWinner(self):
         pass
 
-    def getPlayerCoin(self):
+    def getPlayerCoin(self,player):
         if self.playerOne:
             return "./img/coins/blue_coin.png"
         else:
