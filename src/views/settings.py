@@ -137,7 +137,7 @@ class Settings_Renderer:
         )
 
         self.comboBox.setGeometry(
-            QRect(0.6 * self.settingsBG.width(), 440, .1 * self.settingsBG.width(), 61)
+            QRect(0.6 * self.settingsBG.width(), 440, 0.1 * self.settingsBG.width(), 61)
         )
 
         self.pushButton.setGeometry(QRect(0.48 * self.settingsBG.width(), 670, 271, 61))
