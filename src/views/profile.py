@@ -99,7 +99,7 @@ class Profile_Renderer:
         self.cat.setStyleSheet(
             "border-radius: 50%;background-color: transparent"
         )
-        self.cat.setGeometry(QRect(1500, 80, 120, 120))
+        self.cat.setGeometry(QRect(1500, 80, 90, 90))
         self.img = open("../img/cat.png",'rb').read()
         self.cat.setPixmap(mask_image(self.img))
         self.cat.setScaledContents(True)
@@ -142,7 +142,7 @@ class Profile_Renderer:
         self.mainBG.setGeometry(geometry)
         self.mainBG.move(QPoint(0, 0))
         self.mainBM.setGeometry(self.mainBG.geometry())
-        self.cat.setGeometry(QRect(0.9 * self.mainPage.width() , 80, 120, 120))
+        self.cat.setGeometry(QRect(0.9 * self.mainPage.width() , 80, 90, 90))
 
 
         # Move the label logo
