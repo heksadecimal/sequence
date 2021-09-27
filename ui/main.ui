@@ -3024,13 +3024,13 @@ background-color: rgb(125, 125, 125);</string>
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="lalalala">
      <property name="geometry">
       <rect>
        <x>60</x>
        <y>50</y>
        <width>1121</width>
-       <height>71</height>
+       <height>100</height>
       </rect>
      </property>
      <property name="font">
