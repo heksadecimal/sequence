@@ -56,6 +56,8 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
 
+
+
         # background game sound
         self.gameMusic = QLabel(self.mainPage)
         self.gameMusic.setText("Background Music")
@@ -68,6 +70,7 @@ class Settings_Renderer:
         )
         self.gameMusic.setFont(font)
 
+
         # seletion of bg music
         self.gameAudio = QLabel(self.mainPage)
         self.gameAudio.setText("Audio")
@@ -79,6 +82,7 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
         self.gameAudio.setFont(font)
+
 
         # in-game sound slider
         self.gameSoundSlider = QSlider(self.mainPage)
@@ -129,12 +133,12 @@ class Settings_Renderer:
         self.gameAudio.setGeometry(QRect(0.4 * self.settingsBG.width(), 440, 200, 61))
         self.gameSoundSlider.setGeometry(
             QRect(
-                0.6 * self.settingsBG.width(), 160, 300, 0.1 * self.settingsBG.width()
+                0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20
             )
         )
 
         self.gameMusicSlider.setGeometry(
             QRect(
-                0.6 * self.settingsBG.width(), 250, 300, 0.1 * self.settingsBG.width()
+                0.6 * self.settingsBG.width(), 340, 0.1 * self.settingsBG.width(), 20
             )
         )
