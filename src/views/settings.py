@@ -56,8 +56,6 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
 
-
-
         # background game sound
         self.gameMusic = QLabel(self.mainPage)
         self.gameMusic.setText("Background Music")
@@ -70,11 +68,10 @@ class Settings_Renderer:
         )
         self.gameMusic.setFont(font)
 
-
         # seletion of bg music
         self.gameAudio = QLabel(self.mainPage)
         self.gameAudio.setText("Audio")
-        self.gameAudio.setGeometry(QRect(520, 440, 200, 61))
+        self.gameAudio.setGeometry(QRect(520, 460, 200, 61))
         self.gameAudio.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
@@ -82,7 +79,6 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
         self.gameAudio.setFont(font)
-
 
         # in-game sound slider
         self.gameSoundSlider = QSlider(self.mainPage)
@@ -107,9 +103,9 @@ class Settings_Renderer:
         self.comboBox.setStyleSheet(
             "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);"
         )
-        self.comboBox.addItem("casino 1")
-        self.comboBox.addItem("casino 2")
-        self.comboBox.addItem("casino 3")
+        self.comboBox.addItem("  casino 1  ")
+        self.comboBox.addItem("  casino 2  ")
+        self.comboBox.addItem("  casino 3  ")
 
         # back-button
         self.pushButton = QPushButton(self.mainPage)
@@ -119,6 +115,7 @@ class Settings_Renderer:
         self.pushButton.setStyleSheet(
             "color: rgb(220, 220, 0);\n" "background-color: rgb(125, 125, 125);"
         )
+        # self.pushButton.clicked.connect(self.mainPage)
         self.animation.start()
 
         return self.mainPage
@@ -130,15 +127,17 @@ class Settings_Renderer:
         self.header.setGeometry(QRect(0, 70, self.window.width(), 100))
         self.gameSound.setGeometry(QRect(0.4 * self.settingsBG.width(), 250, 200, 61))
         self.gameMusic.setGeometry(QRect(0.4 * self.settingsBG.width(), 340, 200, 61))
-        self.gameAudio.setGeometry(QRect(0.4 * self.settingsBG.width(), 440, 200, 61))
+        self.gameAudio.setGeometry(QRect(0.4 * self.settingsBG.width(), 460, 200, 61))
         self.gameSoundSlider.setGeometry(
-            QRect(
-                0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20
-            )
+            QRect(0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20)
         )
 
         self.gameMusicSlider.setGeometry(
-            QRect(
-                0.6 * self.settingsBG.width(), 340, 0.1 * self.settingsBG.width(), 20
-            )
+            QRect(0.6 * self.settingsBG.width(), 340, 0.1 * self.settingsBG.width(), 20)
         )
+
+        self.comboBox.setGeometry(
+            QRect(0.6 * self.settingsBG.width(), 440, .1 * self.settingsBG.width(), 61)
+        )
+
+        self.pushButton.setGeometry(QRect(0.48 * self.settingsBG.width(), 670, 271, 61))
