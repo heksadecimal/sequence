@@ -5,61 +5,66 @@ from views.statistics import Statistics_Renderer
 from assets.widgets import QButton
 from assets.animations import Animation
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
-from PyQt6.QtGui import QBrush, QColor, QCursor, QFont, QImage, QPainter, QPixmap, QWindow
-from PyQt6.QtWidgets import QLabel, QMainWindow, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtGui import (
+    QBrush,
+    QColor,
+    QCursor,
+    QFont,
+    QImage,
+    QPainter,
+    QPixmap,
+    QWindow,
+)
+from PyQt6.QtWidgets import (
+    QDialog,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 
-def mask_image(imageData, imgtype ='png', size = 64):
-  
+def mask_image(imageData, imgtype="png", size=64):
+
     image = QImage.fromData(imageData, imgtype)
-  
-    # convert image to 32-bit ARGB (adds an alpha
-    # channel ie transparency factor):
     image.convertToFormat(QImage.Format.Format_ARGB32)
-  
-    # Crop image to a square:
+
     imgsize = min(image.width(), image.height())
     rect = QRect(
         (image.width() - imgsize) / 2,
         (image.height() - imgsize) / 2,
         imgsize,
         imgsize,
-     )
-       
+    )
+
     image = image.copy(rect)
-  
-    # Create the output image with the same dimensions 
-    # and an alpha channel and make it completely transparent:
+
     out_img = QImage(imgsize, imgsize, QImage.Format.Format_ARGB32)
-    out_img.fill(QColor(0,0,0,0))
-  
-    # Create a texture brush and paint a circle 
-    # with the original image onto the output image:
+    out_img.fill(QColor(0, 0, 0, 0))
+
     brush = QBrush(image)
-  
-    # Paint the output image
+
     painter = QPainter(out_img)
     painter.setBrush(brush)
-  
-    # Don't draw an outline
+
     painter.setPen(Qt.PenStyle.NoPen)
-  
-    # drawing circle
+
     painter.drawEllipse(0, 0, imgsize, imgsize)
-  
-    # closing painter event
+
     painter.end()
-    # Convert the image to a pixmap and rescale it. 
     pr = QWindow().devicePixelRatio()
     pm = QPixmap.fromImage(out_img)
     pm.setDevicePixelRatio(pr)
     size *= pr
-    pm = pm.scaled(size, size, Qt.AspectRatioMode.KeepAspectRatio, 
-                               Qt.TransformationMode.SmoothTransformation)
-  
-    # return back the pixmap data
-    return pm
+    pm = pm.scaled(
+        size,
+        size,
+        Qt.AspectRatioMode.KeepAspectRatio,
+        Qt.TransformationMode.SmoothTransformation,
+    )
 
+    return pm
 
 
 class Profile_Renderer:
@@ -96,11 +101,9 @@ class Profile_Renderer:
 
         # Logo
         self.cat = QLabel(self.mainPage)
-        self.cat.setStyleSheet(
-            "border-radius: 50%;background-color: transparent"
-        )
+        self.cat.setStyleSheet("border-radius: 50%;background-color: transparent")
         self.cat.setGeometry(QRect(1500, 80, 90, 90))
-        self.img = open("../img/cat.png",'rb').read()
+        self.img = open("../img/cat.png", "rb").read()
         self.cat.setPixmap(mask_image(self.img))
         self.cat.setScaledContents(True)
         self.cat.raise_()
@@ -123,7 +126,7 @@ class Profile_Renderer:
                 "Settings",
                 self.openSettings,
             ],
-            ["Exit", exit],
+            ["Exit", self.quit],
         ]
 
         for text, func in buttons:
@@ -142,8 +145,7 @@ class Profile_Renderer:
         self.mainBG.setGeometry(geometry)
         self.mainBG.move(QPoint(0, 0))
         self.mainBM.setGeometry(self.mainBG.geometry())
-        self.cat.setGeometry(QRect(0.9 * self.mainPage.width() , 80, 90, 90))
-
+        self.cat.setGeometry(QRect(0.9 * self.mainPage.width(), 80, 90, 90))
 
         # Move the label logo
         x = 0.5 * (geometry.width() - 181)
@@ -200,3 +202,9 @@ class Profile_Renderer:
         self.animation = Animation.fade(Animation, self.window.centralWidget())
         self.animation.finished.connect(second)
         self.animation.start()
+
+    def quit(self):
+        quitDialog = QDialog(self.window)
+        quitDialog.setWindowTitle("You sure you wanna quit?")
+        quitDialog.set
+        quitDialog.show()

@@ -1,3 +1,4 @@
+import views
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
@@ -5,6 +6,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QPushButton,
     QVBoxLayout,
     QWidget,
 )
@@ -24,33 +26,35 @@ class Award_Renderer:
         )
 
         self.awardBG = QLabel(self.mainPage)
-
         self.awardBG.setGeometry(QRect(0, 0, 1191, 1001))
-
         self.awardBG.setPixmap(QPixmap("./img/main_bg.png"))
-
         self.awardBG.setScaledContents(True)
 
         self.awardBM = QLabel(self.mainPage)
-
         self.awardBM.setGeometry(QRect(0, 0, 1191, 1001))
-
         self.awardBM.setStyleSheet("background-color: rgba(0, 0, 0, 200);")
-
         self.awardBM.setScaledContents(False)
 
         self.header = QLabel(self.mainPage)
-
         self.header.setGeometry(QRect(0, 70, self.window.width(), 50))
-
         self.header.setStyleSheet(
             "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #D8DEE9"
         )
-
         self.header.setText("Awards")
-
         self.header.setAlignment(
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+        )
+
+        self.backPushButton = QPushButton(self.mainPage)
+        self.backPushButton.setGeometry(50, 50, 90, 90)
+        self.backPushButton.setText("Go Back")
+        self.backPushButton.setStyleSheet(
+            "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);font-size:20px"
+        )
+        self.backPushButton.clicked.connect(
+            lambda: self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+            )
         )
 
         awardsMap = [
@@ -60,15 +64,12 @@ class Award_Renderer:
         ]
 
         self.awardsLayoutParent = QLabel(self.mainPage)
-
         self.awardsLayoutParent.setGeometry(
             QRect(0, 90, self.window.width(), self.window.height() - 100)
         )
-
         self.awardsLayoutParent.setStyleSheet("background-color: transparent;")
 
         layout = QVBoxLayout()
-
         self.awardsLayoutParent.setLayout(layout)
 
         for row in awardsMap:
@@ -81,28 +82,20 @@ class Award_Renderer:
 
                 image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
                 image.setFixedSize(QSize(100, 100))
-
                 image.setScaledContents(True)
-
                 image.setAlignment(
                     Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignCenter
                 )
-
                 l.addWidget(image)
                 # l.setGeometry(imageGeometry)
 
                 name = QLabel()
-
                 name.setFixedHeight(50)
-
                 name.setFixedWidth(130)
-
                 name.setStyleSheet(
                     "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase;border-size: 5px"
                 )
-
                 name.setText(value.replace("_", " "))
-
                 name.setAlignment(
                     Qt.AlignmentFlag.AlignLeading | Qt.AlignmentFlag.AlignBottom
                 )
@@ -130,4 +123,7 @@ class Award_Renderer:
 
         self.awardsLayoutParent.setGeometry(
             QRect(0, 90, self.window.width(), self.window.height() - 90)
+        )
+        self.backPushButton.setGeometry(
+            0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 90
         )

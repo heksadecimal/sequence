@@ -1,3 +1,4 @@
+import views
 from assets.animations import Animation
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
 from PyQt6.QtGui import QFont, QPixmap
@@ -115,7 +116,12 @@ class Settings_Renderer:
         self.pushButton.setStyleSheet(
             "color: rgb(220, 220, 0);\n" "background-color: rgb(125, 125, 125);"
         )
-        # self.pushButton.clicked.connect(self.mainPage)
+        self.pushButton.clicked.connect(
+            lambda: self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+            )
+        )
+
         self.animation.start()
 
         return self.mainPage

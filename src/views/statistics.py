@@ -1,3 +1,4 @@
+import views
 from assets.charts import QBarChart
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries
 from PyQt6.QtCore import QPoint, QRect, Qt
@@ -125,6 +126,11 @@ class Statistics_Renderer:
         self.pushButton.setText("Back to Main Menu")
         self.pushButton.setStyleSheet(
             "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);"
+        )
+        self.pushButton.clicked.connect(
+            lambda: self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+            )
         )
 
         return self.mainPage

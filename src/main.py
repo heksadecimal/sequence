@@ -29,15 +29,9 @@ class Main:
 
 if __name__ == "__main__":
     app = QApplication([])
-
     window = QMainWindow()
-
     window.setStyleSheet("background-color: #2E3440")
-
     renderer = Main(window)
-
     renderer.create()
-    
-    window.show(                  )
-
+    window.show()
     exit(app.exec())
