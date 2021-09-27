@@ -7,3 +7,18 @@ class player:
 
     def addCard(self, card):
         self.playerCards += card
+
+    def hasWildCard(self):
+        return "JC" in self.playerCards  or "JD" in self.playerCards
+
+    def hasRemove(self):
+        return "JH" in self.playerCards or "JS" in self.playerCards
+
+    def chosenValid(self, x, y, opponentBox, card):
+        if self.playerBox[x][x]:
+            return False
+
+        if opponentBox[x][y]:
+            return self.hasRemove()
+        else:
+            return card in self.playerCards
