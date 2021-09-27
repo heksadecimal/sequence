@@ -23,24 +23,6 @@ class Game:
 
         random.shuffle(self.deck)
 
-        # self.botScore = 0
-        # self.playerScore = 0
-        # self.playerCards = []
-        # self.botCards = []
-        # self.playerBox = [[0] * 10 for _ in " " * 10]
-        # self.BotBox = [[0] * 10 for _ in " " * 10]
-        # self.fixedBox = defaultdict(int)
-        # self.playerBox[0][0] = self.playerBox[0][-1] = self.playerBox[-1][
-        #     0
-        # ] = self.playerBox[-1][-1] = 1
-        # self.BotBox[0][0] = self.BotBox[0][-1] = self.BotBox[-1][0] = self.BotBox[-1][
-        #     -1
-        # ] = 1
-
-        # self.chance = 1
-        # self.used = defaultdict(int)
-        # self.distribute()
-
         playerOne = player()
         playerTwo = player()
 
@@ -55,7 +37,7 @@ class Game:
         currentCard = ["botCards", "playerCards"][who]
 
         if eval(f"self.{current}[{x}][{y}] == 1"):
-           return False 
+            return False
 
         if eval(f"self.{opponent}[{x}][{y}] == 1"):
             # if who:
@@ -67,7 +49,6 @@ class Game:
                 self.playerCards.remove("JD")
             else:
                 return False
-
 
         else:
             if who:
@@ -83,10 +64,10 @@ class Game:
 
             eval(f"self.{current}[{x}][{y}] = 1")
 
-        self.checkSequence(x, y)
+        self.checkSequence(x, y, player)
         return True
 
-    def getNewCard(self,player):
+    def getNewCard(self, player):
         while self.deck:
             newCard = self.deck.pop()
             if not self.used[newCard] == 2:
@@ -98,7 +79,7 @@ class Game:
     def declareWinner(self):
         pass
 
-    def getPlayerCoin(self,player):
+    def getPlayerCoin(self, player):
         if self.playerOne:
             return "./img/coins/blue_coin.png"
         else:
@@ -106,124 +87,94 @@ class Game:
 
     def checkSequence(self, x, y, obj):
         # check up - down
-        c=1
-        if x>1 and x<10:
-            for i in range(1,10):
-                if obj.playerBox[x][i]==obj.playerBox[x][i-1]:
-                    c+=1
+        c = 1
+        if x > 1 and x < 10:
+            for i in range(1, 10):
+                if obj.playerBox[x][i] == obj.playerBox[x][i-1]:
+                    c += 1
                 else:
-                    c=1    
+                    c = 1
                 if c == 5:
-                    obj.playerScore=1
-                    break                   
+                    obj.playerScore = 1
+                    break
         else:
-            for i in range(2,9):
-                if obj.playerBox[x][i]==obj.playerBox[x][i-1]:
-                    c+=1
+            for i in range(2, 9):
+                if obj.playerBox[x][i] == obj.playerBox[x][i-1]:
+                    c += 1
                 else:
-                    c=1    
-                if c == 4 and i == 5 or c==4 and i==9:
-                    obj.playerScore=1
-                elif c==5:
-                    obj.playerScore=1   
+                    c = 1
+                if c == 4 and i == 5 or c == 4 and i == 9:
+                    obj.playerScore = 1
+                elif c == 5:
+                    obj.playerScore = 1
 
         # check left - right
 
-        c=1
-        if y>1 and y<10:
-            for i in range(1,10):
-                if obj.playerBox[i][y]==obj.playerBox[i-1][y]:
-                    c+=1
+        c = 1
+        if y > 1 and y < 10:
+            for i in range(1, 10):
+                if obj.playerBox[i][y] == obj.playerBox[i-1][y]:
+                    c += 1
                 else:
-                    c=1    
+                    c = 1
                 if c == 5:
-                    obj.playerScore=1
-                    break                   
+                    obj.playerScore = 1
+                    break
         else:
-            for i in range(2,9):
-                if obj.playerBox[i][y]==obj.playerBox[i-1][y]:
-                    c+=1
+            for i in range(2, 9):
+                if obj.playerBox[i][y] == obj.playerBox[i-1][y]:
+                    c += 1
                 else:
-                    c=1    
-                if c == 4 and i == 5 or c==4 and i==9:
-                    obj.playerScore=1
-                elif c==5:
-                    obj.playerScore=1      
+                    c = 1
+                if c == 4 and i == 5 or c == 4 and i == 9:
+                    obj.playerScore = 1
+                elif c == 5:
+                    obj.playerScore = 1
 
         # check left - diagonal
 
-        c=1
-        if x>y and x!=y:
-            z=abs(x-y)
-            w=abs(x-y)
-            for i in range(1,z):
-                if obj.playerBox[i][w+1]==obj.playerBox[i-1][w]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 5:
-                    obj.playerScore=1
-                    break
-                w+=1                   
-        elif y>x and x!=y:
-            z=abs(x-y)
-            w=abs(x-y)
-            for i in range(1,z):
-                if obj.playerBox[w+1][i]==obj.playerBox[w][i-1]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 5:
-                    obj.playerScore=1
-                    break
-                w+=1
-        else:
-            for i in range(2,9):
-                if obj.playerBox[i][i]==obj.playerBox[i-1][i-1]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 4 and i == 5 or c==4 and i==9:
-                    obj.playerScore=1
-                elif c==5:
-                    obj.playerScore=1               
-            
+        total = 0
+        a = c = x
+        b = d = y
+        while a>0 and b>0:
+            if obj.playerBox[a][b] == obj.playerBox[a-1][b-1]:
+                total+=1
+            else:
+                break
+            a-=1
+            b-=1
+
+        while c<9 and b<9:
+            if obj.playerBox[c][d] == obj.playerBox[c+1][d+1]:
+                total+=1
+            else:
+                break
+            c+=1
+            d+=1    
+
+        if total>=4:
+            obj.playerScore=1    
+
         # check right - diagonal
 
-        c=1
-        if x>y and x!=y:
-            z=abs(x-y)
-            w=abs(x-y)
-            for i in range(1,z):
-                if obj.playerBox[w][i]==obj.playerBox[w-1][i+1]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 5:
-                    obj.playerScore=1
-                    break
-                w-=1                   
-        elif y>x and x!=y:
-            z=abs(x-y)
-            w=abs(x-y)
-            for i in range(1,z):
-                if obj.playerBox[i][w]==obj.playerBox[i+1][w-1]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 5:
-                    obj.playerScore=1
-                    break
-                w-=1
-        else:
-            w=2
-            for i in range(2,9):
-                if obj.playerBox[i][w]==obj.playerBox[i-1][w+1]:
-                    c+=1
-                else:
-                    c=1    
-                if c == 4 and i == 5 or c==4 and i==9:
-                    obj.playerScore=1
-                elif c==5:
-                    obj.playerScore=1
-                w+=1     
+        total = 0
+        a = c = x
+        b = d = y
+        while a>0 and b<9:
+            if obj.playerBox[a][b] == obj.playerBox[a-1][b+1]:
+                total+=1
+            else:
+                break
+            a-=1
+            b+=1
+
+        while c<9 and d>0:
+            if obj.playerBox[c][d] == obj.playerBox[c+1][d-1]:
+                total+=1
+            else:
+                break
+            c+=1
+            d-=1    
+
+        if total>=4:
+            obj.playerScore=1    
