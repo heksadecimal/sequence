@@ -15,7 +15,7 @@ class player:
         return "JH" in self.playerCards or "JS" in self.playerCards
 
     def chosenValid(self, x, y, opponentBox, card):
-        if self.playerBox[x][x]:
+        if self.playerBox[x][y]:
             return False
 
         if opponentBox[x][y]:
