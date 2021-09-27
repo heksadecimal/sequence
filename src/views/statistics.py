@@ -11,22 +11,19 @@ class Statistics_Renderer:
 
     def render(self):
         self.mainPage = QWidget()
-        self.mainPage.setGeometry(0, 0 , self.window.width(), self.window.height())
+        self.mainPage.setGeometry(0, 0, self.window.width(), self.window.height())
         self.mainPage.resizeEvent = lambda event: self.responser(
             self.mainPage.geometry()
         )
-
 
         self.profileBG = QLabel(self.mainPage)
         self.profileBG.setGeometry(QRect(0, 0, 1191, 1001))
         self.profileBG.setPixmap(QPixmap("./img/main_bg.png"))
         self.profileBG.setScaledContents(True)
 
-
         self.label = QLabel(self.mainPage)
         self.label.setGeometry(QRect(0, 0, self.mainPage.width(), 1001))
         self.label.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
-
 
         self.header = QLabel(self.mainPage)
         self.header.setGeometry(QRect(0, 70, self.label.width(), 50))

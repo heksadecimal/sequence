@@ -12,127 +12,91 @@ from PyQt6.QtWidgets import QLabel, QMainWindow, QPushButton, QVBoxLayout, QWidg
 class Profile_Renderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
-
         self.animation = QParallelAnimationGroup()
 
     def render(self) -> QWidget:
         # Create main page
         self.mainPage = QWidget()
-
         self.mainPage.resizeEvent = lambda event: self.responser(
             self.mainPage.geometry()
         )
 
         # Main background image
         self.mainBG = QLabel(self.mainPage)
-
         self.mainBG.setPixmap(QPixmap("../img/main_bg.png"))
-
         self.mainBG.setScaledContents(True)
-
         self.mainBG.raise_()
 
         # Background Mask for darkening the image
         self.mainBM = QLabel(self.mainPage)
-
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
-
         self.mainBM.raise_()
-
         self.animation.addAnimation(Animation.unfade(Animation, self.mainBM))
 
         # Logo
         self.lableLogo = QLabel(self.mainPage)
-
         self.lableLogo.setStyleSheet("background-color: transparent")
-
         self.lableLogo.setGeometry(QRect(500, 80, 181, 151))
-
         self.lableLogo.setPixmap(QPixmap("../img/logo.png"))
-
         self.lableLogo.setScaledContents(True)
-
         self.lableLogo.raise_()
 
+        # fade animation
         self.animation.addAnimation(Animation.unfade(Animation, self.lableLogo))
-
         self.buttons = QLabel(self.mainPage)
-
         self.buttons.setGeometry(0, 0, 650, 500)
-
         self.buttons.setStyleSheet("background-color: transparent")
-
         self.buttons.show()
 
+        # menu layout
         self.layout = QVBoxLayout()
-
         buttons = [
-            "Profile",
-            "New Game",
-            "Load Saved Games",
-            "Awards",
-            "Settings",
-            "Exit",
-        ]
-        funcs = [
-            self.openStats,
-            self.newGame,
-            self.loadSaves,
-            self.openAwards,
-            self.openSettings,
-            exit,
+            ["Profile", self.openStats],
+            ["New Game", self.newGame],
+            ["Load Saved Games", self.loadSaves],
+            ["Awards", self.openAwards],
+            [
+                "Settings",
+                self.openSettings,
+            ],
+            ["Exit", exit],
         ]
 
-        for text, func in zip(buttons, funcs):
+        for text, func in buttons:
             widget = QButton(None)
 
             widget.setFixedSize(600, 70)
-
             widget.clicked.connect(func)
-
             widget.setText(text)
-
             self.layout.addWidget(widget)
 
         self.buttons.setLayout(self.layout)
-
         self.animation.start()
-
         return self.mainPage
 
     def responser(self, geometry: QRect):
         self.mainBG.setGeometry(geometry)
-
         self.mainBG.move(QPoint(0, 0))
-
         self.mainBM.setGeometry(self.mainBG.geometry())
 
         # Move the label logo
         x = 0.5 * (geometry.width() - 181)
-
         y = 0.17 * (geometry.height() - 151)
-
         self.lableLogo.setGeometry(QRect(x, y, 181, 151))
 
         # The buttons
         x = 0.38 * (geometry.width() - 181)
-
         y = 0.4 * (geometry.height() - 151)
-
         self.buttons.move(x, y)
 
     def openStats(self):
         def second():
             self.window.setCentralWidget(Statistics_Renderer(self.window).render())
-
             self.animation = Animation.unfade(Animation, self.window.centralWidget())
-
             self.animation.start()
 
         self.animation = Animation.fade(Animation, self.window.centralWidget())
-
         self.animation.finished.connect(second)
-
         self.animation.start()
 
     def newGame(self):
@@ -140,13 +104,10 @@ class Profile_Renderer:
             self.window.setCentralWidget(Game_Renderer(self.window).render())
 
             self.animation = Animation.unfade(Animation, self.window.centralWidget())
-
             self.animation.start()
 
         self.animation = Animation.fade(Animation, self.window.centralWidget())
-
         self.animation.finished.connect(second)
-
         self.animation.start()
 
     def loadSaves(self):
@@ -157,13 +118,10 @@ class Profile_Renderer:
             self.window.setCentralWidget(Award_Renderer(self.window).render())
 
             self.animation = Animation.unfade(Animation, self.window.centralWidget())
-
             self.animation.start()
 
         self.animation = Animation.fade(Animation, self.window.centralWidget())
-
         self.animation.finished.connect(second)
-
         self.animation.start()
 
     def openSettings(self):
@@ -171,11 +129,8 @@ class Profile_Renderer:
             self.window.setCentralWidget(Settings_Renderer(self.window).render())
 
             self.animation = Animation.unfade(Animation, self.window.centralWidget())
-
             self.animation.start()
 
         self.animation = Animation.fade(Animation, self.window.centralWidget())
-
         self.animation.finished.connect(second)
-
         self.animation.start()

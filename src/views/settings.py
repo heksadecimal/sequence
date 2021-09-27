@@ -16,27 +16,22 @@ class Settings_Renderer:
             self.mainPage.geometry()
         )
 
-
         # Main Background
         self.settingsBG = QLabel(self.mainPage)
         self.settingsBG.setPixmap(QPixmap("../img/main_bg.png"))
         self.settingsBG.setScaledContents(True)
-
 
         # Mask
         self.settingsBM = QLabel(self.mainPage)
         self.settingsBM.setStyleSheet("background-color: rgba(0, 0, 0, 170);")
         self.animation.addAnimation(Animation.unfade(Animation, self.settingsBM))
 
-
         # font
-        font = QFont()
         font = QFont()
         font.setFamily("Comfortaa")
         font.setPointSize(14)
         font.setBold(True)
         font.setUnderline(False)
-
 
         # header
         self.header = QLabel(self.mainPage)
@@ -48,7 +43,6 @@ class Settings_Renderer:
         self.header.setAlignment(
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
         )
-
 
         # in-game sound
         self.gameSound = QLabel(self.mainPage)
@@ -62,7 +56,6 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
 
-
         # background game sound
         self.gameMusic = QLabel(self.mainPage)
         self.gameMusic.setText("Background Music")
@@ -74,7 +67,6 @@ class Settings_Renderer:
             "color: rgb(220, 220, 0);background-color: transparent"
         )
         self.gameMusic.setFont(font)
-
 
         # seletion of bg music
         self.gameAudio = QLabel(self.mainPage)
@@ -88,14 +80,13 @@ class Settings_Renderer:
         )
         self.gameAudio.setFont(font)
 
-
         # in-game sound slider
         self.gameSoundSlider = QSlider(self.mainPage)
         self.gameSoundSlider.setGeometry(QRect(920, 250, 300, 61))
+        self.gameSoundSlider.setOrientation(Qt.Orientation.Horizontal)
         self.gameSoundSlider.setStyleSheet(
             "color: rgb(255, 255, 255);background-color: transparent"
         )
-        self.gameSoundSlider.setOrientation(Qt.Orientation.Horizontal)
 
         # bg sound slider
         self.gameMusicSlider = QSlider(self.mainPage)
@@ -104,7 +95,6 @@ class Settings_Renderer:
         self.gameMusicSlider.setStyleSheet(
             "color: rgb(255, 255, 255);background-color: transparent"
         )
-
 
         # bg-audio selector
         self.comboBox = QComboBox(self.mainPage)
@@ -116,9 +106,8 @@ class Settings_Renderer:
         self.comboBox.addItem("casino 1")
         self.comboBox.addItem("casino 2")
         self.comboBox.addItem("casino 3")
-        
 
-        #back-button
+        # back-button
         self.pushButton = QPushButton(self.mainPage)
         self.pushButton.setGeometry(QRect(710, 670, 271, 61))
         self.pushButton.setFont(font)
@@ -135,5 +124,17 @@ class Settings_Renderer:
         self.settingsBG.move(QPoint(0, 0))
         self.settingsBM.setGeometry(self.settingsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.window.width(), 100))
+        self.gameSound.setGeometry(QRect(0.4 * self.settingsBG.width(), 250, 200, 61))
+        self.gameMusic.setGeometry(QRect(0.4 * self.settingsBG.width(), 340, 200, 61))
+        self.gameAudio.setGeometry(QRect(0.4 * self.settingsBG.width(), 440, 200, 61))
+        self.gameSoundSlider.setGeometry(
+            QRect(
+                0.6 * self.settingsBG.width(), 160, 300, 0.1 * self.settingsBG.width()
+            )
+        )
 
-
+        self.gameMusicSlider.setGeometry(
+            QRect(
+                0.6 * self.settingsBG.width(), 250, 300, 0.1 * self.settingsBG.width()
+            )
+        )
