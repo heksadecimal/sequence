@@ -23,29 +23,31 @@ class Game:
 
         random.shuffle(self.deck)
 
-        self.botScore = 0
-        self.playerScore = 0
-        self.playerCards = []
-        self.botCards = []
-        self.playerBox = [[0] * 10 for _ in " " * 10]
-        self.BotBox = [[0] * 10 for _ in " " * 10]
-        self.fixedBox = defaultdict(int)
-        self.playerBox[0][0] = self.playerBox[0][-1] = self.playerBox[-1][
-            0
-        ] = self.playerBox[-1][-1] = 1
-        self.BotBox[0][0] = self.BotBox[0][-1] = self.BotBox[-1][0] = self.BotBox[-1][
-            -1
-        ] = 1
+        # self.botScore = 0
+        # self.playerScore = 0
+        # self.playerCards = []
+        # self.botCards = []
+        # self.playerBox = [[0] * 10 for _ in " " * 10]
+        # self.BotBox = [[0] * 10 for _ in " " * 10]
+        # self.fixedBox = defaultdict(int)
+        # self.playerBox[0][0] = self.playerBox[0][-1] = self.playerBox[-1][
+        #     0
+        # ] = self.playerBox[-1][-1] = 1
+        # self.BotBox[0][0] = self.BotBox[0][-1] = self.BotBox[-1][0] = self.BotBox[-1][
+        #     -1
+        # ] = 1
 
-        self.chance = 1
-        self.used = defaultdict(int)
-        self.distribute()
+        # self.chance = 1
+        # self.used = defaultdict(int)
+        # self.distribute()
 
-    def distribute(self):
+        playerOne = player()
+        playerTwo = player()
+
         for _ in range(5):
-            self.playerCards += self.deck.pop()
+            self.playerOne.addCard()
         for _ in range(5):
-            self.botCards += self.deck.pop()
+            self.playerTwo.addCard()
 
     def setBox(self, who, x, y):
         current = ["botBox", "playerBox"][who]
@@ -97,174 +99,131 @@ class Game:
         pass
 
     def getPlayerCoin(self):
-        if self.chance:
+        if self.playerOne:
             return "./img/coins/blue_coin.png"
         else:
             return "./img/coins/red_coin.png"
 
-    def increaseScore(self, who, count=1):
-        eval(f"self.{who} += {count}")
-
-    def checkSequence(self, x, y, who):
-        # check left - right
-        who = ["botBox", "playerBox"][who]
-        score = 0
-        sqset = set()
-        c = 0
-        a = b = y
-        z = set()
-        while a and eval(f"self.{who}[{x}][{a}] == 1") and c < 6:
-            a -= 1
-            c += 1
-        while b < 10 and eval(f"self.{who}[{x}][{b}] == 1") and c < 6:
-            b += 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((x, i))
-
-        sqset.add(frozenset(z))
-
-        c = 0
-        a = b = y
-        z = set()
-        while b < 10 and eval(f"self.{who}[{x}][{b}] == 1") and c < 6:
-            b += 1
-            c += 1
-
-        while a and eval(f"self.{who}[{x}][{a}] == 1") and c < 6:
-            a -= 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((x, i))
-
-        sqset.add(frozenset(z))
-
+    def checkSequence(self, x, y, obj):
         # check up - down
-        c = 0
-        a = b = x
-        z = set()
-        while b < 10 and eval(f"self.{who}[{a}][{y}] == 1") and c < 6:
-            b += 1
-            c += 1
+        c=1
+        if x>1 and x<10:
+            for i in range(1,10):
+                if obj.playerBox[x][i]==obj.playerBox[x][i-1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break                   
+        else:
+            for i in range(2,9):
+                if obj.playerBox[x][i]==obj.playerBox[x][i-1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 4 and i == 5 or c==4 and i==9:
+                    obj.playerScore=1
+                elif c==5:
+                    obj.playerScore=1   
 
-        while a and eval(f"self.{who}[{b}][{y}] == 1") and c < 6:
-            a -= 1
-            c += 1
+        # check left - right
 
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
-
-        c = 0
-        a = b = x
-        z = set()
-        while a and eval(f"self.{who}[{b}][{y}] == 1") and c < 6:
-            a -= 1
-            c += 1
-
-        while b < 10 and eval(f"self.{who}[{a}][{y}] == 1") and c < 6:
-            b += 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
+        c=1
+        if y>1 and y<10:
+            for i in range(1,10):
+                if obj.playerBox[i][y]==obj.playerBox[i-1][y]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break                   
+        else:
+            for i in range(2,9):
+                if obj.playerBox[i][y]==obj.playerBox[i-1][y]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 4 and i == 5 or c==4 and i==9:
+                    obj.playerScore=1
+                elif c==5:
+                    obj.playerScore=1      
 
         # check left - diagonal
-        c = 0
-        z = set()
 
-        a, b = x, y
-        while a and b and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            a -= 1
-            b -= 1
-            c += 1
-
-        a, b = x, y
-        while b < 10 and a < 10 and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            b += 1
-            a += 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
-
-        c = 0
-        z = set()
-
-        a, b = x, y
-        while b < 10 and a < 10 and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            b += 1
-            a += 1
-            c += 1
-
-        a, b = x, y
-        while a and b and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            a -= 1
-            b -= 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
-
+        c=1
+        if x>y and x!=y:
+            z=abs(x-y)
+            w=abs(x-y)
+            for i in range(1,z):
+                if obj.playerBox[i][w+1]==obj.playerBox[i-1][w]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break
+                w+=1                   
+        elif y>x and x!=y:
+            z=abs(x-y)
+            w=abs(x-y)
+            for i in range(1,z):
+                if obj.playerBox[w+1][i]==obj.playerBox[w][i-1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break
+                w+=1
+        else:
+            for i in range(2,9):
+                if obj.playerBox[i][i]==obj.playerBox[i-1][i-1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 4 and i == 5 or c==4 and i==9:
+                    obj.playerScore=1
+                elif c==5:
+                    obj.playerScore=1               
+            
         # check right - diagonal
-        c = 0
-        z = set()
 
-        a, b = x, y
-        while a and b and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            a += 1
-            b -= 1
-            c += 1
-
-        a, b = x, y
-        while b < 10 and a < 10 and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            b += 1
-            a -= 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
-
-        c = 0
-        z = set()
-
-        a, b = x, y
-        while b < 10 and a < 10 and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            b += 1
-            a -= 1
-            c += 1
-
-        a, b = x, y
-        while a and b and eval(f"self.{who}[{a}][{b}] == 1") and c < 6:
-            a += 1
-            b -= 1
-            c += 1
-
-        if c == 5:
-            for i in range(a, b + 1):
-                z.add((i, y))
-
-        sqset.add(frozenset(z))
-
-        self.increaseScore(who, len(sqset))
-        for i in sqset:
-            for j, k in i:
-                self.fixedBox[(j, k)] = 1
+        c=1
+        if x>y and x!=y:
+            z=abs(x-y)
+            w=abs(x-y)
+            for i in range(1,z):
+                if obj.playerBox[w][i]==obj.playerBox[w-1][i+1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break
+                w-=1                   
+        elif y>x and x!=y:
+            z=abs(x-y)
+            w=abs(x-y)
+            for i in range(1,z):
+                if obj.playerBox[i][w]==obj.playerBox[i+1][w-1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 5:
+                    obj.playerScore=1
+                    break
+                w-=1
+        else:
+            w=2
+            for i in range(2,9):
+                if obj.playerBox[i][w]==obj.playerBox[i-1][w+1]:
+                    c+=1
+                else:
+                    c=1    
+                if c == 4 and i == 5 or c==4 and i==9:
+                    obj.playerScore=1
+                elif c==5:
+                    obj.playerScore=1
+                w+=1     
