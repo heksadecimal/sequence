@@ -114,7 +114,7 @@ class Game:
             a -= 1
             b -= 1
 
-        while c < 10 and b < 10:
+        while c < 10 and d < 10:
             if obj.playerBox[c][d]:
                 total += 1
             else:

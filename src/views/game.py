@@ -48,8 +48,8 @@ class Game_Renderer:
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
         self.chance = 1
-        self.bot = player()
-        self.challenger = player()
+        self.bot = player(self.showCards)
+        self.challenger = player(self.showCards)
         self.position = defaultdict()
         self.game.distribute(self.bot)
         self.game.distribute(self.challenger)
@@ -73,13 +73,21 @@ class Game_Renderer:
         self.mainBM = QLabel(self.mainPage)
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
         self.mainBM.raise_()
-        
-        x, y = 500, 0
+
+        self.currentCards = QLabel(self.mainPage)
+        self.currentCards.setStyleSheet("background-color: transparent")
+        self.currentCardsLayout = QHBoxLayout()
+        self.currentCards.setLayout(self.currentCardsLayout)
+        self.currentCards.show()
+
+        constX = .25 * self.window.width()
+
+        x, y = constX , 10
 
         for i,row in enumerate(self.board):
             for j,value in enumerate(row):
                 card = Clickable_Label(self.mainPage)
-                card.setGeometry(QRect(500, 0, 50, 70))
+                card.setGeometry(QRect(500, 10, 50, 70))
                 card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
                 card.setScaledContents(True)
                 card.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -95,10 +103,12 @@ class Game_Renderer:
 
                 x += 70
 
-            x = 500
+            x = constX
             y += 80
 
         self.animation.start()
+
+        self.showCards()
 
         return self.mainPage
 
@@ -113,7 +123,7 @@ class Game_Renderer:
         if not ok:
             return
         
-        self.coin = QLabel(self.window)
+        self.coin = Clickable_Label(self.window)
         self.coin.setFixedSize(40, 40)
         self.coin.setScaledContents(True)
         self.coin.setStyleSheet("background-color: transparent")
@@ -126,6 +136,8 @@ class Game_Renderer:
         self.chance += 1
         p1.addCard(self.game.getNewCard())
 
+        self.showCards()
+
         print("1: ", self.bot.playerCards)
         print("2: ", self.challenger.playerCards)
         print("---------------------")
@@ -133,7 +145,10 @@ class Game_Renderer:
 
         # self.coin.setGraphicsEffect(opacity)
 
+
+
         self.coin.show()
+
 
         # self.animation = QPropertyAnimation(opacity , b"opacity")
 
@@ -151,3 +166,28 @@ class Game_Renderer:
         self.mainBG.setGeometry(geometry)
         self.mainBG.move(0, 0)
         self.mainBM.setGeometry(self.mainBG.geometry())
+        self.currentCards.setGeometry(QRect(0.2 * self.window.width() , 0.85 * self.window.height() , .45 * self.window.width() , 0.1 * self.window.height() ))
+
+
+    def showCards(self):
+        self.currentCards = QLabel(self.mainPage)
+
+        self.currentCards.setStyleSheet("background-color: transparent")
+
+        self.currentCards.show()
+
+        self.newLayout = QHBoxLayout()
+
+        self.currentCards.setLayout(self.newLayout)
+
+        for cardTag in self.challenger.playerCards:
+            card = QLabel()
+
+            card.setScaledContents(True)
+
+            card.setFixedSize(50 , 70)
+
+            card.setPixmap(QPixmap("./img/cards/{}.png".format(cardTag)))
+
+            self.newLayout.addWidget(card)
+

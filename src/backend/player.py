@@ -1,11 +1,12 @@
 class player:
-    def __init__(self):
+    def __init__(self , callback):
         self.playerScore = 0
         self.playerCards = []
         self.playerBox = [[0] * 10 for _ in " " * 10]
         self.playerBox[0][0] = self.playerBox[0][-1] = self.playerBox[-1][
             0
         ] = self.playerBox[-1][-1] = 1
+        self.callback = callback
 
     def addCard(self, card):
         self.playerCards += card,
@@ -29,6 +30,7 @@ class player:
 
         if opponentBox[x][y]:
             if self.hasRemove():
+                print(self.getRemove)
                 self.playerCards.remove(self.getRemove)
                 return 2
 
@@ -39,5 +41,7 @@ class player:
             if card in self.playerCards:
                 self.playerCards.remove(card)
                 return True
-
+            elif self.hasWildCard():
+                self.playerCards.remove(self.getWildCard())
+                return True
             return False
