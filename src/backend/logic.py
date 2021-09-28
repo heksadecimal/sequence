@@ -52,49 +52,44 @@ class Game:
 
     def checkSequence(self, x, y, obj):
         # check up - down
-        c = 1
-        if x > 1 and x < 10:
-            for i in range(1, 10):
-                if obj.playerBox[x][i] == obj.playerBox[x][i - 1]:
-                    c += 1
-                else:
-                    c = 1
-                if c == 5:
-                    obj.playerScore = 1
-                    break
-        else:
-            for i in range(2, 9):
-                if obj.playerBox[x][i] == obj.playerBox[x][i - 1]:
-                    c += 1
-                else:
-                    c = 1
-                if c == 4 and i == 5 or c == 4 and i == 9:
-                    obj.playerScore = 1
-                elif c == 5:
-                    obj.playerScore = 1
+
+        total = 0
+        b = d = y
+        while b:
+            if obj.playerBox[x][b]:
+                total += 1
+            else:
+                break
+            b -= 1
+
+        while d < 10:
+            if obj.playerBox[x][d]:
+                total += 1
+            else:
+                break
+            d += 1
+
+        obj.playerScore += total >= 4
 
         # check left - right
 
-        c = 1
-        if y > 1 and y < 10:
-            for i in range(1, 10):
-                if obj.playerBox[i][y] == obj.playerBox[i - 1][y]:
-                    c += 1
-                else:
-                    c = 1
-                if c == 5:
-                    obj.playerScore = 1
-                    break
-        else:
-            for i in range(2, 10):
-                if obj.playerBox[i][y] == obj.playerBox[i - 1][y]:
-                    c += 1
-                else:
-                    c = 1
-                if c == 4 and i == 5 or c == 4 and i == 9:
-                    obj.playerScore = 1
-                elif c == 5:
-                    obj.playerScore = 1
+        total = 0
+        a = c = x
+        while a:
+            if obj.playerBox[a][y]:
+                total += 1
+            else:
+                break
+            a -= 1
+
+        while c < 10:
+            if obj.playerBox[c][y]:
+                total += 1
+            else:
+                break
+            c += 1
+
+        obj.playerScore += total >= 4
 
         # check left - diagonal
 
