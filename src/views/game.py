@@ -1,4 +1,7 @@
+from collections import defaultdict
+import enum
 from backend.logic import Game
+from backend.player import player
 from PyQt6.QtCore import (
     QParallelAnimationGroup,
     QPoint,
@@ -44,61 +47,55 @@ class Game_Renderer:
         self.game = Game()
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
+        self.chance = 1
+        self.bot = player()
+        self.challenger = player()
+        self.position = defaultdict()
+        self.game.distribute(self.bot)
+        self.game.distribute(self.challenger)
+        print("1: ", self.bot.playerCards)
+        print("2: ", self.challenger.playerCards)
+        print("---------------------")
 
     def render(self) -> QWidget:
-
         self.mainPage = QWidget()
-
         self.mainPage.resizeEvent = lambda event: self.responser(
             self.mainPage.geometry()
         )
 
         # Main background image
         self.mainBG = QLabel(self.mainPage)
-
         self.mainBG.setPixmap(QPixmap("./img/main_bg.png"))
-
         self.mainBG.setScaledContents(True)
-
         self.mainBG.raise_()
 
         # Background Mask for darkening the image
         self.mainBM = QLabel(self.mainPage)
-
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
-
         self.mainBM.raise_()
-
+        
         x, y = 500, 0
 
-        for row in self.board:
-            for value in row:
+        for i,row in enumerate(self.board):
+            for j,value in enumerate(row):
                 card = Clickable_Label(self.mainPage)
-
                 card.setGeometry(QRect(500, 0, 50, 70))
-
                 card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
-
                 card.setScaledContents(True)
-
                 card.setCursor(Qt.CursorShape.PointingHandCursor)
-
                 card.clicked.connect(partial(self.click, card))
 
                 animation = QPropertyAnimation(card, b"pos")
-
                 animation.setStartValue(QPoint(500, 0))
-
                 animation.setEndValue(QPoint(x, y))
-
                 animation.setDuration(300)
-
                 self.animation.addAnimation(animation)
+
+                self.position[card.geometry] = (i,j)
 
                 x += 70
 
             x = 500
-
             y += 80
 
         self.animation.start()
@@ -106,18 +103,32 @@ class Game_Renderer:
         return self.mainPage
 
     def click(self, card: QLabel):
+
+        x , y = self.position[card.geometry]
+        p1, p2 = self.bot, self.challenger
+        if self.chance % 2 == 0:
+            p1, p2 = p2 , p1
+
+        ok = self.game.setBox(p1, p2.playerBox, x, y)
+        if not ok:
+            return
+        
         self.coin = QLabel(self.window)
-
         self.coin.setFixedSize(40, 40)
-
         self.coin.setScaledContents(True)
-
         self.coin.setStyleSheet("background-color: transparent")
-
-        self.coin.setPixmap(QPixmap(self.game.getPlayerCoin()))
-
+        playerCoin = "one" if self.chance % 2 else "two"
+        if ok == 2:
+            playerCoin = "null"
+            
+        self.coin.setPixmap(QPixmap(f"../img/coins/{playerCoin}.png"))
         self.coin.move(card.pos().x() + 5, card.pos().y() + 15)
+        self.chance += 1
+        p1.addCard(self.game.getNewCard())
 
+        print("1: ", self.bot.playerCards)
+        print("2: ", self.challenger.playerCards)
+        print("---------------------")
         # opacity = QGraphicsOpacityEffect()
 
         # self.coin.setGraphicsEffect(opacity)
@@ -138,7 +149,5 @@ class Game_Renderer:
 
     def responser(self, geometry):
         self.mainBG.setGeometry(geometry)
-
         self.mainBG.move(0, 0)
-
         self.mainBM.setGeometry(self.mainBG.geometry())

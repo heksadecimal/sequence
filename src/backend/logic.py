@@ -1,16 +1,16 @@
 import random
-import string
 from collections import defaultdict
-import backend.player
+from backend.player import player
 
 
 class Game:
     def __init__(self):
         self.deck = [
             f"{i}{j}"
-            for i in list("KQJA") + list(map(str, range(1, 11)))
+            for i in list("KQJA") + list(map(str, range(2, 11)))
             for j in "SHCD"
         ] * 2
+        
 
         self.board = [
             ["XX", "6D", "7D", "8D", "9D", "10D", "QD", "KD", "AD", "XX"],
@@ -28,16 +28,26 @@ class Game:
         random.shuffle(self.deck)
         self.used = defaultdict(int)
 
+    def distribute(self, player: player):
+        for _ in range(5):
+            player.addCard(self.getNewCard())
+
     def setBox(self, player, opponent, x, y):
         if self.board[x][y] == "XX":
+            print("WILD")
             return False
 
-        if player.hasChosenValid(x, y, opponent, self.board[x][y]):
+        ok =  player.hasChosenValid(x, y, opponent, self.board[x][y])
+        if not ok :
+            return False
+
+        if ok != 2:
             player.playerBox[x][y] = 1
             self.checkSequence(x, y, player)
             return True
 
-        return False
+        return 2
+
 
     def getNewCard(self):
         while self.deck:

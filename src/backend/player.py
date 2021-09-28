@@ -8,7 +8,7 @@ class player:
         ] = self.playerBox[-1][-1] = 1
 
     def addCard(self, card):
-        self.playerCards += card
+        self.playerCards += card,
 
     def hasWildCard(self):
         return "JC" in self.playerCards or "JD" in self.playerCards
@@ -16,11 +16,28 @@ class player:
     def hasRemove(self):
         return "JH" in self.playerCards or "JS" in self.playerCards
 
-    def chosenValid(self, x, y, opponentBox, card):
+    def getWildCard(self):
+        return "JC" if "JC" in self.playerCards else "JD"
+    
+    def getRemove(self):
+        return "JH" if "JH" in self.playerCards else "JS"
+
+    def hasChosenValid(self, x, y, opponentBox, card):
         if self.playerBox[x][y]:
+            print("ALREADY THERE")
             return False
 
         if opponentBox[x][y]:
-            return self.hasRemove()
+            if self.hasRemove():
+                self.playerCards.remove(self.getRemove)
+                return 2
+
+            print("OPPO THERE")
+            return False
+
         else:
-            return card in self.playerCards
+            if card in self.playerCards:
+                self.playerCards.remove(card)
+                return True
+
+            return False
