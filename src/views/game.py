@@ -170,9 +170,13 @@ class Game_Renderer:
 
 
     def showCards(self):
+        self.currentCards.hide()
+
         self.currentCards = QLabel(self.mainPage)
 
-        self.currentCards.setStyleSheet("background-color: transparent")
+        self.currentCards.setStyleSheet("background-color: yellow")
+
+        self.currentCards.setGeometry(QRect(0.2 * self.window.width() , 0.85 * self.window.height() , .45 * self.window.width() , 0.1 * self.window.height() ))
 
         self.currentCards.show()
 
@@ -180,7 +184,7 @@ class Game_Renderer:
 
         self.currentCards.setLayout(self.newLayout)
 
-        for cardTag in self.challenger.playerCards:
+        for cardTag in self.bot.playerCards:
             card = QLabel()
 
             card.setScaledContents(True)
