@@ -1,0 +1,20 @@
+{
+    "player":[
+        {
+            "name":"Challenger",
+            "gamesPlayed":"0",
+            "gamesWon":"0",
+            "gamesLost":"0",
+            "sequenceMade":"0",
+            "winRatio":"0%"
+        },
+        {
+            "name":"Bot",
+            "gamesPlayed":"0",
+            "gamesWon":"0",
+            "gamesLost":"0",
+            "sequenceMade":"0",
+            "winRatio":"0%"
+        }
+    ]
+}
