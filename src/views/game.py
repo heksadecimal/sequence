@@ -50,7 +50,8 @@ class Game_Renderer:
         self.chance = 1
         self.bot = player(self.showCards)
         self.challenger = player(self.showCards)
-        self.position = defaultdict()
+        self.position = defaultdict(lambda: (0,0))
+        self.revposition = defaultdict(QRect)
         self.game.distribute(self.bot)
         self.game.distribute(self.challenger)
         print("1: ", self.bot.playerCards)
@@ -99,7 +100,8 @@ class Game_Renderer:
                 animation.setDuration(300)
                 self.animation.addAnimation(animation)
 
-                self.position[card.geometry] = (i,j)
+                self.position[QRect(x , y , 50 , 70)] = (i,j)
+                self.revposition[(i,j)] = QRect(x , y , 50 , 70)
 
                 x += 70
 
@@ -112,29 +114,43 @@ class Game_Renderer:
 
         return self.mainPage
 
-    def click(self, card: QLabel):
-
-        x , y = self.position[card.geometry]
-        p1, p2 = self.bot, self.challenger
-        if self.chance % 2 == 0:
-            p1, p2 = p2 , p1
-
-        ok = self.game.setBox(p1, p2.playerBox, x, y)
-        if not ok:
-            return
-        
+    def placeCoin(self, position:QRect, image):
+        print(position)
         self.coin = Clickable_Label(self.window)
         self.coin.setFixedSize(40, 40)
         self.coin.setScaledContents(True)
         self.coin.setStyleSheet("background-color: transparent")
-        playerCoin = "one" if self.chance % 2 else "two"
-        if ok == 2:
-            playerCoin = "null"
-            
-        self.coin.setPixmap(QPixmap(f"../img/coins/{playerCoin}.png"))
-        self.coin.move(card.pos().x() + 5, card.pos().y() + 15)
+        self.coin.setPixmap(QPixmap(f"../img/coins/{image}.png"))
+        self.coin.move(position.x() + 5, position.y() + 15)
+        self.coin.show()
+
+
+    def click(self, card: QLabel):
+
+        x , y = self.position[card.geometry()]
+        ok = self.game.setBox(self.challenger, self.bot.playerBox, x, y)
+        if not ok:
+            return
+        print("YESSSSSSSSSSSSSSSSSSS")
+
+        # if ok == 2:
+        #     playerCoin = "null"
+        
+        self.placeCoin(self.revposition[(x, y)], "one")
         self.chance += 1
-        p1.addCard(self.game.getNewCard())
+        self.challenger.addCard(self.game.getNewCard())
+
+        while True:
+            ok = self.game.makeRandomMove(self.bot, self.challenger)
+            if not ok:
+                continue
+
+            i , j , x = ok
+            pos = self.revposition[(i, j)] 
+            playerCoin = "null" if not x else "two"
+            self.placeCoin(pos, playerCoin)
+            break
+        
 
         self.showCards()
 
@@ -184,7 +200,7 @@ class Game_Renderer:
 
         self.currentCards.setLayout(self.newLayout)
 
-        for cardTag in self.bot.playerCards:
+        for cardTag in self.challenger.playerCards:
             card = QLabel()
 
             card.setScaledContents(True)

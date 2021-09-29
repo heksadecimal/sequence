@@ -1,3 +1,4 @@
+import random
 class player:
     def __init__(self , callback):
         self.playerScore = 0
@@ -30,7 +31,7 @@ class player:
 
         if opponentBox[x][y]:
             if self.hasRemove():
-                print(self.getRemove)
+                print("REM: ", self.getRemove)
                 self.playerCards.remove(self.getRemove)
                 return 2
 
@@ -44,4 +45,8 @@ class player:
             elif self.hasWildCard():
                 self.playerCards.remove(self.getWildCard())
                 return True
+                
+            print("HEHEH")
             return False
+
+        

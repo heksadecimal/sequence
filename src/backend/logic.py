@@ -10,7 +10,6 @@ class Game:
             for i in list("KQJA") + list(map(str, range(2, 11)))
             for j in "SHCD"
         ] * 2
-        
 
         self.board = [
             ["XX", "6D", "7D", "8D", "9D", "10D", "QD", "KD", "AD", "XX"],
@@ -26,27 +25,40 @@ class Game:
         ]
 
         random.shuffle(self.deck)
+        self.pos = defaultdict(list)
         self.used = defaultdict(int)
+        self.filled = [[0] * 10 for _ in " " * 10]
+
+    def storeLocations(self):
+        for i in range(10):
+            for j in range(10):
+                self.pos[self.board[i][j]] += (i,j),
+
+
 
     def distribute(self, player: player):
         for _ in range(5):
             player.addCard(self.getNewCard())
 
-    def setBox(self, player, opponent, x, y):
+    def setBox(self, player: player, opponent, x, y):
         if self.board[x][y] == "XX":
             print("WILD")
             return False
 
         ok =  player.hasChosenValid(x, y, opponent, self.board[x][y])
         if not ok :
+            print("NOT VALID", self.board[x][y], player.playerCards)
             return False
 
         if ok != 2:
             player.playerBox[x][y] = 1
             self.checkSequence(x, y, player)
+            self.filled[x][y] = 1
             return True
 
+        self.filled[x][y] = 0
         return 2
+        
 
 
     def getNewCard(self):
@@ -146,3 +158,56 @@ class Game:
             d -= 1
 
         obj.playerScore += total >= 4
+
+
+
+    def makeRandomMove(self, player: player, opponent: player):
+        while True:
+            card = random.choice(player.playerCards) # one eye jack
+            if card in ("JH","JS"):
+                for i in range(10):
+                    for j in range(10):
+                        if self.board[i][j] == 'XX':
+                            continue
+                        if opponent.playerBox[i][j]:
+                            opponent.playerBox[i][j] = 0
+                            player.playerCards.remove(card)
+                            player.addCard(self.getNewCard())
+                            return (i, j, 0)
+                return False
+
+            elif card in ("JD","JC"): # two eye jack
+                for i in range(10):
+                    for j in range(10):
+                        if self.board[i][j] == 'XX':
+                            continue
+                        if player.playerBox[i][j] == 0 and opponent.playerBox[i][j] == 0:
+                            player.playerBox[i][j] = 1
+                            self.board[i][j] = 1
+                            self.checkSequence(i, j , player)
+                            player.playerCards.remove(card)
+                            player.addCard(self.getNewCard())
+                            return (i, j, 1)
+                return False
+
+            else: # normal card
+                for i in range(10):
+                    for j in range(10):
+                        if self.board[i][j] == 'XX':
+                            continue
+                        if self.board[i][j] == card and player.playerBox[i][j] == opponent.playerBox[i][j] == 0:
+                            self.board[i][j] = 1
+                            player.playerBox[i][j] = 1
+                            self.checkSequence(i, j , player)
+                            player.playerCards.remove(card)
+                            player.addCard(self.getNewCard())
+                            return (i , j , 1)
+
+                player.playerCards.remove(card)
+                player.addCard(self.getNewCard())
+                return False
+
+
+
+
+            
