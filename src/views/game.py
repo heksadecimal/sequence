@@ -81,7 +81,7 @@ class Game_Renderer:
         self.currentCards.setLayout(self.currentCardsLayout)
         self.currentCards.show()
 
-        constX = 0.25 * self.window.width()
+        constX = 0.31 * self.window.width()
 
         x, y = constX, 10
 
@@ -178,7 +178,7 @@ class Game_Renderer:
         self.mainBM.setGeometry(self.mainBG.geometry())
         self.currentCards.setGeometry(
             QRect(
-                0.2 * self.window.width(),
+                0.27 * self.window.width(),
                 0.85 * self.window.height(),
                 0.45 * self.window.width(),
                 0.1 * self.window.height(),
@@ -189,12 +189,10 @@ class Game_Renderer:
         self.currentCards.hide()
 
         self.currentCards = QLabel(self.mainPage)
-
-        self.currentCards.setStyleSheet("background-color: yellow")
-
+        self.currentCards.setStyleSheet("background-color: #ebcb8b")
         self.currentCards.setGeometry(
             QRect(
-                0.2 * self.window.width(),
+                0.27 * self.window.width(),
                 0.85 * self.window.height(),
                 0.45 * self.window.width(),
                 0.1 * self.window.height(),
