@@ -49,8 +49,11 @@ class Game:
                 return newCard
         return False
 
-    def declareWinner(self):
-        pass
+    def declareWinner(self,obj):
+        if obj.playerScore and obj == challenger:
+            return print("Congratulations You Won!!!")
+        elif obj.playerScore and obj == bot:
+            return print("Computer Won!!!")
 
     def checkSequence(self, x, y, obj):
         # check up - down
