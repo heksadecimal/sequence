@@ -3,8 +3,16 @@ from views.settings import Settings_Renderer
 from views.statistics import Statistics_Renderer
 from views.awards import Award_Renderer
 from views.profile import Profile_Renderer
-from PyQt6.QtCore import QPoint, QRect
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtCore import QPoint, QRect, Qt
+from PyQt6.QtWidgets import (
+    QApplication,
+    QDialog,
+    QDialogButtonBox,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+)
 
 
 class Main:
@@ -12,20 +20,58 @@ class Main:
         self.window = window
 
     def create(self):
-        # Profile Render
         self.window.setCentralWidget(Profile_Renderer(self.window).render())
 
-        # Awards Render
-        # self.window.setCentralWidget(Award_Renderer(self.window).render())
+    # def cleanClose(self, event):
+    #     print(self.window.centralWidget())
 
-        # Statistics Render
-        # self.window.setCentralWidget(Statistics_Renderer(self.window).render())
+    #     self.ok = QDialog(self.window)
+    #     self.ok.setWindowTitle("Quit Sequece")
+    #     self.ok.setGeometry(
+    #         0.4 * self.window.geometry().width(),
+    #         0.4 * self.window.geometry().height(),
+    #         500,
+    #         200,
+    #     )
+    #     self.ok.setStyleSheet("background-color: #3b4252")
 
-        # Settings Renderer
-        # self.window.setCentralWidget(Settings_Renderer(self.window).render())
+    #     self.quitLabel = QLabel(self.ok)
+    #     self.quitLabel.setGeometry(
+    #         self.quitLabel.geometry().x() + 100,
+    #         self.quitLabel.geometry().y() + 10,
+    #         300,
+    #         100,
+    #     )
+    #     self.quitLabel.setText("Do you wish to save you game ?")
+    #     self.quitLabel.setStyleSheet(
+    #         "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
+    #     )
 
-        # Game Render
-        # self.window.setCentralWidget(Game_Renderer(self.window).render())
+    #     self.yes = QPushButton(self.ok)
+    #     self.yes.setText("YES")
+    #     self.yes.setGeometry(
+    #         self.yes.geometry().x() + 100,
+    #         self.yes.geometry().y() + 120,
+    #         self.yes.geometry().width(),
+    #         self.yes.geometry().height(),
+    #     )
+    #     self.yes.show()
+
+
+    #     self.no = QPushButton(self.ok)
+    #     self.no.setText("NO")
+    #     self.no.setGeometry(
+    #         self.no.geometry().x() + 250,
+    #         self.no.geometry().y() + 120,
+    #         self.no.geometry().width(),
+    #         self.no.geometry().height(),
+    #     )
+    #     self.no.show()
+    #     self.no.clicked.connect(exit)
+
+    #     self.quitLabel.show()
+    #     self.ok.exec()
+    #     app.quit()
 
 
 if __name__ == "__main__":
@@ -33,6 +79,7 @@ if __name__ == "__main__":
     window = QMainWindow()
     window.setStyleSheet("background-color: #2E3440")
     renderer = Main(window)
+    # window.closeEvent = renderer.cleanClose
     renderer.create()
     window.show()
     exit(app.exec())

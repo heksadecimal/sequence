@@ -1,5 +1,5 @@
+import views
 from collections import defaultdict
-import enum
 from backend.logic import Game
 from backend.player import player
 from PyQt6.QtCore import (
@@ -10,9 +10,11 @@ from PyQt6.QtCore import (
     Qt,
     pyqtSignal,
 )
+
 from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
+    QDialog,
     QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
@@ -43,11 +45,12 @@ class Clickable_Label(QLabel):
 class Game_Renderer:
     def __init__(self, window) -> None:
         self.window = window
+        # self.window.closeEvent = self.cleanClose
+
 
         self.game = Game()
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
-        self.chance = 1
         self.bot = player(self.showCards)
         self.challenger = player(self.showCards)
         self.position = defaultdict(lambda: (0, 0))
@@ -58,6 +61,63 @@ class Game_Renderer:
         print("2: ", self.challenger.playerCards)
         print("---------------------")
 
+
+    def cleanClose(self):
+        self.ok = QDialog(self.mainPage)
+        self.ok.setWindowTitle("Quit Sequece")
+        self.ok.setGeometry(
+            0.4 * self.window.geometry().width(),
+            0.4 * self.window.geometry().height(),
+            500,
+            200,
+        )
+        self.ok.setStyleSheet("background-color: #3b4252")
+
+        self.quitLabel = QLabel(self.ok)
+        self.quitLabel.setGeometry(
+            self.quitLabel.geometry().x() + 100,
+            self.quitLabel.geometry().y() + 10,
+            300,
+            100,
+        )
+        self.quitLabel.setText("Do you wish to save you game ?")
+        self.quitLabel.setStyleSheet(
+            "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
+        )
+
+        self.yes = QPushButton(self.ok)
+        self.yes.setText("YES")
+        self.yes.setGeometry(
+            self.yes.geometry().x() + 100,
+            self.yes.geometry().y() + 120,
+            self.yes.geometry().width(),
+            self.yes.geometry().height(),
+        )
+        self.yes.show()
+
+
+        self.no = QPushButton(self.ok)
+        self.no.setText("NO")
+        self.no.setGeometry(
+            self.no.geometry().x() + 250,
+            self.no.geometry().y() + 120,
+            self.no.geometry().width(),
+            self.no.geometry().height(),
+        )
+        self.no.show()
+        self.no.clicked.connect(lambda : self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+        ))
+        self.yes.clicked.connect(lambda : self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+        ))
+        
+
+        self.quitLabel.show()
+        self.ok.exec()
+        # app.quit()
+
+ 
     def render(self) -> QWidget:
         self.mainPage = QWidget()
         self.mainPage.resizeEvent = lambda event: self.responser(
@@ -74,6 +134,16 @@ class Game_Renderer:
         self.mainBM = QLabel(self.mainPage)
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
         self.mainBM.raise_()
+
+
+        # back-button
+        self.backPushButton = QPushButton(self.mainPage)
+        self.backPushButton.setGeometry(.04 * self.mainPage.width(), .12 * self.mainPage.height(), 120, 90)
+        self.backPushButton.setText("Go Back")
+        self.backPushButton.setStyleSheet(
+            "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);font-style: comfortaa;font-size: 20px"
+        )
+        self.backPushButton.clicked.connect(lambda: self.cleanClose())
 
         self.currentCards = QLabel(self.mainPage)
         self.currentCards.setStyleSheet("background-color: transparent")
@@ -135,7 +205,6 @@ class Game_Renderer:
             playerCoin = "null"
 
         self.placeCoin(self.revposition[(x, y)], "one")
-        self.chance += 1
         self.challenger.addCard(self.game.getNewCard())
 
         while True:
