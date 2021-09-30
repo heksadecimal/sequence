@@ -4,19 +4,21 @@ from views.game import Game_Renderer
 from views.statistics import Statistics_Renderer
 from assets.widgets import QButton
 from assets.animations import Animation
-from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
+from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt, pyqtSignal
 from PyQt6.QtGui import (
     QBrush,
     QColor,
     QCursor,
     QFont,
     QImage,
+    QMouseEvent,
     QPainter,
     QPixmap,
     QWindow,
 )
 from PyQt6.QtWidgets import (
     QDialog,
+    QFileDialog,
     QLabel,
     QMainWindow,
     QPushButton,
@@ -66,11 +68,26 @@ def mask_image(imageData, imgtype="png", size=64):
 
     return pm
 
+class Clickable_Label(QLabel):
+
+    clicked = pyqtSignal()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        self.create()
+
+    def mousePressEvent(self, ev: QMouseEvent) -> None:
+        if ev.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()
+
+        return super().mousePressEvent(ev)
 
 class Profile_Renderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         self.animation = QParallelAnimationGroup()
+
 
     def render(self) -> QWidget:
         # Create main page
@@ -100,12 +117,14 @@ class Profile_Renderer:
         self.lableLogo.raise_()
 
         # Logo
-        self.cat = QLabel(self.mainPage)
+        file = QFileDialog(self.mainPage)
+        self.cat = Clickable_Label(self.mainPage)
         self.cat.setStyleSheet("border-radius: 50%;background-color: transparent")
         self.cat.setGeometry(QRect(1500, 80, 90, 90))
         self.img = open("../img/cat.png", "rb").read()
         self.cat.setPixmap(mask_image(self.img))
         self.cat.setScaledContents(True)
+        self.cat.clicked.connect(self.updatePicture)
         self.cat.raise_()
 
         # fade animation
@@ -208,3 +227,12 @@ class Profile_Renderer:
         quitDialog.setWindowTitle("You sure you wanna quit?")
         quitDialog.set
         quitDialog.show()
+
+    def updatePicture(self):
+        self.fDialog = QFileDialog()
+
+        imagePath, *args = self.fDialog.getOpenFileName(self.mainPage, 'choose picture', '.')
+        # imagePath = str(imagePath)
+        with open(imagePath, 'rb') as image:
+            newImage = mask_image(image.read(), imgtype=imagePath[imagePath.rindex('.') + 1:])
+            self.cat.setPixmap(newImage)
