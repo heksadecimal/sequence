@@ -38,7 +38,7 @@ class Settings_Renderer:
         self.header = QLabel(self.mainPage)
         self.header.setGeometry(QRect(0, 70, self.window.width(), 70))
         self.header.setStyleSheet(
-            "background-color: #ebcb8b; font-size: 56px; font-family: Comfortaa; color: #88C0D0"
+            "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #ebcb8b"
         )
         self.header.setText("Settings")
         self.header.setAlignment(
@@ -54,7 +54,7 @@ class Settings_Renderer:
         )
         self.gameSound.setFont(font)
         self.gameSound.setStyleSheet(
-            "color: rgb(220, 220, 0);background-color: transparent"
+            "color: #ebcb8b;background-color: transparent"
         )
 
         # background game sound
@@ -65,7 +65,7 @@ class Settings_Renderer:
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
         self.gameMusic.setStyleSheet(
-            "color: rgb(220, 220, 0);background-color: transparent"
+            "color: #ebcb8b;background-color: transparent"
         )
         self.gameMusic.setFont(font)
 
@@ -77,7 +77,7 @@ class Settings_Renderer:
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
         self.gameAudio.setStyleSheet(
-            "color: rgb(220, 220, 0);background-color: transparent"
+            "color: #ebcb8b;background-color: transparent"
         )
         self.gameAudio.setFont(font)
 
@@ -86,15 +86,37 @@ class Settings_Renderer:
         self.gameSoundSlider.setGeometry(QRect(920, 250, 300, 61))
         self.gameSoundSlider.setOrientation(Qt.Orientation.Horizontal)
         self.gameSoundSlider.setStyleSheet(
-            "color: rgb(255, 255, 255);background-color: transparent"
+            """
+            QSlider{
+                background-color: transparent
+            }
+
+            QSlider::handle{
+                background-color: #ebcb8b;
+                border-radius: 10px
+            }
+            """
         )
+        self.gameSoundSlider.setFont(font)
 
         # bg sound slider
         self.gameMusicSlider = QSlider(self.mainPage)
         self.gameMusicSlider.setGeometry(QRect(920, 340, 300, 61))
         self.gameMusicSlider.setOrientation(Qt.Orientation.Horizontal)
         self.gameMusicSlider.setStyleSheet(
-            "color: rgb(255, 255, 255);background-color: transparent"
+            "color: #ebcb8b;background-color: transparent"
+        )
+        self.gameMusicSlider.setStyleSheet(
+            """
+            QSlider{
+                background-color: transparent
+            }
+
+            QSlider::handle{
+                background-color: #ebcb8b;
+                border-radius: 10px
+            }
+            """
         )
 
         # bg-audio selector
@@ -102,7 +124,7 @@ class Settings_Renderer:
         self.comboBox.setGeometry(QRect(920, 440, 300, 61))
         self.comboBox.setFont(font)
         self.comboBox.setStyleSheet(
-            "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);"
+            "color: #ebcb8b;background-color: rgb(125, 125, 125);"
         )
         self.comboBox.addItem("  casino 1  ")
         self.comboBox.addItem("  casino 2  ")
@@ -114,7 +136,7 @@ class Settings_Renderer:
         self.pushButton.setFont(font)
         self.pushButton.setText("Back to Main Menu")
         self.pushButton.setStyleSheet(
-            "color: rgb(220, 220, 0);\n" "background-color: rgb(125, 125, 125);"
+            "color: #ebcb8b;\n" "background-color: rgb(125, 125, 125);"
         )
         self.pushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
@@ -131,9 +153,9 @@ class Settings_Renderer:
         self.settingsBG.move(QPoint(0, 0))
         self.settingsBM.setGeometry(self.settingsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.window.width(), 100))
-        self.gameSound.setGeometry(QRect(0.4 * self.settingsBG.width(), 250, 200, 61))
-        self.gameMusic.setGeometry(QRect(0.4 * self.settingsBG.width(), 340, 200, 61))
-        self.gameAudio.setGeometry(QRect(0.4 * self.settingsBG.width(), 460, 200, 61))
+        self.gameSound.setGeometry(QRect(.35 * self.settingsBG.width(), 250, 200, 61))
+        self.gameMusic.setGeometry(QRect(.35 * self.settingsBG.width(), 340, 200, 61))
+        self.gameAudio.setGeometry(QRect(.35 * self.settingsBG.width(), 460, 200, 61))
         self.gameSoundSlider.setGeometry(
             QRect(0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20)
         )
@@ -146,4 +168,4 @@ class Settings_Renderer:
             QRect(0.6 * self.settingsBG.width(), 440, 0.1 * self.settingsBG.width(), 61)
         )
 
-        self.pushButton.setGeometry(QRect(0.48 * self.settingsBG.width(), 670, 271, 61))
+        self.pushButton.setGeometry(QRect(0.43 * self.settingsBG.width(), 670, 271, 61))
