@@ -2,7 +2,7 @@
 seq card check
 decalre winner
 awards claim
-profile
+
 
 -----
 volume controls
