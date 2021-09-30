@@ -126,9 +126,9 @@ class Settings_Renderer:
         self.comboBox.setStyleSheet(
             "color: #ebcb8b;background-color: rgb(125, 125, 125);"
         )
-        self.comboBox.addItem("  casino 1  ")
-        self.comboBox.addItem("  casino 2  ")
-        self.comboBox.addItem("  casino 3  ")
+        self.comboBox.addItem("casino1")
+        self.comboBox.addItem("casino2")
+        self.comboBox.addItem("casino3")
 
         # back-button
         self.pushButton = QPushButton(self.mainPage)
