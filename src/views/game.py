@@ -61,6 +61,11 @@ class Game_Renderer:
         print("2: ", self.challenger.playerCards)
         print("---------------------")
 
+    def saveAndClose(self):
+        print("HEYYEYEY")
+        self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+        )
 
     def cleanClose(self):
         self.ok = QDialog(self.mainPage)
@@ -95,7 +100,6 @@ class Game_Renderer:
         )
         self.yes.show()
 
-
         self.no = QPushButton(self.ok)
         self.no.setText("NO")
         self.no.setGeometry(
@@ -108,14 +112,10 @@ class Game_Renderer:
         self.no.clicked.connect(lambda : self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
         ))
-        self.yes.clicked.connect(lambda : self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
-        ))
+        self.yes.clicked.connect(lambda : self.saveAndClose())
         
-
         self.quitLabel.show()
         self.ok.exec()
-        # app.quit()
 
  
     def render(self) -> QWidget:
