@@ -1,7 +1,8 @@
 import views
-from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt, pyqtSignal
+from PyQt6.QtGui import QFont, QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
+    QDialog,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -10,6 +11,22 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from functools import partial
+
+class Clickable_Label(QLabel):
+    clicked = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.create()
+
+    def mousePressEvent(self, ev: QMouseEvent) -> None:
+        if ev.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()
+
+        return super().mousePressEvent(ev)
+
 
 
 class Award_Renderer:
@@ -72,13 +89,72 @@ class Award_Renderer:
         layout = QVBoxLayout()
         self.awardsLayoutParent.setLayout(layout)
 
+        awardData = {
+            "chicken": {
+                "needed": 1,
+                "info": "Create A Sequence",
+                "won": False,
+                "when": "-"
+            },
+            
+            "milk": {
+                "needed": 1,
+                "info": "Win A Game",
+                "won": False,
+                "when": "-"
+            },
+            "two": {
+                "needed": 2,
+                "info": "Win Two Game",
+                "won": False,
+                "when": "-"
+            },
+            "super": {
+                "needed": 4,
+                "info": "Win 4 Awards",
+                "won": False,
+                "when": "-"
+            },
+            "oops": {
+                "needed": 5,
+                "info": "Lose 5 Games",
+                "won": False,
+                "when": "-"
+            },
+            "rising_star": {
+                "needed": 5,
+                "info": "Win 5 Games in a row",
+                "won": False,
+                "when": "-"
+            },
+            "bulb": {
+                "needed": 5,
+                "info": "Draw 5 Matches",
+                "won": False,
+                "when": "-"
+            },
+            "master": {
+                "needed": 50,
+                "info": "Win 50 Matches",
+                "won": False,
+                "when": "-"
+            },
+            "legend": {
+                "needed": 100,
+                "info": "Win 100 Games",
+                "won": False,
+                "when": "-"
+            },
+        
+        }
+
         for row in awardsMap:
             hlayout = QHBoxLayout()
 
             for value in row:
                 l = QVBoxLayout()
 
-                image = QLabel()
+                image = Clickable_Label()
 
                 image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
                 image.setFixedSize(QSize(100, 100))
@@ -86,6 +162,8 @@ class Award_Renderer:
                 image.setAlignment(
                     Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
                 )
+                image.clicked.connect(partial(self.showData , awardData[value] , QPixmap("./img/awards/{}.png".format(value))))
+                
                 l.addWidget(image)
                 # l.setGeometry(imageGeometry)
 
@@ -93,7 +171,7 @@ class Award_Renderer:
                 name.setFixedHeight(50)
                 name.setFixedWidth(130)
                 name.setStyleSheet(
-                    "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase;border-size: 5px"
+                    "color: #D8DEE9; font-size: 20px; font-family: Comfortaa; text-transform: uppercase;"
                 )
                 name.setText(value.replace("_", " "))
                 name.setAlignment(
@@ -125,3 +203,45 @@ class Award_Renderer:
         self.backPushButton.setGeometry(
             0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 70
         )
+
+    def showData(self , data , pixmap):
+        self.dialog = QDialog()
+
+        self.dialog.setStyleSheet("background-color: #2E3440; margin: 50px")
+
+        layout = QVBoxLayout()
+
+        # Award Image
+        label = QLabel()
+        label.setFixedSize(200 , 200)
+        label.setScaledContents(True)
+        label.setStyleSheet("background-color: transparent")
+        label.setPixmap(pixmap)
+        layout.addWidget(label , alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Win Needed
+        needed = QLabel()
+        needed.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px")
+        needed.setText("Needed  :  " + str(data["needed"]))
+        layout.addWidget(needed)
+
+        # Info
+        info = QLabel()
+        info.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px")
+        info.setText("Info  :  " + str(data["info"]))
+        layout.addWidget(info)
+
+        # Has the challenger Won?
+        won = QLabel()
+        won.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px")
+        won.setText("Has Won  :  " + str(data["won"]))
+        layout.addWidget(won)
+
+        # When the player has achieved?
+        when = QLabel()
+        when.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px")
+        when.setText("Date  :  " + str(data["when"]))
+        layout.addWidget(when)
+
+        self.dialog.setLayout(layout)
+        self.dialog.exec()
