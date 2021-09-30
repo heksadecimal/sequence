@@ -38,7 +38,7 @@ class Award_Renderer:
         self.header = QLabel(self.mainPage)
         self.header.setGeometry(QRect(0, 70, self.window.width(), 50))
         self.header.setStyleSheet(
-            "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #D8DEE9"
+            "background-color: transparent; font-size: 56px; font-family: Comfortaa; color: #ebcb8b"
         )
         self.header.setText("Awards")
         self.header.setAlignment(
@@ -84,7 +84,7 @@ class Award_Renderer:
                 image.setFixedSize(QSize(100, 100))
                 image.setScaledContents(True)
                 image.setAlignment(
-                    Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignCenter
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
                 )
                 l.addWidget(image)
                 # l.setGeometry(imageGeometry)
@@ -97,7 +97,7 @@ class Award_Renderer:
                 )
                 name.setText(value.replace("_", " "))
                 name.setAlignment(
-                    Qt.AlignmentFlag.AlignLeading | Qt.AlignmentFlag.AlignBottom
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
                 )
 
                 l.addWidget(name)
@@ -110,9 +110,7 @@ class Award_Renderer:
 
     def responser(self, geometry):
         self.awardBG.setGeometry(geometry)
-
         self.awardBG.move(QPoint(0, 0))
-
         self.awardBM.setGeometry(self.awardBG.geometry())
 
         self.mainPage.setGeometry(
@@ -125,5 +123,5 @@ class Award_Renderer:
             QRect(0, 90, self.window.width(), self.window.height() - 90)
         )
         self.backPushButton.setGeometry(
-            0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 90
+            0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 70
         )
