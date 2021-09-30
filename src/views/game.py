@@ -50,7 +50,7 @@ class Game_Renderer:
         self.chance = 1
         self.bot = player(self.showCards)
         self.challenger = player(self.showCards)
-        self.position = defaultdict(lambda: (0,0))
+        self.position = defaultdict(lambda: (0, 0))
         self.revposition = defaultdict(QRect)
         self.game.distribute(self.bot)
         self.game.distribute(self.challenger)
@@ -81,12 +81,12 @@ class Game_Renderer:
         self.currentCards.setLayout(self.currentCardsLayout)
         self.currentCards.show()
 
-        constX = .25 * self.window.width()
+        constX = 0.25 * self.window.width()
 
-        x, y = constX , 10
+        x, y = constX, 10
 
-        for i,row in enumerate(self.board):
-            for j,value in enumerate(row):
+        for i, row in enumerate(self.board):
+            for j, value in enumerate(row):
                 card = Clickable_Label(self.mainPage)
                 card.setGeometry(QRect(500, 10, 50, 70))
                 card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
@@ -100,8 +100,8 @@ class Game_Renderer:
                 animation.setDuration(300)
                 self.animation.addAnimation(animation)
 
-                self.position[QRect(x , y , 50 , 70)] = (i,j)
-                self.revposition[(i,j)] = QRect(x , y , 50 , 70)
+                self.position[QRect(x, y, 50, 70)] = (i, j)
+                self.revposition[(i, j)] = QRect(x, y, 50, 70)
 
                 x += 70
 
@@ -114,7 +114,7 @@ class Game_Renderer:
 
         return self.mainPage
 
-    def placeCoin(self, position:QRect, image):
+    def placeCoin(self, position: QRect, image):
         print(position)
         self.coin = Clickable_Label(self.window)
         self.coin.setFixedSize(40, 40)
@@ -124,18 +124,16 @@ class Game_Renderer:
         self.coin.move(position.x() + 5, position.y() + 15)
         self.coin.show()
 
-
     def click(self, card: QLabel):
 
-        x , y = self.position[card.geometry()]
+        x, y = self.position[card.geometry()]
         ok = self.game.setBox(self.challenger, self.bot.playerBox, x, y)
         if not ok:
             return
-        print("YESSSSSSSSSSSSSSSSSSS")
 
-        # if ok == 2:
-        #     playerCoin = "null"
-        
+        if ok == 2:
+            playerCoin = "null"
+
         self.placeCoin(self.revposition[(x, y)], "one")
         self.chance += 1
         self.challenger.addCard(self.game.getNewCard())
@@ -145,12 +143,11 @@ class Game_Renderer:
             if not ok:
                 continue
 
-            i , j , x = ok
-            pos = self.revposition[(i, j)] 
+            i, j, x = ok
+            pos = self.revposition[(i, j)]
             playerCoin = "null" if not x else "two"
             self.placeCoin(pos, playerCoin)
             break
-        
 
         self.showCards()
 
@@ -161,10 +158,7 @@ class Game_Renderer:
 
         # self.coin.setGraphicsEffect(opacity)
 
-
-
         self.coin.show()
-
 
         # self.animation = QPropertyAnimation(opacity , b"opacity")
 
@@ -182,8 +176,14 @@ class Game_Renderer:
         self.mainBG.setGeometry(geometry)
         self.mainBG.move(0, 0)
         self.mainBM.setGeometry(self.mainBG.geometry())
-        self.currentCards.setGeometry(QRect(0.2 * self.window.width() , 0.85 * self.window.height() , .45 * self.window.width() , 0.1 * self.window.height() ))
-
+        self.currentCards.setGeometry(
+            QRect(
+                0.2 * self.window.width(),
+                0.85 * self.window.height(),
+                0.45 * self.window.width(),
+                0.1 * self.window.height(),
+            )
+        )
 
     def showCards(self):
         self.currentCards.hide()
@@ -192,7 +192,14 @@ class Game_Renderer:
 
         self.currentCards.setStyleSheet("background-color: yellow")
 
-        self.currentCards.setGeometry(QRect(0.2 * self.window.width() , 0.85 * self.window.height() , .45 * self.window.width() , 0.1 * self.window.height() ))
+        self.currentCards.setGeometry(
+            QRect(
+                0.2 * self.window.width(),
+                0.85 * self.window.height(),
+                0.45 * self.window.width(),
+                0.1 * self.window.height(),
+            )
+        )
 
         self.currentCards.show()
 
@@ -205,9 +212,8 @@ class Game_Renderer:
 
             card.setScaledContents(True)
 
-            card.setFixedSize(50 , 70)
+            card.setFixedSize(50, 70)
 
             card.setPixmap(QPixmap("./img/cards/{}.png".format(cardTag)))
 
             self.newLayout.addWidget(card)
-

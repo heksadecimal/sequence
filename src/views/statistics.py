@@ -141,8 +141,22 @@ class Statistics_Renderer:
 
         self.label.setGeometry(self.statsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.label.width(), 50))
-        self.labelWin.setGeometry(0.3 * self.mainPage.width(), 250, 350, 50)
-        self.labelLost.setGeometry(0.3 * self.mainPage.width(), 340, 350, 50)
-        self.labelSeqs.setGeometry(0.3 * self.mainPage.width(), 440, 350, 50)
-        self.labelWinRatio.setGeometry(0.3 * self.mainPage.width(), 540, 350, 50)
-        self.pushButton.setGeometry(QRect(0.37 * self.mainPage.width(), 670, 271, 61))
+        self.labelWin.setGeometry(.42 * self.mainPage.width(), 250, 350, 50)
+        self.labelLost.setGeometry(.42 * self.mainPage.width(), 340, 350, 50)
+        self.labelSeqs.setGeometry(.42 * self.mainPage.width(), 440, 350, 50)
+        self.labelWinRatio.setGeometry(.42 * self.mainPage.width(), 540, 350, 50)
+        self.labelSeqsCount.setGeometry(0.6 * self.mainPage.width(), 440, 350, 50)
+        self.labelWinCount.setGeometry(0.6 * self.mainPage.width(), 250, 350, 50)
+        self.labelLostCount.setGeometry(0.6 * self.mainPage.width(), 340, 350, 50)
+        self.labelWinRatioCount.setGeometry(0.6 * self.mainPage.width(), 540, 350, 50)
+
+        self.blackFrame.setGeometry(
+            QRect(
+                0.3 * self.mainPage.width(),
+                220,
+                0.4 * self.mainPage.width(),
+                400,
+            )
+        )
+
+        self.pushButton.setGeometry(QRect(.45 * self.mainPage.width(), 670, 271, 61))

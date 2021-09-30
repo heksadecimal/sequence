@@ -1,4 +1,12 @@
-from PyQt6.QtCore import QObject, QParallelAnimationGroup, QPoint, QPropertyAnimation, QRect, QThread, pyqtSignal
+from PyQt6.QtCore import (
+    QObject,
+    QParallelAnimationGroup,
+    QPoint,
+    QPropertyAnimation,
+    QRect,
+    QThread,
+    pyqtSignal,
+)
 from PyQt6.QtWidgets import QGraphicsOpacityEffect, QLabel, QWidget
 from time import sleep
 from functools import partial
@@ -11,7 +19,8 @@ time = 100
 
 width = 1000
 
-def run(time , width , target):
+
+def run(time, width, target):
     # pixelFill = width / time
 
     # size = target.size()
@@ -42,21 +51,21 @@ def run(time , width , target):
 
 
 class QBarChart(QLabel):
-    def __init__(self , window: QWidget):
+    def __init__(self, window: QWidget):
         super().__init__(window)
 
         self.entryValues = []
 
-        self.setGeometry(QRect(10 , 300 , 1980 , 1080))
+        self.setGeometry(QRect(10, 300, 1980, 1080))
 
-        self.cX , self.cY = 0 , 10
+        self.cX, self.cY = 0, 10
 
-    def addInEntry(self , name , value):
+    def addInEntry(self, name, value):
         self.entryValues.append(value)
 
         bar = QLabel(self)
 
-        bar.setGeometry(self.cX , self.cY , 50 , 70)
+        bar.setGeometry(self.cX, self.cY, 50, 70)
 
         self.cX += 200
 
@@ -83,9 +92,9 @@ class QBarChart(QLabel):
         # animation.setDuration(700)
 
         # self.animation.addAnimation(animation)
-        
+
         # self.animation.start()\
-        thread = Thread(target=run , args=(time , width , bar))
+        thread = Thread(target=run, args=(time, width, bar))
 
         thread.setDaemon(True)
 

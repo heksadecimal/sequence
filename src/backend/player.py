@@ -1,6 +1,8 @@
 import random
+
+
 class player:
-    def __init__(self , callback):
+    def __init__(self, callback):
         self.playerScore = 0
         self.playerCards = []
         self.playerBox = [[0] * 10 for _ in " " * 10]
@@ -10,17 +12,17 @@ class player:
         self.callback = callback
 
     def addCard(self, card):
-        self.playerCards += card,
+        self.playerCards += (card,)
 
     def hasWildCard(self):
         return "JC" in self.playerCards or "JD" in self.playerCards
 
+    def getWildCard(self):
+        return "JC" if "JC" in self.playerCards else "JD"
+
     def hasRemove(self):
         return "JH" in self.playerCards or "JS" in self.playerCards
 
-    def getWildCard(self):
-        return "JC" if "JC" in self.playerCards else "JD"
-    
     def getRemove(self):
         return "JH" if "JH" in self.playerCards else "JS"
 
@@ -31,8 +33,8 @@ class player:
 
         if opponentBox[x][y]:
             if self.hasRemove():
-                print("REM: ", self.getRemove)
-                self.playerCards.remove(self.getRemove)
+                print("REM: ", self.getRemove())
+                self.playerCards.remove(self.getRemove())
                 return 2
 
             print("OPPO THERE")
@@ -41,12 +43,10 @@ class player:
         else:
             if card in self.playerCards:
                 self.playerCards.remove(card)
-                return True
+                return 1
             elif self.hasWildCard():
                 self.playerCards.remove(self.getWildCard())
-                return True
-                
+                return 1
+
             print("HEHEH")
             return False
-
-        

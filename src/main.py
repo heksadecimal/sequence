@@ -6,8 +6,9 @@ from views.profile import Profile_Renderer
 from PyQt6.QtCore import QPoint, QRect
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
+
 class Main:
-    def __init__(self , window: QMainWindow) -> None:
+    def __init__(self, window: QMainWindow) -> None:
         self.window = window
 
     def create(self):
