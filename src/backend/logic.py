@@ -1,5 +1,7 @@
 import random
 from collections import defaultdict
+
+from PyQt6.QtWidgets import QLabel
 from backend.player import player
 
 
@@ -18,7 +20,7 @@ class Game:
             ["3D", "5H", "QD", "QH", "10H", "9H", "8H", "9C", "9S", "QC"],
             ["2D", "6H", "10D", "KH", "3H", "2H", "7H", "8C", "10S", "10C"],
             ["AS", "7H", "9D", "AH", "4H", "5H", "6H", "7C", "QS", "9C"],
-            ["KS", "8H", "8D", "2C", "3C", "4C", "QD", "6C", "KS", "8C"],
+            ["KS", "8H", "8D", "2C", "3C", "4C", "5C", "6C", "KS", "8C"],
             ["QS", "9H", "7D", "6D", "6D", "4D", "QD", "2D", "AS", "7C"],
             ["10S", "10H", "QH", "KH", "AH", "2C", "3C", "4C", "5C", "6C"],
             ["XX", "9S", "8S", "7S", "6S", "5S", "4S", "3S", "2S", "XX"],
@@ -27,6 +29,7 @@ class Game:
         random.shuffle(self.deck)
         self.pos = defaultdict(list)
         self.used = defaultdict(int)
+        self.coins = defaultdict(QLabel)
         self.filled = [[0] * 10 for _ in " " * 10]
 
     def storeLocations(self):
@@ -142,18 +145,20 @@ class Game:
             return False
 
         ok = player.hasChosenValid(x, y, opponent, self.board[x][y])
-        if not ok:
+        if ok == 0:
             print("NOT VALID", self.board[x][y], player.playerCards)
-            return False
 
-        if ok != 2:
+        elif ok == 1:
             player.playerBox[x][y] = 1
             self.checkSequence(x, y, player)
             self.filled[x][y] = 1
-            return 1
-
-        self.filled[x][y] = 0
-        return 2
+            return ok
+        
+        else:
+            self.filled[x][y] = 0
+            opponent[x][y] = 0
+        
+        return ok
 
     def makeRandomMove(self, player: player, opponent: player):
         while True:

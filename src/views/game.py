@@ -32,6 +32,7 @@ class Clickable_Label(QLabel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.create()
 
@@ -57,6 +58,7 @@ class Game_Renderer:
         self.revposition = defaultdict(QRect)
         self.game.distribute(self.bot)
         self.game.distribute(self.challenger)
+        self.coins = defaultdict(Clickable_Label)
         print("1: ", self.bot.playerCards)
         print("2: ", self.challenger.playerCards)
         print("---------------------")
@@ -192,6 +194,8 @@ class Game_Renderer:
         self.coin.setStyleSheet("background-color: transparent")
         self.coin.setPixmap(QPixmap(f"../img/coins/{image}.png"))
         self.coin.move(position.x() + 5, position.y() + 15)
+        self.coin.clicked.connect(partial(self.click, self.coin))
+        self.coins[position] = self.coin
         self.coin.show()
 
     def click(self, card: QLabel):
@@ -202,10 +206,10 @@ class Game_Renderer:
             return
 
         if ok == 2:
-            playerCoin = "null"
-
-        self.placeCoin(self.revposition[(x, y)], "one")
-        self.challenger.addCard(self.game.getNewCard())
+            self.coins[card.geometry()].hide()
+        else:
+            self.placeCoin(self.revposition[(x, y)], "one")
+            self.challenger.addCard(self.game.getNewCard())
 
         while True:
             ok = self.game.makeRandomMove(self.bot, self.challenger)
@@ -214,8 +218,10 @@ class Game_Renderer:
 
             i, j, x = ok
             pos = self.revposition[(i, j)]
-            playerCoin = "null" if not x else "two"
-            self.placeCoin(pos, playerCoin)
+            if not x:
+                self.coins[card.geometry()].hide()
+            else:
+                self.placeCoin(pos, "two")
             break
 
         self.showCards()
