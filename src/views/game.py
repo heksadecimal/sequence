@@ -1,4 +1,5 @@
 import views
+import configparser
 from collections import defaultdict
 from backend.logic import Game
 from backend.player import player
@@ -233,8 +234,24 @@ class Game_Renderer:
         if status == 1:
             if who == "challenger":
                 message.setText("Wohoo! That was a great match and you won. Congrats !!!!!")
+                config = configparser.ConfigParser()
+                config.read('sequence.ini')
+                totalGamesPlayed = config.get("player", "gamesPlayed") + 1
+                config.set('player', 'gamesPlayed','totalGamesPlayed')
+                totalGamesWon = config.get("player", "gamesWon") + 1
+                config.set('player', 'gamesWon','totalGamesWon')
+                totalSequenceMade = config.get("player", "sequenceMade") + 1
+                config.set('player', 'sequenceMade','totalSequenceMade')
+                currentWinRatio = 100*float((config.get("player", "winRatio") + 1)/totalGamesPlayed)
+                config.set('player', 'winRatio','currentWinRatio')
             else:
                 message.setText("Oops! You were close. Better Luck newxt time ;_;")
+                totalGamesLost = config.get("player", "gamesLost") + 1
+                config.set('player', 'gamesLost','totalGamesLost')
+                totalGamesPlayed = config.get("player", "gamesPlayed") + 1
+                config.set('player', 'gamesPlayed','totalGamesPlayed')
+                currentWinRatio = 100*float(config.get("player", "winRatio")/totalGamesPlayed)
+                config.set('player', 'winRatio','currentWinRatio')
 
         else:
             message.setText("WoW that was close. Looks like you need a rematch :)")
