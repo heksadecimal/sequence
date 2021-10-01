@@ -235,7 +235,7 @@ class Game_Renderer:
             if who == "challenger":
                 message.setText("Wohoo! That was a great match and you won. Congrats !!!!!")
                 config = configparser.ConfigParser()
-                config.read('sequence.ini')
+                config.read('../sequence.ini')
                 totalGamesPlayed = config.get("player", "gamesPlayed") + 1
                 config.set('player', 'gamesPlayed','totalGamesPlayed')
                 totalGamesWon = config.get("player", "gamesWon") + 1
@@ -244,6 +244,30 @@ class Game_Renderer:
                 config.set('player', 'sequenceMade','totalSequenceMade')
                 currentWinRatio = 100*float((config.get("player", "winRatio") + 1)/totalGamesPlayed)
                 config.set('player', 'winRatio','currentWinRatio')
+                if totalSequenceMade == 1:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("CHICKEN")
+                    config.set('player', 'awards','newAwards')
+                if totalGamesWon == 1:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("MILK")
+                    config.set('player', 'awards','newAwards')  
+                if totalGamesWon == 2:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("TWO")
+                    config.set('player', 'awards','newAwards')  
+                if totalGamesWon == 50:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("MASTER")
+                    config.set('player', 'awards','newAwards') 
+                if totalGamesWon == 100:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("LEGEND")
+                    config.set('player', 'awards','newAwards')  
+                newAwards = config.get("player", "awards")
+                if len(newAwards)==4:
+                    newAwards.add(SUPER)
+                    config.set('player', 'awards','newAwards')              
             else:
                 message.setText("Oops! You were close. Better Luck newxt time ;_;")
                 totalGamesLost = config.get("player", "gamesLost") + 1
@@ -252,9 +276,29 @@ class Game_Renderer:
                 config.set('player', 'gamesPlayed','totalGamesPlayed')
                 currentWinRatio = 100*float(config.get("player", "winRatio")/totalGamesPlayed)
                 config.set('player', 'winRatio','currentWinRatio')
+                if totalGamesLost == 5:
+                    newAwards = config.get("player", "awards")
+                    newAwards.add("OOPS")
+                    config.set('player', 'awards','newAwards')
+                newAwards = config.get("player", "awards")
+                if len(newAwards)==4:
+                    newAwards.add(SUPER)
+                    config.set('player', 'awards','newAwards')      
 
         else:
             message.setText("WoW that was close. Looks like you need a rematch :)")
+            totalGamesPlayed = config.get("player", "gamesPlayed") + 1
+            config.set('player', 'gamesPlayed','totalGamesPlayed')
+            currentWinRatio = 100*float(config.get("player", "winRatio")/totalGamesPlayed)
+            config.set('player', 'winRatio','currentWinRatio')
+            if totalGamesDraw == 5:
+                newAwards = config.get("player", "awards")
+                newAwards.add("BULB")
+                config.set('player', 'awards','newAwards')
+            newAwards = config.get("player", "awards")
+            if len(newAwards)==4:
+                newAwards.add(SUPER)
+                config.set('player', 'awards','newAwards')      
 
         flash.show()                
 
