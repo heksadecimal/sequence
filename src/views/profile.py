@@ -225,7 +225,6 @@ class Profile_Renderer:
     def quit(self):
         quitDialog = QDialog(self.window)
         quitDialog.setWindowTitle("You sure you wanna quit?")
-        quitDialog.set
         quitDialog.show()
 
     def updatePicture(self):

@@ -52,19 +52,20 @@ class Game_Renderer:
         self.game = Game()
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
-        self.bot = player(self.showCards)
-        self.challenger = player(self.showCards)
+        self.bot = player("bot")
+        self.challenger = player("challenger")
         self.position = defaultdict(lambda: (0, 0))
         self.revposition = defaultdict(QRect)
         self.game.distribute(self.bot)
-        self.game.distribute(self.challenger)
+        # self.game.distribute(self.challenger)
+        self.challenger.playerCards = ["JC"] * 5
+
         self.coins = defaultdict(Clickable_Label)
         print("1: ", self.bot.playerCards)
         print("2: ", self.challenger.playerCards)
         print("---------------------")
 
     def saveAndClose(self):
-        print("HEYYEYEY")
         self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
         )
@@ -197,6 +198,48 @@ class Game_Renderer:
         self.coin.clicked.connect(partial(self.click, self.coin))
         self.coins[position] = self.coin
         self.coin.show()
+    
+    def delcareOutcome(self, status, who=""):
+        flash = QDialog(self.mainPage)
+        message = QLabel(flash)
+        flash.setGeometry(.35 * self.mainPage.width(), 0.4 * self.mainPage.height(), 700, 300)
+        # flash.setFixedWidth(700)
+        flash.setStyleSheet("background-color: #3b4252")
+
+        message = QLabel(flash)
+        message.setGeometry(
+            message.geometry().x() + 100,
+            message.geometry().y() + 10,
+            550,
+            100,
+        )
+        message.setStyleSheet(
+            "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
+        )
+        pushButtonMenu = QPushButton(flash)
+        pushButtonMenu.setText("Return to Main Menu")
+        pushButtonMenu.setGeometry(
+            pushButtonMenu.geometry().x() + 250,
+            pushButtonMenu.geometry().y() + 200,
+            pushButtonMenu.geometry().width() + 50,
+            pushButtonMenu.geometry().height(),
+        )
+        pushButtonMenu.clicked.connect(
+            lambda: self.window.setCentralWidget(
+                views.profile.Profile_Renderer(self.window).render()
+            )
+        )
+
+        if status == 1:
+            if who == "challenger":
+                message.setText("Wohoo! That was a great match and you won. Congrats !!!!!")
+            else:
+                message.setText("Oops! You were close. Better Luck newxt time ;_;")
+
+        else:
+            message.setText("WoW that was close. Looks like you need a rematch :)")
+
+        flash.show()                
 
     def click(self, card: QLabel):
 
@@ -210,6 +253,14 @@ class Game_Renderer:
         else:
             self.placeCoin(self.revposition[(x, y)], "one")
             self.challenger.addCard(self.game.getNewCard())
+        
+        if self.game.winner:
+            self.delcareOutcome(1, "challenger")
+            return
+            
+        if not self.game.deck:
+            self.delcareOutcome(0)
+            return
 
         while True:
             ok = self.game.makeRandomMove(self.bot, self.challenger)
@@ -223,6 +274,17 @@ class Game_Renderer:
             else:
                 self.placeCoin(pos, "two")
             break
+
+        if self.game.winner:
+            self.delcareOutcome(1)
+            return
+
+
+        if not self.game.deck:
+            self.declareOutcome(0)
+            return
+
+
 
         self.showCards()
 

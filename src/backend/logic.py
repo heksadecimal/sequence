@@ -1,7 +1,7 @@
 import random
 from collections import defaultdict
 
-from PyQt6.QtWidgets import QLabel
+from PyQt6.QtWidgets import QDialog, QLabel
 from backend.player import player
 
 
@@ -31,6 +31,7 @@ class Game:
         self.used = defaultdict(int)
         self.coins = defaultdict(QLabel)
         self.filled = [[0] * 10 for _ in " " * 10]
+        self.winner = False
 
     def storeLocations(self):
         for i in range(10):
@@ -49,18 +50,12 @@ class Game:
                 return newCard
         return False
 
-    def declareWinner(self,obj):
-        if obj.playerScore and obj == challenger:
-            return print("Congratulations You Won!!!")
-        elif obj.playerScore and obj == bot:
-            return print("Computer Won!!!")
-
     def checkSequence(self, x, y, obj):
         # check up - down
 
         total = 0
         b = d = y
-        while b:
+        while b >= 0:
             if obj.playerBox[x][b]:
                 total += 1
             else:
@@ -74,7 +69,7 @@ class Game:
                 break
             d += 1
 
-        obj.playerScore += total >= 4
+        obj.playerScore += total >= 6
 
         # check left - right
 
@@ -94,7 +89,7 @@ class Game:
                 break
             c += 1
 
-        obj.playerScore += total >= 4
+        obj.playerScore += total >= 6
 
         # check left - diagonal
 
@@ -117,7 +112,7 @@ class Game:
             c += 1
             d += 1
 
-        obj.playerScore += total >= 4
+        obj.playerScore += total >= 6
 
         # check right - diagonal
 
@@ -140,7 +135,10 @@ class Game:
             c += 1
             d -= 1
 
-        obj.playerScore += total >= 4
+        obj.playerScore += total >= 6
+        if obj.playerScore > 0:
+            self.winner = True
+
 
     def setBox(self, player: player, opponent, x, y):
         if self.board[x][y] == "XX":

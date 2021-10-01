@@ -2,14 +2,14 @@ import random
 
 
 class player:
-    def __init__(self, callback):
+    def __init__(self, name):
+        self.playerName = name
         self.playerScore = 0
         self.playerCards = []
         self.playerBox = [[0] * 10 for _ in " " * 10]
         self.playerBox[0][0] = self.playerBox[0][-1] = self.playerBox[-1][
             0
         ] = self.playerBox[-1][-1] = 1
-        self.callback = callback
 
     def addCard(self, card):
         self.playerCards += (card,)
