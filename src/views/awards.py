@@ -1,4 +1,6 @@
+import configparser
 import views
+import os
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt, pyqtSignal
 from PyQt6.QtGui import QFont, QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
@@ -12,7 +14,6 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 from functools import partial
-
 class Clickable_Label(QLabel):
     clicked = pyqtSignal()
 
@@ -27,12 +28,14 @@ class Clickable_Label(QLabel):
 
         return super().mousePressEvent(ev)
 
-
+config  = configparser.ConfigParser()
+config.read("../sequence.ini")
+awards = config.get("player", "awards")
+print(awards)
 
 class Award_Renderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
-
         self.animation = QParallelAnimationGroup()
 
     def render(self):
@@ -155,15 +158,26 @@ class Award_Renderer:
                 l = QVBoxLayout()
 
                 image = Clickable_Label()
-
                 image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
                 image.setFixedSize(QSize(100, 100))
                 image.setScaledContents(True)
                 image.setAlignment(
                     Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
                 )
-                image.clicked.connect(partial(self.showData , awardData[value] , QPixmap("./img/awards/{}.png".format(value))))
+                image.clicked.connect(partial(self.showData , awardData[value] , QPixmap("../img/awards/{}.png".format(value))))
                 
+                if value in awards:
+                    claim = QLabel(image)
+                    stamp = QPixmap("../img/stamp.png")
+                    print(stamp.isNull())
+                    claim.setPixmap(stamp)
+                    claim.setScaledContents(True)
+                    claim.setAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                )   
+                    claim.setGeometry(image.geometry())
+                    claim.show()
+
                 l.addWidget(image)
                 # l.setGeometry(imageGeometry)
 

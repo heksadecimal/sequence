@@ -1,7 +1,3 @@
--------
-awards claim
-
-
 -----
 volume controls
 Saving Games
