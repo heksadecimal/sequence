@@ -25,7 +25,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from functools import partial
+from functools import partial, update_wrapper
 
 
 class Clickable_Label(QLabel):
@@ -190,7 +190,7 @@ class Game_Renderer:
 
     def placeCoin(self, position: QRect, image):
         print(position)
-        self.coin = Clickable_Label(self.window)
+        self.coin = Clickable_Label(self.mainPage)
         self.coin.setFixedSize(40, 40)
         self.coin.setScaledContents(True)
         self.coin.setStyleSheet("background-color: transparent")
@@ -199,7 +199,58 @@ class Game_Renderer:
         self.coin.clicked.connect(partial(self.click, self.coin))
         self.coins[position] = self.coin
         self.coin.show()
-    
+
+    def updateAwards(self):
+        awards = set()
+        if self.gamesLost >= 5:
+            awards.add("oops")
+        if self.gamesWon:
+            awards.add("milk")
+        if self.sequenceMade:
+            awards.add("chicken")
+        if self.gamesWon > 1:
+            awards.add("two")
+        if len(awards) >= 4:
+            awards.add("super")
+        if self.continousWin == 5:
+            awards.add("rising_star")
+        if self.gamesWon + self.gamesLost >= 50:
+            awards.add("bulb")
+        if self.gamesWon >= 50:
+            awards.add("master")
+        if self.gamesWon >= 100:
+            awards.add("legend")
+        
+        return ', '.join(list(awards))
+
+    def updateUserData(self, score):
+        self.config = configparser.ConfigParser()
+        self.config.read("../sequence.ini")
+        self.gamesWon = int(self.config.get('player', 'gamesWon'))
+        self.sequenceMade = int(self.config.get('player', 'sequenceMade'))
+        self.gamesLost = int(self.config.get('player', 'gamesLost'))
+        self.continousWin = int(self.config.get('player', 'continousWin'))
+
+        if score:
+            self.gamesWon += 1
+            self.sequenceMade += 1
+            self.continousWin += 1
+            self.config.set('player', 'gamesWon', str(self.gamesWon))
+            self.config.set('player', 'sequenceMade', str(self.sequenceMade + 1))
+        else:
+            self.gamesLost += 1
+            self.continousWin = 0
+            self.config.set('player', 'gamesLost', str(self.gamesLost + 1))
+
+        self.config.set('player', 'gamesPlayed', str(int(self.config.get('player', 'gamesPlayed') )+ 1))
+        awards = self.updateAwards()
+        self.config.set('player', 'awards', awards)
+
+        with open("../sequence.ini", "w") as c:
+            self.config.write(c)
+
+
+
     def delcareOutcome(self, status, who=""):
         flash = QDialog(self.mainPage)
         message = QLabel(flash)
@@ -234,72 +285,16 @@ class Game_Renderer:
         if status == 1:
             if who == "challenger":
                 message.setText("Wohoo! That was a great match and you won. Congrats !!!!!")
-                config = configparser.ConfigParser()
-                config.read('../sequence.ini')
-                totalGamesPlayed = config.get("player", "gamesPlayed") + 1
-                config.set('player', 'gamesPlayed','totalGamesPlayed')
-                totalGamesWon = config.get("player", "gamesWon") + 1
-                config.set('player', 'gamesWon','totalGamesWon')
-                totalSequenceMade = config.get("player", "sequenceMade") + 1
-                config.set('player', 'sequenceMade','totalSequenceMade')
-                currentWinRatio = 100*float((config.get("player", "winRatio") + 1)/totalGamesPlayed)
-                config.set('player', 'winRatio','currentWinRatio')
-                if totalSequenceMade == 1:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("CHICKEN")
-                    config.set('player', 'awards','newAwards')
-                if totalGamesWon == 1:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("MILK")
-                    config.set('player', 'awards','newAwards')  
-                if totalGamesWon == 2:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("TWO")
-                    config.set('player', 'awards','newAwards')  
-                if totalGamesWon == 50:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("MASTER")
-                    config.set('player', 'awards','newAwards') 
-                if totalGamesWon == 100:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("LEGEND")
-                    config.set('player', 'awards','newAwards')  
-                newAwards = config.get("player", "awards")
-                if len(newAwards)==4:
-                    newAwards.add(SUPER)
-                    config.set('player', 'awards','newAwards')              
+                self.updateUserData(1)            
             else:
                 message.setText("Oops! You were close. Better Luck newxt time ;_;")
-                totalGamesLost = config.get("player", "gamesLost") + 1
-                config.set('player', 'gamesLost','totalGamesLost')
-                totalGamesPlayed = config.get("player", "gamesPlayed") + 1
-                config.set('player', 'gamesPlayed','totalGamesPlayed')
-                currentWinRatio = 100*float(config.get("player", "winRatio")/totalGamesPlayed)
-                config.set('player', 'winRatio','currentWinRatio')
-                if totalGamesLost == 5:
-                    newAwards = config.get("player", "awards")
-                    newAwards.add("OOPS")
-                    config.set('player', 'awards','newAwards')
-                newAwards = config.get("player", "awards")
-                if len(newAwards)==4:
-                    newAwards.add(SUPER)
-                    config.set('player', 'awards','newAwards')      
-
+                self.updateUserData(0)
         else:
             message.setText("WoW that was close. Looks like you need a rematch :)")
-            totalGamesPlayed = config.get("player", "gamesPlayed") + 1
-            config.set('player', 'gamesPlayed','totalGamesPlayed')
-            currentWinRatio = 100*float(config.get("player", "winRatio")/totalGamesPlayed)
-            config.set('player', 'winRatio','currentWinRatio')
-            if totalGamesDraw == 5:
-                newAwards = config.get("player", "awards")
-                newAwards.add("BULB")
-                config.set('player', 'awards','newAwards')
-            newAwards = config.get("player", "awards")
-            if len(newAwards)==4:
-                newAwards.add(SUPER)
-                config.set('player', 'awards','newAwards')      
 
+
+
+        print("FLASSSSSSSSSS")
         flash.show()                
 
     def click(self, card: QLabel):

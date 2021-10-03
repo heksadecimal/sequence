@@ -6,7 +6,7 @@ from views.settings import Settings_Renderer
 from views.statistics import Statistics_Renderer
 from views.awards import Award_Renderer
 from views.profile import Profile_Renderer
-from PyQt6.QtCore import QPoint, QRect, Qt
+from PyQt6.QtCore import QPoint, QRect, QUrl, Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QDialog,
@@ -15,11 +15,15 @@ from PyQt6.QtWidgets import (
     QPushButton,
 )
 
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
+
 
 class Main:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         self.quit = 0
+        
+
 
     def create(self):
         self.window.setCentralWidget(Profile_Renderer(self.window).render())

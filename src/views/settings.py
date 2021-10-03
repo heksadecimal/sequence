@@ -1,6 +1,7 @@
+from PyQt6.QtMultimedia import QSoundEffect
 import views
 from assets.animations import Animation
-from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
+from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QUrl, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QSlider, QWidget
 
@@ -8,8 +9,8 @@ from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QSlider, QWidget
 class Settings_Renderer:
     def __init__(self, window) -> None:
         self.window = window
-
         self.animation = QParallelAnimationGroup()
+        self.effect = QSoundEffect()
 
     def render(self):
         self.mainPage = QWidget()
@@ -129,6 +130,7 @@ class Settings_Renderer:
         self.comboBox.addItem("casino1")
         self.comboBox.addItem("casino2")
         self.comboBox.addItem("casino3")
+        self.comboBox.currentTextChanged.connect(self.changeSong)
 
         # back-button
         self.pushButton = QPushButton(self.mainPage)
@@ -147,6 +149,14 @@ class Settings_Renderer:
         self.animation.start()
 
         return self.mainPage
+
+    def changeSong(self, event):
+        print('------')
+        song = f"../sounds/{self.comboBox.currentText()}.wav"
+        self.effect.stop()
+        self.effect.setSource(QUrl.fromLocalFile(song))
+        self.effect.setLoopCount(-2)
+        self.effect.play()
 
     def responser(self, geometry: QRect):
         self.settingsBG.setGeometry(geometry)

@@ -28,10 +28,6 @@ class Clickable_Label(QLabel):
 
         return super().mousePressEvent(ev)
 
-config  = configparser.ConfigParser()
-config.read("../sequence.ini")
-awards = config.get("player", "awards")
-print(awards)
 
 class Award_Renderer:
     def __init__(self, window: QMainWindow) -> None:
@@ -45,6 +41,10 @@ class Award_Renderer:
             self.mainPage.geometry()
         )
 
+        config  = configparser.ConfigParser()
+        config.read("../sequence.ini")
+        awards = config.get("player", "awards").split(', ')
+        
         self.awardBG = QLabel(self.mainPage)
         self.awardBG.setGeometry(QRect(0, 0, 1191, 1001))
         self.awardBG.setPixmap(QPixmap("./img/main_bg.png"))
@@ -132,7 +132,7 @@ class Award_Renderer:
             },
             "bulb": {
                 "needed": 5,
-                "info": "Draw 5 Matches",
+                "info": "Play 50 matches",
                 "won": False,
                 "when": "-"
             },
