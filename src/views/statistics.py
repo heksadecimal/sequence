@@ -248,7 +248,7 @@ class Statistics_Renderer:
         chart.setAnimationOptions(QChart.AnimationOption.SeriesAnimations)
         chart.layout().setContentsMargins(0, 0, 0, 0)
 
-        chart.legend().setVisible(True)
+        # chart.legend().setVisible(True)
         chart.legend().setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.chartview = QChartView(chart, self.mainPage)
         self.chartview.setRenderHint(QPainter.RenderHint.Antialiasing)
