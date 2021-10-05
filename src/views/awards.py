@@ -14,6 +14,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 from functools import partial
+
+
 class Clickable_Label(QLabel):
     clicked = pyqtSignal()
 
@@ -41,10 +43,10 @@ class Award_Renderer:
             self.mainPage.geometry()
         )
 
-        config  = configparser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read("../sequence.ini")
-        awards = config.get("player", "awards").split(', ')
-        
+        awards = config.get("player", "awards").split(", ")
+
         self.awardBG = QLabel(self.mainPage)
         self.awardBG.setGeometry(QRect(0, 0, 1191, 1001))
         self.awardBG.setPixmap(QPixmap("./img/main_bg.png"))
@@ -97,58 +99,31 @@ class Award_Renderer:
                 "needed": 1,
                 "info": "Create A Sequence",
                 "won": False,
-                "when": "-"
+                "when": "-",
             },
-            
-            "milk": {
-                "needed": 1,
-                "info": "Win A Game",
-                "won": False,
-                "when": "-"
-            },
-            "two": {
-                "needed": 2,
-                "info": "Win Two Game",
-                "won": False,
-                "when": "-"
-            },
-            "super": {
-                "needed": 4,
-                "info": "Win 4 Awards",
-                "won": False,
-                "when": "-"
-            },
-            "oops": {
-                "needed": 5,
-                "info": "Lose 5 Games",
-                "won": False,
-                "when": "-"
-            },
+            "milk": {"needed": 1, "info": "Win A Game", "won": False, "when": "-"},
+            "two": {"needed": 2, "info": "Win Two Game", "won": False, "when": "-"},
+            "super": {"needed": 4, "info": "Win 4 Awards", "won": False, "when": "-"},
+            "oops": {"needed": 5, "info": "Lose 5 Games", "won": False, "when": "-"},
             "rising_star": {
                 "needed": 5,
                 "info": "Win 5 Games in a row",
                 "won": False,
-                "when": "-"
+                "when": "-",
             },
-            "bulb": {
-                "needed": 5,
-                "info": "Play 50 matches",
-                "won": False,
-                "when": "-"
-            },
+            "bulb": {"needed": 5, "info": "Play 50 matches", "won": False, "when": "-"},
             "master": {
                 "needed": 50,
                 "info": "Win 50 Matches",
                 "won": False,
-                "when": "-"
+                "when": "-",
             },
             "legend": {
                 "needed": 100,
                 "info": "Win 100 Games",
                 "won": False,
-                "when": "-"
+                "when": "-",
             },
-        
         }
 
         for row in awardsMap:
@@ -164,8 +139,14 @@ class Award_Renderer:
                 image.setAlignment(
                     Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
                 )
-                image.clicked.connect(partial(self.showData , awardData[value] , QPixmap("../img/awards/{}.png".format(value))))
-                
+                image.clicked.connect(
+                    partial(
+                        self.showData,
+                        awardData[value],
+                        QPixmap("../img/awards/{}.png".format(value)),
+                    )
+                )
+
                 if value in awards:
                     claim = QLabel(image)
                     stamp = QPixmap("../img/stamp.png")
@@ -173,8 +154,8 @@ class Award_Renderer:
                     claim.setPixmap(stamp)
                     claim.setScaledContents(True)
                     claim.setAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
-                )   
+                        Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+                    )
                     claim.setGeometry(image.geometry())
                     claim.show()
 
@@ -218,7 +199,7 @@ class Award_Renderer:
             0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 70
         )
 
-    def showData(self , data , pixmap):
+    def showData(self, data, pixmap):
         self.dialog = QDialog()
 
         self.dialog.setStyleSheet("background-color: #2E3440; margin: 50px")
@@ -227,33 +208,41 @@ class Award_Renderer:
 
         # Award Image
         label = QLabel()
-        label.setFixedSize(200 , 200)
+        label.setFixedSize(200, 200)
         label.setScaledContents(True)
         label.setStyleSheet("background-color: transparent")
         label.setPixmap(pixmap)
-        layout.addWidget(label , alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Win Needed
         needed = QLabel()
-        needed.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px")
+        needed.setStyleSheet(
+            "font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px"
+        )
         needed.setText("Needed  :  " + str(data["needed"]))
         layout.addWidget(needed)
 
         # Info
         info = QLabel()
-        info.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px")
+        info.setStyleSheet(
+            "font-size: 20px; font-family: Comfortaa; color: #88C0D0;  margin: 10px"
+        )
         info.setText("Info  :  " + str(data["info"]))
         layout.addWidget(info)
 
         # Has the challenger Won?
         won = QLabel()
-        won.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px")
+        won.setStyleSheet(
+            "font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px"
+        )
         won.setText("Has Won  :  " + str(data["won"]))
         layout.addWidget(won)
 
         # When the player has achieved?
         when = QLabel()
-        when.setStyleSheet("font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px")
+        when.setStyleSheet(
+            "font-size: 20px; font-family: Comfortaa; color: #88C0D0; margin: 10px"
+        )
         when.setText("Date  :  " + str(data["when"]))
         layout.addWidget(when)
 

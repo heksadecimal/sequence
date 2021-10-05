@@ -1,48 +1,110 @@
-from PyQt6.QtCore import QPropertyAnimation
+from typing import Any, Callable
+from PyQt6.QtCore import QEasingCurve, QPoint, QPropertyAnimation, QRect, QVariantAnimation
 from PyQt6.QtWidgets import QGraphicsOpacityEffect, QWidget
 
-
 class Animation:
-    def fade(self, widget: QWidget):
-        opacity = widget.graphicsEffect()
+    def fade(target: QWidget, duration: int) -> QPropertyAnimation:
+        # Opacity
+        opacity = QGraphicsOpacityEffect()
 
-        if opacity == None:
-            opacity = QGraphicsOpacityEffect()
+        # Set the graphics effect to the target
+        target.setGraphicsEffect(opacity)
 
-            widget.setGraphicsEffect(opacity)
+        # QProperty Animation for the gradual decrease of the opacity
+        opacityAnimation = QPropertyAnimation(opacity , b"opacity")
 
-        else:
+        # Start with the widget with a opacity of 1
+        opacityAnimation.setStartValue(1.0)
 
-            opacity.setOpacity(1)
+        # End with the widget having an opacity of 0 (hidden)
+        opacityAnimation.setEndValue(0.0)
 
-        animation = QPropertyAnimation(opacity, b"opacity")
+        # Smooth, easing curves
+        opacityAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
-        animation.setStartValue(1)
+        # Set duration
+        opacityAnimation.setDuration(duration)
 
-        animation.setEndValue(0)
+        return opacityAnimation
 
-        animation.setDuration(500)
+    def unfade(target: QWidget , duration: int) -> QPropertyAnimation:
+        # Initiate the opacity class
+        opacity = QGraphicsOpacityEffect()
 
+        # Set the graphics effect to the target
+        target.setGraphicsEffect(opacity)
+
+        # QProperty Animation for the gradual decrease of the opacity
+        opacityAnimation = QPropertyAnimation(opacity , b"opacity")
+
+        # Start with the widget with a opacity of 1
+        opacityAnimation.setStartValue(0.0)
+
+        # End with the widget having an opacity of 0 (hidden)
+        opacityAnimation.setEndValue(1.0)
+
+        # Smooth, easing curves
+        opacityAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
+
+        # Set duration
+        opacityAnimation.setDuration(duration)
+
+        return opacityAnimation
+
+    def variantAnimation(startValue: Any , endValue: Any , duration: int , callback: Callable) -> QVariantAnimation:
+        # Create a varint animation instance
+        animation = QVariantAnimation()
+
+        # Set the startb value
+        animation.setStartValue(startValue)
+
+        # Set the end value
+        animation.setEndValue(endValue)
+
+        # Set the duration
+        animation.setDuration(duration)
+
+        # Set Easing curve
+        animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
+
+        # Call the callback on update function
+        animation.valueChanged.connect(callback)
+
+        # Return the animation
         return animation
 
-    def unfade(self, widget: QWidget):
-        opacity = widget.graphicsEffect()
+    def geometryAnimation(target: QWidget , endValue: QRect , duration: int) -> QPropertyAnimation:
+        # QProperty Animation for a smooth animation
+        geometryAnimation = QPropertyAnimation(target , b"geomtry")
 
-        if opacity == None:
-            opacity = QGraphicsOpacityEffect()
+        # Set the original value as the current geometry of the target
+        geometryAnimation.setStartValue(target.geometry())
 
-            widget.setGraphicsEffect(opacity)
+        # Set the end value as provided
+        geometryAnimation.setEndValue(endValue)
 
-        else:
+        # Smooth, easing curves
+        geometryAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
-            opacity.setOpacity(0)
+        # Set duration
+        geometryAnimation.setDuration(duration)
 
-        animation = QPropertyAnimation(opacity, b"opacity")
+        return geometryAnimation
 
-        animation.setStartValue(0)
+    def moveAnimation(target: QWidget , endValue: QPoint , duration: int) -> QPropertyAnimation:
+        # QProperty Animation for a smooth animation
+        moveAnimation = QPropertyAnimation(target , b"pos")
 
-        animation.setEndValue(1)
+        # Set the original value as the current geometry of the target
+        moveAnimation.setStartValue(target.pos())
 
-        animation.setDuration(500)
+        # Set the end value as provided
+        moveAnimation.setEndValue(endValue)
 
-        return animation
+        # Smooth, easing curves
+        moveAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
+
+        # Set duration
+        moveAnimation.setDuration(duration)
+
+        return moveAnimation

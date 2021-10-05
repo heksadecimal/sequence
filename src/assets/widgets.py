@@ -59,8 +59,6 @@ class QButton(QLabel):
     def set_color(self, col):
         self.currentColor = col.name()
 
-        print(self.currentColor)
-
         self.setStyles(False)
 
     color = pyqtProperty(QColor, fset=set_color)

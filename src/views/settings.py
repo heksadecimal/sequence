@@ -54,9 +54,7 @@ class Settings_Renderer:
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
         self.gameSound.setFont(font)
-        self.gameSound.setStyleSheet(
-            "color: #ebcb8b;background-color: transparent"
-        )
+        self.gameSound.setStyleSheet("color: #ebcb8b;background-color: transparent")
 
         # background game sound
         self.gameMusic = QLabel(self.mainPage)
@@ -65,9 +63,7 @@ class Settings_Renderer:
         self.gameMusic.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
-        self.gameMusic.setStyleSheet(
-            "color: #ebcb8b;background-color: transparent"
-        )
+        self.gameMusic.setStyleSheet("color: #ebcb8b;background-color: transparent")
         self.gameMusic.setFont(font)
 
         # seletion of bg music
@@ -77,9 +73,7 @@ class Settings_Renderer:
         self.gameAudio.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
-        self.gameAudio.setStyleSheet(
-            "color: #ebcb8b;background-color: transparent"
-        )
+        self.gameAudio.setStyleSheet("color: #ebcb8b;background-color: transparent")
         self.gameAudio.setFont(font)
 
         # in-game sound slider
@@ -151,7 +145,7 @@ class Settings_Renderer:
         return self.mainPage
 
     def changeSong(self, event):
-        print('------')
+        print("------")
         song = f"../sounds/{self.comboBox.currentText()}.wav"
         self.effect.stop()
         self.effect.setSource(QUrl.fromLocalFile(song))
@@ -163,9 +157,9 @@ class Settings_Renderer:
         self.settingsBG.move(QPoint(0, 0))
         self.settingsBM.setGeometry(self.settingsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.window.width(), 100))
-        self.gameSound.setGeometry(QRect(.35 * self.settingsBG.width(), 250, 200, 61))
-        self.gameMusic.setGeometry(QRect(.35 * self.settingsBG.width(), 340, 200, 61))
-        self.gameAudio.setGeometry(QRect(.35 * self.settingsBG.width(), 460, 200, 61))
+        self.gameSound.setGeometry(QRect(0.35 * self.settingsBG.width(), 250, 200, 61))
+        self.gameMusic.setGeometry(QRect(0.35 * self.settingsBG.width(), 340, 200, 61))
+        self.gameAudio.setGeometry(QRect(0.35 * self.settingsBG.width(), 460, 200, 61))
         self.gameSoundSlider.setGeometry(
             QRect(0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20)
         )

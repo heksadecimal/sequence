@@ -30,7 +30,6 @@ class Main:
 
 
     def cleanClose(self, event: QCloseEvent):
-        print(self.window.centralWidget())
 
         self.ok = QDialog(self.window)
         self.ok.setWindowTitle("Quit Sequece")

@@ -49,7 +49,6 @@ class Game_Renderer:
         self.window = window
         # self.window.closeEvent = self.cleanClose
 
-
         self.game = Game()
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
@@ -57,6 +56,7 @@ class Game_Renderer:
         self.challenger = player("challenger")
         self.position = defaultdict(lambda: (0, 0))
         self.revposition = defaultdict(QRect)
+        self.coinPos = []
         self.game.distribute(self.bot)
         # self.game.distribute(self.challenger)
         self.challenger.playerCards = ["JC"] * 5
@@ -68,7 +68,7 @@ class Game_Renderer:
 
     def saveAndClose(self):
         self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+            views.profile.Profile_Renderer(self.window).render()
         )
 
     def cleanClose(self):
@@ -113,15 +113,16 @@ class Game_Renderer:
             self.no.geometry().height(),
         )
         self.no.show()
-        self.no.clicked.connect(lambda : self.window.setCentralWidget(
+        self.no.clicked.connect(
+            lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
-        ))
-        self.yes.clicked.connect(lambda : self.saveAndClose())
-        
+            )
+        )
+        self.yes.clicked.connect(lambda: self.saveAndClose())
+
         self.quitLabel.show()
         self.ok.exec()
 
- 
     def render(self) -> QWidget:
         self.mainPage = QWidget()
         self.mainPage.resizeEvent = lambda event: self.responser(
@@ -139,10 +140,11 @@ class Game_Renderer:
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
         self.mainBM.raise_()
 
-
         # back-button
         self.backPushButton = QPushButton(self.mainPage)
-        self.backPushButton.setGeometry(.04 * self.mainPage.width(), .12 * self.mainPage.height(), 120, 90)
+        self.backPushButton.setGeometry(
+            0.04 * self.mainPage.width(), 0.12 * self.mainPage.height(), 120, 90
+        )
         self.backPushButton.setText("Go Back")
         self.backPushButton.setStyleSheet(
             "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);font-style: comfortaa;font-size: 20px"
@@ -166,6 +168,7 @@ class Game_Renderer:
                 card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
                 card.setScaledContents(True)
                 card.setCursor(Qt.CursorShape.PointingHandCursor)
+                card.setProperty("codeName" , value)
                 card.clicked.connect(partial(self.click, card))
 
                 animation = QPropertyAnimation(card, b"pos")
@@ -188,17 +191,19 @@ class Game_Renderer:
 
         return self.mainPage
 
-    def placeCoin(self, position: QRect, image):
-        print(position)
+    def placeCoin(self, position: QRect, image , card: QWidget):
+        # self.coinPos.append(card.property("codeName"))
+        print("AAAAA ---- " , card.property("codeName"))
         self.coin = Clickable_Label(self.mainPage)
         self.coin.setFixedSize(40, 40)
         self.coin.setScaledContents(True)
         self.coin.setStyleSheet("background-color: transparent")
         self.coin.setPixmap(QPixmap(f"../img/coins/{image}.png"))
         self.coin.move(position.x() + 5, position.y() + 15)
-        self.coin.clicked.connect(partial(self.click, self.coin))
+        self.coin.clicked.connect(partial(self.click, card))
         self.coins[position] = self.coin
         self.coin.show()
+        print(self.coinPos)
 
     def updateAwards(self):
         awards = set()
@@ -220,41 +225,45 @@ class Game_Renderer:
             awards.add("master")
         if self.gamesWon >= 100:
             awards.add("legend")
-        
-        return ', '.join(list(awards))
+
+        return ", ".join(list(awards))
 
     def updateUserData(self, score):
         self.config = configparser.ConfigParser()
         self.config.read("../sequence.ini")
-        self.gamesWon = int(self.config.get('player', 'gamesWon'))
-        self.sequenceMade = int(self.config.get('player', 'sequenceMade'))
-        self.gamesLost = int(self.config.get('player', 'gamesLost'))
-        self.continousWin = int(self.config.get('player', 'continousWin'))
+        self.gamesWon = int(self.config.get("player", "gamesWon"))
+        self.sequenceMade = int(self.config.get("player", "sequenceMade"))
+        self.gamesLost = int(self.config.get("player", "gamesLost"))
+        self.continousWin = int(self.config.get("player", "continousWin"))
 
         if score:
             self.gamesWon += 1
             self.sequenceMade += 1
             self.continousWin += 1
-            self.config.set('player', 'gamesWon', str(self.gamesWon))
-            self.config.set('player', 'sequenceMade', str(self.sequenceMade + 1))
+            self.config.set("player", "gamesWon", str(self.gamesWon))
+            self.config.set("player", "sequenceMade", str(self.sequenceMade + 1))
         else:
             self.gamesLost += 1
             self.continousWin = 0
-            self.config.set('player', 'gamesLost', str(self.gamesLost + 1))
+            self.config.set("player", "gamesLost", str(self.gamesLost + 1))
 
-        self.config.set('player', 'gamesPlayed', str(int(self.config.get('player', 'gamesPlayed') )+ 1))
+        self.config.set(
+            "player",
+            "gamesPlayed",
+            str(int(self.config.get("player", "gamesPlayed")) + 1),
+        )
         awards = self.updateAwards()
-        self.config.set('player', 'awards', awards)
+        self.config.set("player", "awards", awards)
 
         with open("../sequence.ini", "w") as c:
             self.config.write(c)
 
-
-
     def delcareOutcome(self, status, who=""):
         flash = QDialog(self.mainPage)
         message = QLabel(flash)
-        flash.setGeometry(.35 * self.mainPage.width(), 0.4 * self.mainPage.height(), 700, 300)
+        flash.setGeometry(
+            0.35 * self.mainPage.width(), 0.4 * self.mainPage.height(), 700, 300
+        )
         # flash.setFixedWidth(700)
         flash.setStyleSheet("background-color: #3b4252")
 
@@ -265,9 +274,7 @@ class Game_Renderer:
             550,
             100,
         )
-        message.setStyleSheet(
-            "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
-        )
+        message.setStyleSheet("color: #ebcb8b; font-size: 18px; font-style: comfortaa")
         pushButtonMenu = QPushButton(flash)
         pushButtonMenu.setText("Return to Main Menu")
         pushButtonMenu.setGeometry(
@@ -284,21 +291,21 @@ class Game_Renderer:
 
         if status == 1:
             if who == "challenger":
-                message.setText("Wohoo! That was a great match and you won. Congrats !!!!!")
-                self.updateUserData(1)            
+                message.setText(
+                    "Wohoo! That was a great match and you won. Congrats !!!!!"
+                )
+                self.updateUserData(1)
             else:
                 message.setText("Oops! You were close. Better Luck newxt time ;_;")
                 self.updateUserData(0)
         else:
             message.setText("WoW that was close. Looks like you need a rematch :)")
 
-
-
         print("FLASSSSSSSSSS")
-        flash.show()                
+        flash.show()
 
     def click(self, card: QLabel):
-
+        print(card.property("codeName"))
         x, y = self.position[card.geometry()]
         ok = self.game.setBox(self.challenger, self.bot.playerBox, x, y)
         if not ok:
@@ -307,13 +314,14 @@ class Game_Renderer:
         if ok == 2:
             self.coins[card.geometry()].hide()
         else:
-            self.placeCoin(self.revposition[(x, y)], "one")
+
+            self.placeCoin(self.revposition[(x, y)], "one" , card)
             self.challenger.addCard(self.game.getNewCard())
-        
+
         if self.game.winner:
             self.delcareOutcome(1, "challenger")
             return
-            
+
         if not self.game.deck:
             self.delcareOutcome(0)
             return
@@ -328,19 +336,16 @@ class Game_Renderer:
             if not x:
                 self.coins[card.geometry()].hide()
             else:
-                self.placeCoin(pos, "two")
+                self.placeCoin(pos, "two" , card)
             break
 
         if self.game.winner:
             self.delcareOutcome(1)
             return
 
-
         if not self.game.deck:
             self.declareOutcome(0)
             return
-
-
 
         self.showCards()
 

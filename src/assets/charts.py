@@ -21,19 +21,6 @@ width = 1000
 
 
 def run(time, width, target):
-    # pixelFill = width / time
-
-    # size = target.size()
-
-    # size.setWidth(size.width() + pixelFill)
-
-    # width -= pixelFill
-
-    # time -= 1
-
-    # print(pixelFill)
-
-    # target.setFixedSize(size)
     while time > 0:
         pixelFill = width / time
 

@@ -2,14 +2,11 @@ from views.settings import Settings_Renderer
 from views.awards import Award_Renderer
 from views.game import Game_Renderer
 from views.statistics import Statistics_Renderer
-from assets.widgets import QButton
 from assets.animations import Animation
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt, pyqtSignal
 from PyQt6.QtGui import (
     QBrush,
     QColor,
-    QCursor,
-    QFont,
     QImage,
     QMouseEvent,
     QPainter,
@@ -21,10 +18,10 @@ from PyQt6.QtWidgets import (
     QFileDialog,
     QLabel,
     QMainWindow,
-    QPushButton,
     QVBoxLayout,
     QWidget,
 )
+from components.QLight import QLightReflectionButton
 
 
 def mask_image(imageData, imgtype="png", size=64):
@@ -68,9 +65,11 @@ def mask_image(imageData, imgtype="png", size=64):
 
     return pm
 
+
 class Clickable_Label(QLabel):
 
     clicked = pyqtSignal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -83,11 +82,11 @@ class Clickable_Label(QLabel):
 
         return super().mousePressEvent(ev)
 
+
 class Profile_Renderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         self.animation = QParallelAnimationGroup()
-
 
     def render(self) -> QWidget:
         # Create main page
@@ -106,7 +105,7 @@ class Profile_Renderer:
         self.mainBM = QLabel(self.mainPage)
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
         self.mainBM.raise_()
-        self.animation.addAnimation(Animation.unfade(Animation, self.mainBM))
+        self.animation.addAnimation(Animation.unfade(self.mainBM , 300))
 
         # Profile Picture
         self.lableLogo = QLabel(self.mainPage)
@@ -128,7 +127,7 @@ class Profile_Renderer:
         self.cat.raise_()
 
         # fade animation
-        self.animation.addAnimation(Animation.unfade(Animation, self.lableLogo))
+        self.animation.addAnimation(Animation.unfade(self.lableLogo , 500))
         self.buttons = QLabel(self.mainPage)
         self.buttons.setGeometry(0, 0, 650, 500)
         self.buttons.setStyleSheet("background-color: transparent")
@@ -149,40 +148,48 @@ class Profile_Renderer:
         ]
 
         for text, func in buttons:
-            widget = QButton(None)
+            widget = QLightReflectionButton(None)
 
             widget.setFixedSize(600, 70)
             widget.clicked.connect(func)
             widget.setText(text)
-            self.layout.addWidget(widget)
+            self.layout.addWidget(widget , alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.buttons.setLayout(self.layout)
         self.animation.start()
         return self.mainPage
 
     def responser(self, geometry: QRect):
-        self.mainBG.setGeometry(geometry)
-        self.mainBG.move(QPoint(0, 0))
-        self.mainBM.setGeometry(self.mainBG.geometry())
-        self.cat.setGeometry(QRect(0.9 * self.mainPage.width(), 80, 90, 90))
+        self.geometryAnimation = QParallelAnimationGroup()
+
+        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.mainBG.geometry() , QRect(0 , 0 , geometry.width() , geometry.height()) , 300 , lambda newValue: self.mainBG.setGeometry(newValue)))
+
+        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.mainBM.geometry() , QRect(0 , 0 , geometry.width() , geometry.height()) , 300 , lambda newValue: self.mainBM.setGeometry(newValue)))
+
+        self.geometryAnimation.addAnimation(Animation.moveAnimation(self.cat , QPoint(self.mainPage.width() - 110 , 30) , 300))
+
 
         # Move the label logo
         x = 0.5 * (geometry.width() - 181)
         y = 0.17 * (geometry.height() - 151)
-        self.lableLogo.setGeometry(QRect(x, y, 181, 151))
+        
+        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.lableLogo.geometry() , QRect(x, y, 181, 151) , 300 , lambda newValue: self.lableLogo.setGeometry(newValue)))
 
         # The buttons
-        x = 0.38 * (geometry.width() - 181)
+        x = 0
         y = 0.4 * (geometry.height() - 151)
-        self.buttons.move(x, y)
+
+        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.buttons.geometry() , QRect(x, y, geometry.width(), self.buttons.height()) , 300 , lambda newValue: self.buttons.setGeometry(newValue)))
+
+        self.geometryAnimation.start()
 
     def openStats(self):
         def second():
             self.window.setCentralWidget(Statistics_Renderer(self.window).render())
-            self.animation = Animation.unfade(Animation, self.window.centralWidget())
+            self.animation = Animation.unfade(self.window.centralWidget() , 300)
             self.animation.start()
 
-        self.animation = Animation.fade(Animation, self.window.centralWidget())
+        self.animation = Animation.fade(self.window.centralWidget() , 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -190,10 +197,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Game_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(Animation, self.window.centralWidget())
+            self.animation = Animation.unfade(self.window.centralWidget() , 300)
             self.animation.start()
 
-        self.animation = Animation.fade(Animation, self.window.centralWidget())
+        self.animation = Animation.fade(self.window.centralWidget() , 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -230,8 +237,12 @@ class Profile_Renderer:
     def updatePicture(self):
         self.fDialog = QFileDialog()
 
-        imagePath, *args = self.fDialog.getOpenFileName(self.mainPage, 'choose picture', '.')
+        imagePath, *args = self.fDialog.getOpenFileName(
+            self.mainPage, "Choose picture", "."
+        )
         # imagePath = str(imagePath)
-        with open(imagePath, 'rb') as image:
-            newImage = mask_image(image.read(), imgtype=imagePath[imagePath.rindex('.') + 1:])
+        with open(imagePath, "rb") as image:
+            newImage = mask_image(
+                image.read(), imgtype=imagePath[imagePath.rindex(".") + 1 :]
+            )
             self.cat.setPixmap(newImage)

@@ -139,7 +139,6 @@ class Game:
         if obj.playerScore > 0:
             self.winner = True
 
-
     def setBox(self, player: player, opponent, x, y):
         if self.board[x][y] == "XX":
             print("WILD")
@@ -154,11 +153,11 @@ class Game:
             self.checkSequence(x, y, player)
             self.filled[x][y] = 1
             return ok
-        
+
         else:
             self.filled[x][y] = 0
             opponent[x][y] = 0
-        
+
         return ok
 
     def makeRandomMove(self, player: player, opponent: player):
