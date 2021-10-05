@@ -26,7 +26,7 @@ class Settings_Renderer:
         # Mask
         self.settingsBM = QLabel(self.mainPage)
         self.settingsBM.setStyleSheet("background-color: rgba(0, 0, 0, 170);")
-        self.animation.addAnimation(Animation.unfade(Animation, self.settingsBM))
+        self.animation.addAnimation(Animation.unfade( self.settingsBM, 300))
 
         # font
         font = QFont()

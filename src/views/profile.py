@@ -211,10 +211,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Award_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(Animation, self.window.centralWidget())
+            self.animation = Animation.unfade(self.window.centralWidget() , 300)
             self.animation.start()
 
-        self.animation = Animation.fade(Animation, self.window.centralWidget())
+        self.animation = Animation.fade(self.window.centralWidget() , 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -222,10 +222,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Settings_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(Animation, self.window.centralWidget())
+            self.animation = Animation.unfade(self.window.centralWidget() , 300)
             self.animation.start()
 
-        self.animation = Animation.fade(Animation, self.window.centralWidget())
+        self.animation = Animation.fade( self.window.centralWidget(), 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
