@@ -93,7 +93,7 @@ class Settings_Renderer:
             """
         )
         self.gameSoundSlider.setFont(font)
-
+        self.gameSoundSlider.valueChanged.connect(self.changeGameSound)
         # bg sound slider
         self.gameMusicSlider = QSlider(self.mainPage)
         self.gameMusicSlider.setGeometry(QRect(920, 340, 300, 61))
@@ -113,6 +113,8 @@ class Settings_Renderer:
             }
             """
         )
+        # self.gameMusicSlider.setFont(font)
+        # self.gameMusicSlider.valueChanged.connect(self.changeGameSound)
 
         # bg-audio selector
         self.comboBox = QComboBox(self.mainPage)
@@ -121,6 +123,7 @@ class Settings_Renderer:
         self.comboBox.setStyleSheet(
             "color: #ebcb8b;background-color: rgb(125, 125, 125);"
         )
+        self.comboBox.addItem("Mute")
         self.comboBox.addItem("casino1")
         self.comboBox.addItem("casino2")
         self.comboBox.addItem("casino3")
@@ -134,6 +137,7 @@ class Settings_Renderer:
         self.pushButton.setStyleSheet(
             "color: #ebcb8b;\n" "background-color: rgb(125, 125, 125);"
         )
+
         self.pushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
@@ -144,10 +148,21 @@ class Settings_Renderer:
 
         return self.mainPage
 
+
+    def changeGameSound(self, event):
+        volume = self.gameSoundSlider.value()
+        print("vol:    ", volume)
+        self.effect.setVolume(volume/100)
+
     def changeSong(self, event):
-        print("------")
-        song = f"../sounds/{self.comboBox.currentText()}.wav"
+
+
+        songfile = f"../sounds/{self.comboBox.currentText()}.wav"
+        song = songfile
         self.effect.stop()
+        if self.comboBox.currentText() == "Mute":
+            return
+
         self.effect.setSource(QUrl.fromLocalFile(song))
         self.effect.setLoopCount(-2)
         self.effect.play()
