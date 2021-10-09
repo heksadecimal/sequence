@@ -9,7 +9,7 @@ class QLightReflectionButton(QLabel):
     # Signal for user click
     clicked = pyqtSignal()
 
-    def __init__(self , parent: QWidget) -> None:
+    def __init__(self , parent: QWidget = None) -> None:
         super().__init__(parent)
 
         # Set default styles to the button

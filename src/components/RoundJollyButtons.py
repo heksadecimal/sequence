@@ -5,7 +5,7 @@ from PyQt6.QtGui import QColor, QEnterEvent, QMouseEvent , QTransform
 from PyQt6.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene, QGraphicsView, QWidget
 from functools import partial
 from PyQt6.QtSvgWidgets import QGraphicsSvgItem
-from login_page.utils.animation import Animation
+from assets.animations import Animation
 
 class Rounded_Jolly_Button(QGraphicsView):
     # Signal for listening for user clicks

@@ -1,7 +1,6 @@
 import random
 from collections import defaultdict
-
-from PyQt6.QtWidgets import QDialog, QLabel
+from PyQt6.QtWidgets import QLabel
 from backend.player import player
 
 
@@ -141,7 +140,6 @@ class Game:
 
     def setBox(self, player: player, opponent, x, y):
         if self.board[x][y] == "XX":
-            print("WILD")
             return False
 
         ok = player.hasChosenValid(x, y, opponent, self.board[x][y])

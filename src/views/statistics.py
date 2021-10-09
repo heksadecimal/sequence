@@ -1,27 +1,12 @@
-from PyQt6.QtWidgets import (
-    QGraphicsScene,
-    QApplication,
-    QGraphicsView,
-    QGraphicsEllipseItem,
-    QHBoxLayout,
-)
-import sys, random
+from PyQt6.QtWidgets import QHBoxLayout
 from functools import partial
 from assets.animations import Animation
 from components.QLight import QLightReflectionButton
-
 import views
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QPieSlice
-from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QVariant, QVariantAnimation, Qt
+from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
 from PyQt6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPixmap
-from PyQt6.QtWidgets import (
-    QFrame,
-    QLabel,
-    QMainWindow,
-    QVBoxLayout,
-    QWidget,
-    QPushButton,
-)
+from PyQt6.QtWidgets import QLabel , QMainWindow , QVBoxLayout , QWidget
 
 
 class Statistics_Renderer:

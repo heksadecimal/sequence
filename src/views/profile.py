@@ -1,3 +1,4 @@
+from views.savedgames import Saved_Games
 from views.settings import Settings_Renderer
 from views.awards import Award_Renderer
 from views.game import Game_Renderer
@@ -138,13 +139,13 @@ class Profile_Renderer:
         buttons = [
             ["Profile", self.openStats],
             ["New Game", self.newGame],
-            ["Load Saved Games", self.loadSaves],
+            # ["Load Saved Games", self.loadSaves],
             ["Awards", self.openAwards],
             [
                 "Settings",
                 self.openSettings,
             ],
-            ["Exit", self.quit],
+            ["Exit", exit],
         ]
 
         for text, func in buttons:
@@ -204,8 +205,16 @@ class Profile_Renderer:
         self.animation.finished.connect(second)
         self.animation.start()
 
-    def loadSaves(self):
-        pass
+    # def loadSaves(self):
+    #     def second():
+    #         self.window.setCentralWidget(Saved_Games(self.window).render())
+
+    #         self.animation = Animation.unfade(self.window.centralWidget() , 300)
+    #         self.animation.start()
+
+    #     self.animation = Animation.fade(self.window.centralWidget() , 300)
+    #     self.animation.finished.connect(second)
+    #     self.animation.start()
 
     def openAwards(self):
         def second():

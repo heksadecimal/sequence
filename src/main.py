@@ -23,14 +23,10 @@ class Main:
         self.window = window
         self.quit = 0
         
-
-
     def create(self):
         self.window.setCentralWidget(Profile_Renderer(self.window).render())
 
-
     def cleanClose(self, event: QCloseEvent):
-
         self.ok = QDialog(self.window)
         self.ok.setWindowTitle("Quit Sequece")
         self.ok.setGeometry(

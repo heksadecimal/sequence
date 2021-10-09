@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QParallelAnimationGroup, QPointF, QRect, Qt , QEvent
 from PyQt6.QtGui import QColor, QPaintEvent, QPainter, QPainterPath
 from PyQt6.QtWidgets import QLabel, QLineEdit, QWidget
-from login_page.utils.animation import Animation
+from assets.animations import Animation
 
 class Triangle(QWidget):
     """Creates a triangular widget"""

@@ -1,3 +1,7 @@
+from re import S
+from assets.animations import Animation
+from components.QLight import QLightReflectionButton
+from components.text_input import Text_Input
 import views
 import configparser
 from collections import defaultdict
@@ -11,21 +15,20 @@ from PyQt6.QtCore import (
     Qt,
     pyqtSignal,
 )
+from json import dumps, loads
 
 from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
-    QApplication,
     QDialog,
-    QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
-    QMainWindow,
+    QLineEdit,
     QPushButton,
     QVBoxLayout,
     QWidget,
 )
 
-from functools import partial, update_wrapper
+from functools import partial
 
 
 class Clickable_Label(QLabel):
@@ -47,16 +50,17 @@ class Clickable_Label(QLabel):
 class Game_Renderer:
     def __init__(self, window) -> None:
         self.window = window
-        # self.window.closeEvent = self.cleanClose
-
         self.game = Game()
+        self.config = configparser.ConfigParser()
+        self.config.read("../sequence.ini")
         self.animation = QParallelAnimationGroup()
         self.board = self.game.board
+        self.savedBoard = {}
         self.bot = player("bot")
         self.challenger = player("challenger")
         self.position = defaultdict(lambda: (0, 0))
-        self.revposition = defaultdict(QRect)
-        self.coinPos = []
+        self.revposition = defaultdict(QWidget)
+        # self.coinPos = {}
         self.game.distribute(self.bot)
         # self.game.distribute(self.challenger)
         self.challenger.playerCards = ["JC"] * 5
@@ -66,61 +70,77 @@ class Game_Renderer:
         print("2: ", self.challenger.playerCards)
         print("---------------------")
 
-    def saveAndClose(self):
+    def saveAndClose(self , inputBox: QLineEdit):
+        name = inputBox.text()
+
+        # currentGames =  loads(self.config.get("games" , "gameDic"))
+
+        # currentGames[name] = self.coinPos
+
+        # self.config.set("games" , "gameDic" , dumps(currentGames))
+
+        with open("../sequence.ini" , "w") as file:
+            self.config.write(file)
+
         self.window.setCentralWidget(
             views.profile.Profile_Renderer(self.window).render()
         )
 
     def cleanClose(self):
         self.ok = QDialog(self.mainPage)
+
         self.ok.setWindowTitle("Quit Sequece")
-        self.ok.setGeometry(
-            0.4 * self.window.geometry().width(),
-            0.4 * self.window.geometry().height(),
-            500,
-            200,
-        )
+        
+        self.ok.setFixedSize(500 , 250)
+        
         self.ok.setStyleSheet("background-color: #3b4252")
 
-        self.quitLabel = QLabel(self.ok)
-        self.quitLabel.setGeometry(
-            self.quitLabel.geometry().x() + 100,
-            self.quitLabel.geometry().y() + 10,
-            300,
-            100,
-        )
+        self.label = QLabel(self.ok)
+
+        self.label.setFixedSize(self.ok.size())
+        
+        layout = QVBoxLayout()
+        
+        self.quitLabel = QLabel()
+        
         self.quitLabel.setText("Do you wish to save you game ?")
+
+        self.quitLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+        
         self.quitLabel.setStyleSheet(
             "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
         )
+        
+        layout.addWidget(self.quitLabel)
 
-        self.yes = QPushButton(self.ok)
+        self.yes = QLightReflectionButton()
+
+        self.yes.setFixedHeight(50)
+
         self.yes.setText("YES")
-        self.yes.setGeometry(
-            self.yes.geometry().x() + 100,
-            self.yes.geometry().y() + 120,
-            self.yes.geometry().width(),
-            self.yes.geometry().height(),
-        )
-        self.yes.show()
 
-        self.no = QPushButton(self.ok)
+        self.yes.clicked.connect(self.saveGame)
+
+        layout.addWidget(self.yes)
+
+        self.no = QLightReflectionButton()
+
         self.no.setText("NO")
-        self.no.setGeometry(
-            self.no.geometry().x() + 250,
-            self.no.geometry().y() + 120,
-            self.no.geometry().width(),
-            self.no.geometry().height(),
-        )
-        self.no.show()
+
+        self.no.setFixedHeight(50)
+
         self.no.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
             )
         )
-        self.yes.clicked.connect(lambda: self.saveAndClose())
 
-        self.quitLabel.show()
+        layout.addWidget(self.no)
+
+        # self.yes.clicked.connect(lambda: self.saveAndClose())
+
+        self.label.setLayout(layout)
+
         self.ok.exec()
 
     def render(self) -> QWidget:
@@ -177,8 +197,18 @@ class Game_Renderer:
                 animation.setDuration(300)
                 self.animation.addAnimation(animation)
 
+                if(value in self.savedBoard):
+                    print(self.savedBoard[value])
+                    if(self.savedBoard[value] == "bot"):
+                        self.click(card , [x , y] , True , "two")
+                    else:
+                        self.click(card , [int(x) , int(y)] , True , "one")
+                        
+
                 self.position[QRect(x, y, 50, 70)] = (i, j)
-                self.revposition[(i, j)] = QRect(x, y, 50, 70)
+                # self.revposition[(i, j)] = QRect(x, y, 50, 70)
+                self.revposition[(i, j)] = card
+
 
                 x += 70
 
@@ -191,9 +221,10 @@ class Game_Renderer:
 
         return self.mainPage
 
-    def placeCoin(self, position: QRect, image , card: QWidget):
-        # self.coinPos.append(card.property("codeName"))
-        print("AAAAA ---- " , card.property("codeName"))
+    def placeCoin(self, position: QRect, image , card: QWidget , who = "challenger"):
+        # if(who != None):
+            # self.coinPos[card.property("codeName")] = who
+
         self.coin = Clickable_Label(self.mainPage)
         self.coin.setFixedSize(40, 40)
         self.coin.setScaledContents(True)
@@ -203,7 +234,6 @@ class Game_Renderer:
         self.coin.clicked.connect(partial(self.click, card))
         self.coins[position] = self.coin
         self.coin.show()
-        print(self.coinPos)
 
     def updateAwards(self):
         awards = set()
@@ -229,8 +259,6 @@ class Game_Renderer:
         return ", ".join(list(awards))
 
     def updateUserData(self, score):
-        self.config = configparser.ConfigParser()
-        self.config.read("../sequence.ini")
         self.gamesWon = int(self.config.get("player", "gamesWon"))
         self.sequenceMade = int(self.config.get("player", "sequenceMade"))
         self.gamesLost = int(self.config.get("player", "gamesLost"))
@@ -301,13 +329,14 @@ class Game_Renderer:
         else:
             message.setText("WoW that was close. Looks like you need a rematch :)")
 
-        print("FLASSSSSSSSSS")
         flash.show()
 
-    def click(self, card: QLabel):
-        print(card.property("codeName"))
+    def click(self, card: QLabel , position = None , f=False , image = None):
+
         x, y = self.position[card.geometry()]
+        
         ok = self.game.setBox(self.challenger, self.bot.playerBox, x, y)
+
         if not ok:
             return
 
@@ -315,7 +344,7 @@ class Game_Renderer:
             self.coins[card.geometry()].hide()
         else:
 
-            self.placeCoin(self.revposition[(x, y)], "one" , card)
+            self.placeCoin(self.revposition[(x, y)].geometry(), "one" , card)
             self.challenger.addCard(self.game.getNewCard())
 
         if self.game.winner:
@@ -332,11 +361,11 @@ class Game_Renderer:
                 continue
 
             i, j, x = ok
-            pos = self.revposition[(i, j)]
+            pos = self.revposition[(i, j)].geometry()
             if not x:
                 self.coins[card.geometry()].hide()
             else:
-                self.placeCoin(pos, "two" , card)
+                self.placeCoin(pos, "two" , self.revposition[(i , j)] , "bot")
             break
 
         if self.game.winner:
@@ -413,3 +442,77 @@ class Game_Renderer:
             card.setPixmap(QPixmap("./img/cards/{}.png".format(cardTag)))
 
             self.newLayout.addWidget(card)
+
+    def saveGame(self):
+        self.newLabel = QLabel(self.ok)
+
+        self.newLabel.setFixedSize(self.ok.size())
+
+        self.label.move(QPoint(-510 , 0))
+
+        self.newLabel.move(510 , 0)
+
+        layout = QVBoxLayout()
+
+        label = QLabel(text="Enter the name for the game")
+
+        label.setStyleSheet("color: #D8DEE9; font-size: 20px; font-family: Comfortaa")
+
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+
+        layout.addWidget(label)
+
+        textInput = QLineEdit()
+
+        textInput.setFixedHeight(50)
+
+        textInput.setStyleSheet("""
+        QLineEdit{
+            color: #D8DEE9;
+            font-size: 20px;
+            font-family: Comfortaa;
+        }
+
+        QLineEdit:focus{
+            border: 1px solid #2E3440
+        }
+        """)
+
+        layout.addWidget(textInput)
+
+        layout.setContentsMargins(20 , 0 , 20 , 10)
+
+        button = QLightReflectionButton()
+
+        button.setText("Save Game")
+
+        button.setFixedHeight(50)
+
+        button.clicked.connect(partial(self.saveAndClose , textInput))
+
+        layout.addWidget(button)
+
+        layout.setSpacing(20)
+
+        self.newLabel.setLayout(layout)
+        
+        self.label.stackUnder(self.newLabel)
+
+        self.newLabel.show()
+
+        # Animations 
+
+        self.animation = QParallelAnimationGroup()
+
+        self.animation.addAnimation(Animation.fade(self.label , 500))
+
+        self.animation.addAnimation(Animation.moveAnimation(self.label , QPoint(-510 , 0) , 500))
+
+        self.animation.addAnimation(Animation.unfade(self.newLabel , 500))
+
+        self.animation.addAnimation(Animation.moveAnimation(self.newLabel , QPoint(0 , 0) , 500))
+
+        self.animation.start()
+
+    def setBoard(self , board):
+        self.savedBoard = board
