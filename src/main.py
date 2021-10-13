@@ -1,4 +1,4 @@
-from backend.sound import play
+from backend.sound import playBG
 from views.menu import MenuRenderer
 
 from PyQt6.QtGui import QCloseEvent
@@ -14,7 +14,7 @@ from PyQt6.QtWidgets import (
 class Main:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
-        play()
+        playBG()
         self.quit = 0
 
     def create(self):

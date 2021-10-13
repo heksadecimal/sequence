@@ -4,7 +4,7 @@ from assets.animations import Animation
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QUrl, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QSlider, QWidget
-from backend.sound import play, changeVol
+from backend.sound import playBG, playIG, changeVolBG, changeVolIG
 
 
 class Settings_Renderer:
@@ -50,7 +50,7 @@ class Settings_Renderer:
         # in-game sound
         self.gameBackgroundMusic = QLabel(self.mainPage)
         self.gameBackgroundMusic.setGeometry(QRect(520, 250, 200, 61))
-        self.gameBackgroundMusic.setText("In-Game Sound")
+        self.gameBackgroundMusic.setText("Background Music")
         self.gameBackgroundMusic.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
         )
@@ -61,7 +61,7 @@ class Settings_Renderer:
 
         # background game sound
         self.inGameMusic = QLabel(self.mainPage)
-        self.inGameMusic.setText("Background Music")
+        self.inGameMusic.setText("In-Game Music")
         self.inGameMusic.setGeometry(QRect(520, 340, 200, 61))
         self.inGameMusic.setAlignment(
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignLeft
@@ -79,12 +79,15 @@ class Settings_Renderer:
         self.songBoxLabel.setStyleSheet("color: #ebcb8b;background-color: transparent")
         self.songBoxLabel.setFont(font)
 
-        # in-game sound slider
-        self.gameBackgroundMusicSlider = QSlider(self.mainPage)
-        self.gameBackgroundMusicSlider.setGeometry(QRect(920, 250, 300, 61))
-        self.gameBackgroundMusicSlider.setOrientation(Qt.Orientation.Horizontal)
-        self.gameBackgroundMusicSlider.setValue(100)
-        self.gameBackgroundMusicSlider.setStyleSheet(
+        # bg sound slider
+        self.backgroundMusicSlider = QSlider(self.mainPage)
+        self.backgroundMusicSlider.setGeometry(QRect(920, 340, 300, 61))
+        self.backgroundMusicSlider.setValue(100)
+        self.backgroundMusicSlider.setOrientation(Qt.Orientation.Horizontal)
+        self.backgroundMusicSlider.setStyleSheet(
+            "color: #ebcb8b;background-color: transparent"
+        )
+        self.backgroundMusicSlider.setStyleSheet(
             """
             QSlider{
                 background-color: transparent
@@ -96,17 +99,14 @@ class Settings_Renderer:
             }
             """
         )
-        # self.gameBackgroundMusicSlider.setFont(font)
-        # elf.gameSoundSlider.valueChanged.connect(self.updateSound)
+        self.backgroundMusicSlider.setFont(font)
+        self.backgroundMusicSlider.valueChanged.connect(self.updateSoundIG)
 
-        # bg sound slider
+        # in-game sound slider
         self.inGameMusicSlider = QSlider(self.mainPage)
-        self.inGameMusicSlider.setGeometry(QRect(920, 340, 300, 61))
-        self.inGameMusicSlider.setValue(100)
+        self.inGameMusicSlider.setGeometry(QRect(920, 250, 300, 61))
         self.inGameMusicSlider.setOrientation(Qt.Orientation.Horizontal)
-        self.inGameMusicSlider.setStyleSheet(
-            "color: #ebcb8b;background-color: transparent"
-        )
+        self.inGameMusicSlider.setValue(100)
         self.inGameMusicSlider.setStyleSheet(
             """
             QSlider{
@@ -120,7 +120,7 @@ class Settings_Renderer:
             """
         )
         self.inGameMusicSlider.setFont(font)
-        self.inGameMusicSlider.valueChanged.connect(self.updateSound)
+        self.inGameMusicSlider.valueChanged.connect(self.updateSoundBG)
 
         # bg-audio selector
         self.songBox = QComboBox(self.mainPage)
@@ -133,7 +133,7 @@ class Settings_Renderer:
         self.songBox.addItem("casino1")
         self.songBox.addItem("casino2")
         self.songBox.addItem("casino3")
-        self.songBox.currentTextChanged.connect(self.updatePlayer)
+        self.songBox.currentTextChanged.connect(self.updatePlayerBG)
 
         # back-button
         self.menuPushButton = QPushButton(self.mainPage)
@@ -153,14 +153,17 @@ class Settings_Renderer:
         self.animation.start()
         return self.mainPage
 
-    def updatePlayer(self, _):
-        volume = self.gameBackgroundMusicSlider.value() / 100
+    def updatePlayerBG(self, eve):
+        volume = self.inGameMusicSlider.value() / 100
         song = self.songBox.currentText()
-        play(sound=song, volume=volume)
+        playBG(sound=song, volume=volume)
 
-    def updateSound(self, _):
-        changeVol(self.inGameMusicSlider.value() / 100)
+    def updateSoundBG(self, _):
+        changeVolBG(self.inGameMusicSlider.value() / 100)
 
+    def updateSoundIG(self, _):
+        changeVolIG(self.backgroundMusicSlider.value() / 100)
+    
     def responser(self, geometry: QRect):
         self.settingsBG.setGeometry(geometry)
         self.settingsBG.move(QPoint(0, 0))
@@ -175,11 +178,11 @@ class Settings_Renderer:
         self.songBoxLabel.setGeometry(
             QRect(0.35 * self.settingsBG.width(), 460, 200, 61)
         )
-        self.gameBackgroundMusicSlider.setGeometry(
+        self.inGameMusicSlider.setGeometry(
             QRect(0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20)
         )
 
-        self.inGameMusicSlider.setGeometry(
+        self.backgroundMusicSlider.setGeometry(
             QRect(0.6 * self.settingsBG.width(), 340, 0.1 * self.settingsBG.width(), 20)
         )
 

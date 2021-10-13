@@ -1,4 +1,4 @@
-from re import S
+from backend.sound import playIG
 from assets.animations import Animation
 from components.QLight import QLightReflectionButton
 import views
@@ -196,6 +196,7 @@ class Game_Renderer:
         self.coin.clicked.connect(partial(self.click, card))
         self.coins[position] = self.coin
         self.coin.show()
+        
 
     def updateAwards(self):
         awards = set()
@@ -256,7 +257,7 @@ class Game_Renderer:
         with open("../sequence.ini", "w") as c:
             self.config.write(c)
 
-    def delcareOutcome(self, status, who=""):
+    def declare(self, status, who=""):
         flash = QDialog(self.mainPage)
         message = QLabel(flash)
         flash.setGeometry(
@@ -288,11 +289,13 @@ class Game_Renderer:
 
         if status == 1:
             if who == "challenger":
+                playIG("gameWin")
                 message.setText(
                     "Wohoo! That was a great match and you won. Congrats !!!!!"
                 )
                 self.updateUserData(1)
             else:
+                playIG("gameLose")
                 message.setText("Oops! You were close. Better Luck newxt time ;_;")
                 self.updateUserData(0)
         else:
@@ -309,6 +312,7 @@ class Game_Renderer:
         if not ok:
             return
 
+        playIG("coinPlace")
         if ok == 2:
             self.coins[card.geometry()].hide()
         else:
@@ -316,11 +320,11 @@ class Game_Renderer:
             self.challenger.addCard(self.game.getNewCard())
 
         if self.game.winner:
-            self.delcareOutcome(1, "challenger")
+            self.declare(1, "challenger")
             return
 
         if not self.game.deck:
-            self.delcareOutcome(0)
+            self.declare(0)
             return
 
         while True:
@@ -337,26 +341,22 @@ class Game_Renderer:
             break
 
         if self.game.winner:
-            self.delcareOutcome(1)
+            self.declare(1)
             return
 
         if not self.game.deck:
-            self.declareOutcome(0)
+            self.declare(1)
+            self.declare(0)
             return
 
         self.showCards()
         self.coin.show()
 
         # self.animation = QPropertyAnimation(opacity , b"opacity")
-
         # self.animation.setStartValue(0)
-
         # self.animation.setEndValue(1)
-
         # self.animation.setDuration(400)
-
         # self.animation.finished.connect(self.coin.show)
-
         # self.animation.start()
 
     def responser(self, geometry):
@@ -399,67 +399,65 @@ class Game_Renderer:
 
             self.newLayout.addWidget(card)
 
-    def saveGame(self):
-        self.label.move(QPoint(-510, 0))
+    # def saveGame(self):
+    #     self.label.move(QPoint(-510, 0))
 
-        self.newLabel = QLabel(self.ok)
-        self.newLabel.setFixedSize(self.ok.size())
-        self.newLabel.move(510, 0)
+    #     self.newLabel = QLabel(self.ok)
+    #     self.newLabel.setFixedSize(self.ok.size())
+    #     self.newLabel.move(510, 0)
 
-        layout = QVBoxLayout()
+    #     layout = QVBoxLayout()
 
-        label = QLabel(text="Enter the name for the game")
-        label.setStyleSheet("color: #D8DEE9; font-size: 20px; font-family: Comfortaa")
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+    #     label = QLabel(text="Enter the name for the game")
+    #     label.setStyleSheet("color: #D8DEE9; font-size: 20px; font-family: Comfortaa")
+    #     label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
 
-        layout.addWidget(label)
+    #     layout.addWidget(label)
 
-        textInput = QLineEdit()
-        textInput.setFixedHeight(50)
+    #     textInput = QLineEdit()
+    #     textInput.setFixedHeight(50)
 
-        textInput.setStyleSheet(
-            """
-        QLineEdit{
-            color: #D8DEE9;
-            font-size: 20px;
-            font-family: Comfortaa;
-        }
+    #     textInput.setStyleSheet(
+    #         """
+    #     QLineEdit{
+    #         color: #D8DEE9;
+    #         font-size: 20px;
+    #         font-family: Comfortaa;
+    #     }
 
-        QLineEdit:focus{
-            border: 1px solid #2E3440
-        }
-        """
-        )
+    #     QLineEdit:focus{
+    #         border: 1px solid #2E3440
+    #     }
+    #     """
+    #     )
 
-        layout.addWidget(textInput)
-        layout.setContentsMargins(20, 0, 20, 10)
+    #     layout.addWidget(textInput)
+    #     layout.setContentsMargins(20, 0, 20, 10)
 
-        button = QLightReflectionButton()
-        button.setText("Save Game")
-        button.setFixedHeight(50)
-        button.clicked.connect(partial(self.saveAndClose, textInput))
+    #     button = QLightReflectionButton()
+    #     button.setText("Save Game")
+    #     button.setFixedHeight(50)
+    #     button.clicked.connect(partial(self.saveAndClose, textInput))
 
-        layout.addWidget(button)
-        layout.setSpacing(20)
+    #     layout.addWidget(button)
+    #     layout.setSpacing(20)
 
-        self.newLabel.setLayout(layout)
+    #     self.newLabel.setLayout(layout)
 
-        self.label.stackUnder(self.newLabel)
+    #     self.label.stackUnder(self.newLabel)
 
-        self.newLabel.show()
+    #     self.newLabel.show()
 
-        # Animations
+    #     # Animations
 
-        self.animation = QParallelAnimationGroup()
-        self.animation.addAnimation(Animation.fade(self.label, 500))
-        self.animation.addAnimation(
-            Animation.moveAnimation(self.label, QPoint(-510, 0), 500)
-        )
-        self.animation.addAnimation(Animation.unfade(self.newLabel, 500))
-        self.animation.addAnimation(
-            Animation.moveAnimation(self.newLabel, QPoint(0, 0), 500)
-        )
-        self.animation.start()
+    #     self.animation = QParallelAnimationGroup()
+    #     self.animation.addAnimation(Animation.fade(self.label, 500))
+    #     self.animation.addAnimation(
+    #         Animation.moveAnimation(self.label, QPoint(-510, 0), 500)
+    #     )
+    #     self.animation.addAnimation(Animation.unfade(self.newLabel, 500))
+    #     self.animation.addAnimation(
+    #         Animation.moveAnimation(self.newLabel, QPoint(0, 0), 500)
+    #     )
+    #     self.animation.start()
 
-    def setBoard(self, board):
-        self.savedBoard = board

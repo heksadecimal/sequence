@@ -275,6 +275,10 @@ class MenuRenderer:
         imagePath, *_ = self.fDialog.getOpenFileName(
             self.mainPage, "Choose picture", "."
         )
+        if not imagePath:
+            return
+
+
         config.set('player', 'profilePicture', str(imagePath))
         with open("../sequence.ini", "w") as c:
             config.write(c)

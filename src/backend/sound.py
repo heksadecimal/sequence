@@ -2,9 +2,9 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtMultimedia import QSoundEffect
 
 bgSound = QSoundEffect()
+igSound = QSoundEffect()
 
-
-def play(sound="casino1", volume=1):
+def playBG(sound="casino1", volume=1):
     bgSound.stop()
 
     file = f"../sounds/{sound}.wav"
@@ -14,6 +14,19 @@ def play(sound="casino1", volume=1):
     bgSound.setVolume(volume)
     bgSound.play()
 
-
-def changeVol(v):
+def changeVolBG(v):
     bgSound.setVolume(v)
+
+#  ----------------------------------
+
+def playIG(sound, volume=1):
+    file = f"../sounds/{sound}.wav"
+    igSound.stop()
+    igSound.setSource(QUrl.fromLocalFile(file))
+    igSound.setLoopCount(1)
+    igSound.setVolume(volume)
+    igSound.play()
+
+def changeVolIG(v):
+    igSound.setVolume(v)
+
