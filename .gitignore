@@ -3,6 +3,7 @@
 *.py[cod]
 *$py.class
 tests/
+saved/
 
 # C extensions
 *.so
