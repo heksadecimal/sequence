@@ -16,4 +16,4 @@ def play(sound = "casino1", volume = 1):
 
 
 def changeVol(v):
-    bgSound.setVolume(v/100)
+    bgSound.setVolume(v)

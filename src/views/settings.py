@@ -94,8 +94,8 @@ class Settings_Renderer:
             }
             """
         )
-        self.gameSoundSlider.setFont(font)
-        self.gameSoundSlider.valueChanged.connect(self.updateSound)
+        #self.gameSoundSlider.setFont(font)
+        #elf.gameSoundSlider.valueChanged.connect(self.updateSound)
 
 
         # bg sound slider
@@ -118,8 +118,8 @@ class Settings_Renderer:
             }
             """
         )
-        # self.gameMusicSlider.setFont(font)
-        #self.gameMusicSlider.valueChanged.connect(self.updateSound)
+        self.gameMusicSlider.setFont(font)
+        self.gameMusicSlider.valueChanged.connect(self.updateSound)
 
         # bg-audio selector
         self.comboBox = QComboBox(self.mainPage)
@@ -156,10 +156,10 @@ class Settings_Renderer:
     def updatePlayer(self, event):
         volume = self.gameSoundSlider.value() / 100
         song = self.comboBox.currentText()
-        play(song, volume)
+        play(sound = song, volume = volume)
         
     def updateSound(self, event):
-        changeVol(self.gameSoundSlider.value())
+        changeVol(self.gameMusicSlider.value()/ 100 )
 
 
     def responser(self, geometry: QRect):

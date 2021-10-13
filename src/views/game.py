@@ -1,7 +1,6 @@
 from re import S
 from assets.animations import Animation
 from components.QLight import QLightReflectionButton
-from components.text_input import Text_Input
 import views
 import configparser
 from collections import defaultdict
@@ -15,8 +14,6 @@ from PyQt6.QtCore import (
     Qt,
     pyqtSignal,
 )
-from json import dumps, loads
-
 from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
     QDialog,
@@ -60,53 +57,26 @@ class Game_Renderer:
         self.challenger = player("challenger")
         self.position = defaultdict(lambda: (0, 0))
         self.revposition = defaultdict(QWidget)
-        # self.coinPos = {}
         self.game.distribute(self.bot)
         # self.game.distribute(self.challenger)
         self.challenger.playerCards = ["JC"] * 5
 
         self.coins = defaultdict(Clickable_Label)
-        print("1: ", self.bot.playerCards)
-        print("2: ", self.challenger.playerCards)
-        print("---------------------")
-
-    def saveAndClose(self , inputBox: QLineEdit):
-        name = inputBox.text()
-
-        # currentGames =  loads(self.config.get("games" , "gameDic"))
-
-        # currentGames[name] = self.coinPos
-
-        # self.config.set("games" , "gameDic" , dumps(currentGames))
-
-        with open("../sequence.ini" , "w") as file:
-            self.config.write(file)
-
-        self.window.setCentralWidget(
-            views.profile.Profile_Renderer(self.window).render()
-        )
 
     def cleanClose(self):
         self.ok = QDialog(self.mainPage)
-
         self.ok.setWindowTitle("Quit Sequece")
-        
         self.ok.setFixedSize(500 , 250)
-        
         self.ok.setStyleSheet("background-color: #3b4252")
 
         self.label = QLabel(self.ok)
-
         self.label.setFixedSize(self.ok.size())
         
         layout = QVBoxLayout()
         
         self.quitLabel = QLabel()
-        
         self.quitLabel.setText("Do you wish to save you game ?")
-
         self.quitLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
-        
         self.quitLabel.setStyleSheet(
             "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
         )
@@ -114,21 +84,15 @@ class Game_Renderer:
         layout.addWidget(self.quitLabel)
 
         self.yes = QLightReflectionButton()
-
         self.yes.setFixedHeight(50)
-
         self.yes.setText("YES")
-
         self.yes.clicked.connect(self.saveGame)
 
         layout.addWidget(self.yes)
 
         self.no = QLightReflectionButton()
-
         self.no.setText("NO")
-
         self.no.setFixedHeight(50)
-
         self.no.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
@@ -136,8 +100,6 @@ class Game_Renderer:
         )
 
         layout.addWidget(self.no)
-
-        # self.yes.clicked.connect(lambda: self.saveAndClose())
 
         self.label.setLayout(layout)
 
@@ -151,7 +113,7 @@ class Game_Renderer:
 
         # Main background image
         self.mainBG = QLabel(self.mainPage)
-        self.mainBG.setPixmap(QPixmap("./img/main_bg.png"))
+        self.mainBG.setPixmap(QPixmap("../img/main_bg.png"))
         self.mainBG.setScaledContents(True)
         self.mainBG.raise_()
 
@@ -161,15 +123,15 @@ class Game_Renderer:
         self.mainBM.raise_()
 
         # back-button
-        self.backPushButton = QPushButton(self.mainPage)
-        self.backPushButton.setGeometry(
+        self.menuPushButton = QPushButton(self.mainPage)
+        self.menuPushButton.setGeometry(
             0.04 * self.mainPage.width(), 0.12 * self.mainPage.height(), 120, 90
         )
-        self.backPushButton.setText("Go Back")
-        self.backPushButton.setStyleSheet(
+        self.menuPushButton.setText("Go Back")
+        self.menuPushButton.setStyleSheet(
             "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);font-style: comfortaa;font-size: 20px"
         )
-        self.backPushButton.clicked.connect(lambda: self.cleanClose())
+        self.menuPushButton.clicked.connect(lambda: self.cleanClose())
 
         self.currentCards = QLabel(self.mainPage)
         self.currentCards.setStyleSheet("background-color: transparent")
@@ -185,7 +147,7 @@ class Game_Renderer:
             for j, value in enumerate(row):
                 card = Clickable_Label(self.mainPage)
                 card.setGeometry(QRect(500, 10, 50, 70))
-                card.setPixmap(QPixmap("img/cards/{}.png".format(value)))
+                card.setPixmap(QPixmap("../img/cards/{}.png".format(value)))
                 card.setScaledContents(True)
                 card.setCursor(Qt.CursorShape.PointingHandCursor)
                 card.setProperty("codeName" , value)
@@ -239,20 +201,28 @@ class Game_Renderer:
         awards = set()
         if self.gamesLost >= 5:
             awards.add("oops")
+
         if self.gamesWon:
             awards.add("milk")
+        
         if self.sequenceMade:
             awards.add("chicken")
+        
         if self.gamesWon > 1:
             awards.add("two")
+        
         if len(awards) >= 4:
             awards.add("super")
+        
         if self.continousWin == 5:
             awards.add("rising_star")
+        
         if self.gamesWon + self.gamesLost >= 50:
             awards.add("bulb")
+        
         if self.gamesWon >= 50:
             awards.add("master")
+        
         if self.gamesWon >= 100:
             awards.add("legend")
 
@@ -292,7 +262,6 @@ class Game_Renderer:
         flash.setGeometry(
             0.35 * self.mainPage.width(), 0.4 * self.mainPage.height(), 700, 300
         )
-        # flash.setFixedWidth(700)
         flash.setStyleSheet("background-color: #3b4252")
 
         message = QLabel(flash)
@@ -343,7 +312,6 @@ class Game_Renderer:
         if ok == 2:
             self.coins[card.geometry()].hide()
         else:
-
             self.placeCoin(self.revposition[(x, y)].geometry(), "one" , card)
             self.challenger.addCard(self.game.getNewCard())
 
@@ -377,14 +345,6 @@ class Game_Renderer:
             return
 
         self.showCards()
-
-        print("1: ", self.bot.playerCards)
-        print("2: ", self.challenger.playerCards)
-        print("---------------------")
-        # opacity = QGraphicsOpacityEffect()
-
-        # self.coin.setGraphicsEffect(opacity)
-
         self.coin.show()
 
         # self.animation = QPropertyAnimation(opacity , b"opacity")
@@ -427,43 +387,34 @@ class Game_Renderer:
         )
 
         self.currentCards.show()
+        self.currentCards.setLayout(self.newLayout)
 
         self.newLayout = QHBoxLayout()
 
-        self.currentCards.setLayout(self.newLayout)
-
         for cardTag in self.challenger.playerCards:
             card = QLabel()
-
             card.setScaledContents(True)
-
             card.setFixedSize(50, 70)
-
-            card.setPixmap(QPixmap("./img/cards/{}.png".format(cardTag)))
+            card.setPixmap(QPixmap("../img/cards/{}.png".format(cardTag)))
 
             self.newLayout.addWidget(card)
 
     def saveGame(self):
-        self.newLabel = QLabel(self.ok)
-
-        self.newLabel.setFixedSize(self.ok.size())
-
         self.label.move(QPoint(-510 , 0))
 
+        self.newLabel = QLabel(self.ok)
+        self.newLabel.setFixedSize(self.ok.size())
         self.newLabel.move(510 , 0)
 
         layout = QVBoxLayout()
 
         label = QLabel(text="Enter the name for the game")
-
         label.setStyleSheet("color: #D8DEE9; font-size: 20px; font-family: Comfortaa")
-
         label.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
 
         layout.addWidget(label)
 
         textInput = QLineEdit()
-
         textInput.setFixedHeight(50)
 
         textInput.setStyleSheet("""
@@ -479,23 +430,18 @@ class Game_Renderer:
         """)
 
         layout.addWidget(textInput)
-
         layout.setContentsMargins(20 , 0 , 20 , 10)
 
         button = QLightReflectionButton()
-
         button.setText("Save Game")
-
         button.setFixedHeight(50)
-
         button.clicked.connect(partial(self.saveAndClose , textInput))
 
         layout.addWidget(button)
-
         layout.setSpacing(20)
 
         self.newLabel.setLayout(layout)
-        
+
         self.label.stackUnder(self.newLabel)
 
         self.newLabel.show()
@@ -503,15 +449,10 @@ class Game_Renderer:
         # Animations 
 
         self.animation = QParallelAnimationGroup()
-
         self.animation.addAnimation(Animation.fade(self.label , 500))
-
         self.animation.addAnimation(Animation.moveAnimation(self.label , QPoint(-510 , 0) , 500))
-
         self.animation.addAnimation(Animation.unfade(self.newLabel , 500))
-
         self.animation.addAnimation(Animation.moveAnimation(self.newLabel , QPoint(0 , 0) , 500))
-
         self.animation.start()
 
     def setBoard(self , board):

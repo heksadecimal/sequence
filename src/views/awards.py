@@ -1,11 +1,9 @@
 import configparser
 import views
-import os
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QSize, Qt, pyqtSignal
-from PyQt6.QtGui import QFont, QMouseEvent, QPixmap
+from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import (
     QDialog,
-    QFrame,
     QHBoxLayout,
     QLabel,
     QMainWindow,
@@ -49,7 +47,7 @@ class Award_Renderer:
 
         self.awardBG = QLabel(self.mainPage)
         self.awardBG.setGeometry(QRect(0, 0, 1191, 1001))
-        self.awardBG.setPixmap(QPixmap("./img/main_bg.png"))
+        self.awardBG.setPixmap(QPixmap("../img/main_bg.png"))
         self.awardBG.setScaledContents(True)
 
         self.awardBM = QLabel(self.mainPage)
@@ -67,13 +65,13 @@ class Award_Renderer:
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
         )
 
-        self.backPushButton = QPushButton(self.mainPage)
-        self.backPushButton.setGeometry(50, 50, 90, 90)
-        self.backPushButton.setText("Go Back")
-        self.backPushButton.setStyleSheet(
+        self.menuPushButton = QPushButton(self.mainPage)
+        self.menuPushButton.setGeometry(50, 50, 90, 90)
+        self.menuPushButton.setText("Go Back")
+        self.menuPushButton.setStyleSheet(
             "color: rgb(220, 220, 0);background-color: rgb(125, 125, 125);font-size:20px"
         )
-        self.backPushButton.clicked.connect(
+        self.menuPushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
             )
@@ -133,7 +131,7 @@ class Award_Renderer:
                 l = QVBoxLayout()
 
                 image = Clickable_Label()
-                image.setPixmap(QPixmap("./img/awards/{}.png".format(value)))
+                image.setPixmap(QPixmap("../img/awards/{}.png".format(value)))
                 image.setFixedSize(QSize(100, 100))
                 image.setScaledContents(True)
                 image.setAlignment(
@@ -195,7 +193,7 @@ class Award_Renderer:
         self.awardsLayoutParent.setGeometry(
             QRect(0, 90, self.window.width(), self.window.height() - 90)
         )
-        self.backPushButton.setGeometry(
+        self.menuPushButton.setGeometry(
             0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 70
         )
 

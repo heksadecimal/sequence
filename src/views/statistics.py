@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QHBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QPushButton
 from functools import partial
 from assets.animations import Animation
 from components.QLight import QLightReflectionButton
@@ -30,7 +30,7 @@ class Statistics_Renderer:
 
         self.statsBG = QLabel(self.mainPage)
         self.statsBG.setGeometry(QRect(0, 0, 1191, 1001))
-        self.statsBG.setPixmap(QPixmap("./img/main_bg.png"))
+        self.statsBG.setPixmap(QPixmap("../img/main_bg.png"))
         self.statsBG.setScaledContents(True)
 
         self.label = QLabel(self.mainPage)
@@ -118,20 +118,6 @@ class Statistics_Renderer:
 
         layout.addLayout(self.seqLayout)
 
-        # self.labelWinRatio = QLabel(self.mainPage)
-        # self.labelWinRatio.setText("Winning Ratio: ")
-        # self.labelWinRatio.setGeometry(0.3 * self.mainPage.width(), 540, 350, 50)
-        # self.labelWinRatio.setStyleSheet(
-        #     "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
-        # )
-
-        # self.labelWinRatioCount = QLabel(self.mainPage)
-        # self.labelWinRatioCount.setText("0")
-        # self.labelWinRatioCount.setGeometry(0.6 * self.mainPage.width(), 540, 350, 50)
-        # self.labelWinRatioCount.setStyleSheet(
-        #     "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
-        # )
-
         self.ratioLayout = QHBoxLayout()
 
         self.wRation = QLabel()
@@ -152,9 +138,22 @@ class Statistics_Renderer:
 
         layout.addLayout(self.ratioLayout)
         
-        self.pushButton = QLightReflectionButton(self.mainPage)
+        self.pushButton = QPushButton(self.mainPage)
+        self.pushButton.setGeometry(QRect(710, 670, 271, 61))
         self.pushButton.setFont(font)
         self.pushButton.setText("Back to Main Menu")
+        self.pushButton.setStyleSheet(
+            "color: #ebcb8b;\n" "background-color: rgb(125, 125, 125);"
+        )
+
+        #self.pushButton.clicked.connect(
+        #    lambda: self.window.setCentralWidget(
+        #        views.profile.Profile_Renderer(self.window).render()
+        #    )
+        #)
+        #self.pushButton = QPushButton(self.mainPage)
+        #self.pushButton.setFont(font)
+        #self.pushButton.setText("Back to Main Menu")
         self.pushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
