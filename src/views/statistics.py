@@ -1,20 +1,31 @@
 from PyQt6.QtWidgets import QHBoxLayout, QPushButton
 from functools import partial
 from assets.animations import Animation
-from components.QLight import QLightReflectionButton
 import views
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QPieSlice
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
 from PyQt6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPixmap
 from PyQt6.QtWidgets import QLabel, QMainWindow, QVBoxLayout, QWidget
+import configparser
+
+config = configparser.ConfigParser()
 
 
 class Statistics_Renderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         self.pieSlices = []
+        self.updateDB()
+
+    def updateDB(self):
+        config.read("../sequence.ini")
+
+        self.gamesWon = int(config.get("player", "gameswon"))
+        self.gamesLost = int(config.get("player", "gameslost"))
+        self.sequencemade = int(config.get("player", "sequencemade"))
 
     def render(self):
+        self.updateDB()
         self.mainPage = QWidget()
         self.mainPage.setGeometry(0, 0, self.window.width(), self.window.height())
         self.mainPage.resizeEvent = lambda event: self.responser(
@@ -50,7 +61,6 @@ class Statistics_Renderer:
         )
 
         self.blackFrame = QLabel(self.mainPage)
-
         self.blackFrame.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
 
         layout = QVBoxLayout()
@@ -69,7 +79,7 @@ class Statistics_Renderer:
         self.layoutWin.addWidget(self.labelWin, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.labelWinCount = QLabel()
-        self.labelWinCount.setText("0")
+        self.labelWinCount.setText(str(self.gamesWon))
         self.labelWinCount.setStyleSheet(
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
@@ -93,7 +103,7 @@ class Statistics_Renderer:
         )
 
         self.labelWinCount = QLabel()
-        self.labelWinCount.setText("0")
+        self.labelWinCount.setText(str(self.gamesLost))
         self.labelWinCount.setStyleSheet(
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
@@ -115,7 +125,7 @@ class Statistics_Renderer:
         self.seqLayout.addWidget(self.seqLabel, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.seqMade = QLabel()
-        self.seqMade.setText("0")
+        self.seqMade.setText(str(self.sequencemade))
         self.seqMade.setStyleSheet(
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
@@ -123,26 +133,6 @@ class Statistics_Renderer:
         self.seqLayout.addWidget(self.seqMade, alignment=Qt.AlignmentFlag.AlignCenter)
 
         layout.addLayout(self.seqLayout)
-
-        self.ratioLayout = QHBoxLayout()
-
-        self.wRation = QLabel()
-        self.wRation.setText("Winning Ratio: ")
-        self.wRation.setStyleSheet(
-            "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
-        )
-
-        self.ratioLayout.addWidget(self.wRation, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self.wRatioC = QLabel()
-        self.wRatioC.setText("0")
-        self.wRatioC.setStyleSheet(
-            "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
-        )
-
-        self.ratioLayout.addWidget(self.wRatioC, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        layout.addLayout(self.ratioLayout)
 
         self.pushButton = QPushButton(self.mainPage)
         self.pushButton.setGeometry(QRect(710, 670, 271, 61))
@@ -162,57 +152,44 @@ class Statistics_Renderer:
         return self.mainPage
 
     def create_piechart(self):
-
+        
         series = QPieSeries()
 
         font = QFont()
-
         font.setFamily("Comfortaa")
-
         font.setPixelSize(15)
 
         # Slice 1
-        slice = series.append("Games Won", 10)
-        slice.setLabelFont(font)
-        slice.clicked.connect(partial(self.startAnimation, slice))
-        slice.setBrush(QBrush(QColor("#88C0D0")))
-        slice.setLabelColor(QColor("#D8DEE9"))
-        slice.setBorderColor(QColor("#2E3440"))
-        slice.setExplodeDistanceFactor(0)
-        self.pieSlices.append(slice)
+        gameWon = series.append("Games Won", self.gamesWon)
+        gameWon.setLabelFont(font)
+        gameWon.clicked.connect(partial(self.startAnimation, gameWon))
+        gameWon.setBrush(QBrush(QColor("#88C0D0")))
+        gameWon.setLabelColor(QColor("#D8DEE9"))
+        gameWon.setBorderColor(QColor("#2E3440"))
+        gameWon.setExplodeDistanceFactor(0)
+        self.pieSlices.append(gameWon)
 
-        gWon = series.append("Games Lost", 20)
-        gWon.setLabelVisible(True)
-        self.pieSlices.append(gWon)
-        gWon.setLabelFont(font)
-        gWon.clicked.connect(partial(self.startAnimation, gWon))
-        gWon.setLabelColor(QColor("#D8DEE9"))
-        gWon.setExploded(True)
-        gWon.setBrush(QBrush(QColor("#BF616A")))
-        gWon.setBorderColor(QColor("#2E3440"))
-        gWon.setExplodeDistanceFactor(0)
+        gameLost = series.append("Games Lost", self.gamesLost)
+        gameLost.setLabelVisible(True)
+        self.pieSlices.append(gameLost)
+        gameLost.setLabelFont(font)
+        gameLost.clicked.connect(partial(self.startAnimation, gameLost))
+        gameLost.setLabelColor(QColor("#D8DEE9"))
+        gameLost.setExploded(True)
+        gameLost.setBrush(QBrush(QColor("#BF616A")))
+        gameLost.setBorderColor(QColor("#2E3440"))
+        gameLost.setExplodeDistanceFactor(0)
 
-        gLose = series.append("Sequence Created", 10)
-        gLose.clicked.connect(partial(self.startAnimation, gLose))
-        gLose.setExploded(True)
-        gLose.setLabelVisible(True)
-        gLose.setLabelFont(font)
-        self.pieSlices.append(gLose)
-        gLose.setLabelColor(QColor("#D8DEE9"))
-        gLose.setBrush(QBrush(QColor("#D08770")))
-        gLose.setBorderColor(QColor("#2E3440"))
-        gLose.setExplodeDistanceFactor(0)
-
-        rGame = series.append("Game Ratio", 30)
-        rGame.clicked.connect(partial(self.startAnimation, rGame))
-        rGame.setExploded(True)
-        rGame.setLabelFont(font)
-        rGame.setLabelVisible(True)
-        self.pieSlices.append(rGame)
-        rGame.setLabelColor(QColor("#D8DEE9"))
-        rGame.setBrush(QBrush(QColor("#A3BE8C")))
-        rGame.setBorderColor(QColor("#2E3440"))
-        rGame.setExplodeDistanceFactor(0)
+        seqCount = series.append("Sequence Created", self.sequencemade)
+        seqCount.clicked.connect(partial(self.startAnimation, seqCount))
+        seqCount.setExploded(True)
+        seqCount.setLabelVisible(True)
+        seqCount.setLabelFont(font)
+        self.pieSlices.append(seqCount)
+        seqCount.setLabelColor(QColor("#D8DEE9"))
+        seqCount.setBrush(QBrush(QColor("#b48ead")))
+        seqCount.setBorderColor(QColor("#2E3440"))
+        seqCount.setExplodeDistanceFactor(0)
 
         # adding slice
         slice = QPieSlice()
@@ -235,13 +212,9 @@ class Statistics_Renderer:
         self.chartview = QChartView(chart, self.mainPage)
         self.chartview.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.chartview.setBackgroundBrush(QColor(0, 0, 0, 0))
-
         self.chartview.chart().setBackgroundBrush(QBrush(QColor(0, 0, 0, 0)))
-
         self.chartview.show()
-
         self.chartview.setStyleSheet("background-color: transparent")
-
         self.chartview.setGeometry(
             QRect(
                 0.25 * self.mainPage.width(),

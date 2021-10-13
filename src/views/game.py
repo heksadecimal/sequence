@@ -1,5 +1,4 @@
 from backend.sound import playIG
-from assets.animations import Animation
 from components.QLight import QLightReflectionButton
 import views
 import configparser
@@ -58,8 +57,8 @@ class Game_Renderer:
         self.position = defaultdict(lambda: (0, 0))
         self.revposition = defaultdict(QWidget)
         self.game.distribute(self.bot)
-        # self.game.distribute(self.challenger)
-        self.challenger.playerCards = ["JC"] * 5
+        self.game.distribute(self.challenger)
+        # self.challenger.playerCards = ["JC"] * 5
 
         self.coins = defaultdict(Clickable_Label)
 
@@ -240,7 +239,7 @@ class Game_Renderer:
             self.sequenceMade += 1
             self.continousWin += 1
             self.config.set("player", "gamesWon", str(self.gamesWon))
-            self.config.set("player", "sequenceMade", str(self.sequenceMade + 1))
+            self.config.set("player", "sequenceMade", str(self.sequenceMade))
         else:
             self.gamesLost += 1
             self.continousWin = 0
@@ -251,6 +250,7 @@ class Game_Renderer:
             "gamesPlayed",
             str(int(self.config.get("player", "gamesPlayed")) + 1),
         )
+
         awards = self.updateAwards()
         self.config.set("player", "awards", awards)
 
