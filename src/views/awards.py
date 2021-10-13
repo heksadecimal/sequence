@@ -73,7 +73,7 @@ class Award_Renderer:
         )
         self.menuPushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+                views.menu.MenuRenderer(self.window).render()
             )
         )
 
@@ -148,7 +148,6 @@ class Award_Renderer:
                 if value in awards:
                     claim = QLabel(image)
                     stamp = QPixmap("../img/stamp.png")
-                    print(stamp.isNull())
                     claim.setPixmap(stamp)
                     claim.setScaledContents(True)
                     claim.setAlignment(
@@ -158,7 +157,6 @@ class Award_Renderer:
                     claim.show()
 
                 l.addWidget(image)
-                # l.setGeometry(imageGeometry)
 
                 name = QLabel()
                 name.setFixedHeight(50)

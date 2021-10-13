@@ -1,5 +1,5 @@
 from backend.sound import play
-from views.profile import Profile_Renderer
+from views.menu import MenuRenderer
 
 from PyQt6.QtGui import QCloseEvent
 from PyQt6.QtWidgets import (
@@ -18,7 +18,7 @@ class Main:
         self.quit = 0
 
     def create(self):
-        self.window.setCentralWidget(Profile_Renderer(self.window).render())
+        self.window.setCentralWidget(MenuRenderer(self.window).render())
 
     def cleanClose(self, event: QCloseEvent):
         self.closeDialog = QDialog(self.window)

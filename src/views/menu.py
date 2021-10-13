@@ -3,11 +3,15 @@ from views.awards import Award_Renderer
 from views.game import Game_Renderer
 from views.statistics import Statistics_Renderer
 from assets.animations import Animation
+from components.QLight import QLightReflectionButton
+import configparser
+
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt, pyqtSignal
 from PyQt6.QtGui import (
     QBrush,
     QColor,
     QImage,
+    QImageReader,
     QMouseEvent,
     QPainter,
     QPixmap,
@@ -21,10 +25,12 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from components.QLight import QLightReflectionButton
 
 
-def circled_image(imageData, imgtype="png", size=64):
+config = configparser.ConfigParser()
+config.read("../sequence.ini")
+
+def circled_image(imageData, imgtype, size=64):
 
     image = QImage.fromData(imageData, imgtype)
     image.convertToFormat(QImage.Format.Format_ARGB32)
@@ -81,7 +87,7 @@ class Clickable_Label(QLabel):
         return super().mousePressEvent(ev)
 
 
-class Profile_Renderer:
+class MenuRenderer:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         self.animation = QParallelAnimationGroup()
@@ -114,14 +120,16 @@ class Profile_Renderer:
         self.lableLogo.raise_()
 
         # Logo
-        file = QFileDialog(self.mainPage)
+        file = config.get('player', 'profilePicture')
+        extension = file[file.rindex('.'):] 
         self.gameProfilePicture = Clickable_Label(self.mainPage)
         self.gameProfilePicture.setStyleSheet(
             "border-radius: 50%;background-color: transparent"
         )
         self.gameProfilePicture.setGeometry(QRect(1500, 80, 90, 90))
-        self.img = open("../img/cat.png", "rb").read()
-        self.gameProfilePicture.setPixmap(circled_image(self.img))
+        self.img = open(file, "rb").read()
+        
+        self.gameProfilePicture.setPixmap(circled_image(self.img, imgtype= extension))
         self.gameProfilePicture.setScaledContents(True)
         self.gameProfilePicture.clicked.connect(self.updatePicture)
         self.gameProfilePicture.raise_()
@@ -267,6 +275,10 @@ class Profile_Renderer:
         imagePath, *_ = self.fDialog.getOpenFileName(
             self.mainPage, "Choose picture", "."
         )
+        config.set('player', 'profilePicture', str(imagePath))
+        with open("../sequence.ini", "w") as c:
+            config.write(c)
+
         with open(imagePath, "rb") as image:
             newImage = circled_image(
                 image.read(), imgtype=imagePath[imagePath.rindex(".") + 1 :]

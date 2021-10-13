@@ -154,7 +154,7 @@ class Statistics_Renderer:
 
         self.pushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+                views.menu.MenuRenderer(self.window).render()
             )
         )
 

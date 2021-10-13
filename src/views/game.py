@@ -97,7 +97,7 @@ class Game_Renderer:
         self.no.setFixedHeight(50)
         self.no.clicked.connect(
             lambda: self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+                views.menu.MenuRenderer(self.window).render()
             )
         )
 
@@ -211,9 +211,6 @@ class Game_Renderer:
         if self.gamesWon > 1:
             awards.add("two")
 
-        if len(awards) >= 4:
-            awards.add("super")
-
         if self.continousWin == 5:
             awards.add("rising_star")
 
@@ -225,6 +222,9 @@ class Game_Renderer:
 
         if self.gamesWon >= 100:
             awards.add("legend")
+            
+        if len(awards) >= 4:
+            awards.add("super")
 
         return ", ".join(list(awards))
 
@@ -282,7 +282,7 @@ class Game_Renderer:
         )
         pushButtonMenu.clicked.connect(
             lambda: self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+                views.menu.MenuRenderer(self.window).render()
             )
         )
 
@@ -386,10 +386,10 @@ class Game_Renderer:
             )
         )
 
+        self.newLayout = QHBoxLayout()
         self.currentCards.show()
         self.currentCards.setLayout(self.newLayout)
 
-        self.newLayout = QHBoxLayout()
 
         for cardTag in self.challenger.playerCards:
             card = QLabel()

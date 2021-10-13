@@ -146,7 +146,7 @@ class Settings_Renderer:
 
         self.menuPushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
-                views.profile.Profile_Renderer(self.window).render()
+                views.menu.MenuRenderer(self.window).render()
             )
         )
 
