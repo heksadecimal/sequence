@@ -1,4 +1,6 @@
 from functools import partial
+from backend.sound import changeVol, play
+
 
 from PyQt6.QtGui import QCloseEvent
 from views.game import Game_Renderer
@@ -21,6 +23,7 @@ from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
 class Main:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
+        play()
         self.quit = 0
         
     def create(self):

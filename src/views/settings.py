@@ -4,21 +4,22 @@ from assets.animations import Animation
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, QUrl, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QSlider, QWidget
+from backend.sound import play, changeVol
 
 
 class Settings_Renderer:
     def __init__(self, window) -> None:
         self.window = window
-        self.animation = QParallelAnimationGroup()
         self.effect = QSoundEffect()
+        self.animation = QParallelAnimationGroup()
 
     def render(self):
         self.mainPage = QWidget()
         self.mainPage.resizeEvent = lambda event: self.responser(
             self.mainPage.geometry()
         )
-
         # Main Background
+
         self.settingsBG = QLabel(self.mainPage)
         self.settingsBG.setPixmap(QPixmap("../img/main_bg.png"))
         self.settingsBG.setScaledContents(True)
@@ -80,6 +81,7 @@ class Settings_Renderer:
         self.gameSoundSlider = QSlider(self.mainPage)
         self.gameSoundSlider.setGeometry(QRect(920, 250, 300, 61))
         self.gameSoundSlider.setOrientation(Qt.Orientation.Horizontal)
+        self.gameSoundSlider.setValue(100)
         self.gameSoundSlider.setStyleSheet(
             """
             QSlider{
@@ -93,10 +95,13 @@ class Settings_Renderer:
             """
         )
         self.gameSoundSlider.setFont(font)
-        self.gameSoundSlider.valueChanged.connect(self.changeGameSound)
+        self.gameSoundSlider.valueChanged.connect(self.updateSound)
+
+
         # bg sound slider
         self.gameMusicSlider = QSlider(self.mainPage)
         self.gameMusicSlider.setGeometry(QRect(920, 340, 300, 61))
+        self.gameMusicSlider.setValue(100)
         self.gameMusicSlider.setOrientation(Qt.Orientation.Horizontal)
         self.gameMusicSlider.setStyleSheet(
             "color: #ebcb8b;background-color: transparent"
@@ -114,7 +119,7 @@ class Settings_Renderer:
             """
         )
         # self.gameMusicSlider.setFont(font)
-        # self.gameMusicSlider.valueChanged.connect(self.changeGameSound)
+        #self.gameMusicSlider.valueChanged.connect(self.updateSound)
 
         # bg-audio selector
         self.comboBox = QComboBox(self.mainPage)
@@ -123,11 +128,11 @@ class Settings_Renderer:
         self.comboBox.setStyleSheet(
             "color: #ebcb8b;background-color: rgb(125, 125, 125);"
         )
-        self.comboBox.addItem("Mute")
+
         self.comboBox.addItem("casino1")
         self.comboBox.addItem("casino2")
         self.comboBox.addItem("casino3")
-        self.comboBox.currentTextChanged.connect(self.changeSong)
+        self.comboBox.currentTextChanged.connect(self.updatePlayer)
 
         # back-button
         self.pushButton = QPushButton(self.mainPage)
@@ -148,24 +153,14 @@ class Settings_Renderer:
 
         return self.mainPage
 
+    def updatePlayer(self, event):
+        volume = self.gameSoundSlider.value() / 100
+        song = self.comboBox.currentText()
+        play(song, volume)
+        
+    def updateSound(self, event):
+        changeVol(self.gameSoundSlider.value())
 
-    def changeGameSound(self, event):
-        volume = self.gameSoundSlider.value()
-        print("vol:    ", volume)
-        self.effect.setVolume(volume/100)
-
-    def changeSong(self, event):
-
-
-        songfile = f"../sounds/{self.comboBox.currentText()}.wav"
-        song = songfile
-        self.effect.stop()
-        if self.comboBox.currentText() == "Mute":
-            return
-
-        self.effect.setSource(QUrl.fromLocalFile(song))
-        self.effect.setLoopCount(-2)
-        self.effect.play()
 
     def responser(self, geometry: QRect):
         self.settingsBG.setGeometry(geometry)
