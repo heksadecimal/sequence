@@ -74,7 +74,7 @@ class Game_Renderer:
         layout = QVBoxLayout()
 
         self.quitLabel = QLabel()
-        self.quitLabel.setText("Do you wish to save you game ?")
+        self.quitLabel.setText("Do you wish to leave in midst of the game ?")
         self.quitLabel.setAlignment(
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
         )
@@ -84,23 +84,23 @@ class Game_Renderer:
 
         layout.addWidget(self.quitLabel)
 
-        self.yes = QLightReflectionButton()
-        self.yes.setFixedHeight(50)
-        self.yes.setText("YES")
-        self.yes.clicked.connect(self.saveGame)
-
-        layout.addWidget(self.yes)
-
         self.no = QLightReflectionButton()
-        self.no.setText("NO")
         self.no.setFixedHeight(50)
-        self.no.clicked.connect(
+        self.no.setText("no")
+        self.no.clicked.connect(lambda: self.ok.close())
+
+        layout.addWidget(self.no)
+
+        self.yes = QLightReflectionButton()
+        self.yes.setText("YES")
+        self.yes.setFixedHeight(50)
+        self.yes.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.menu.MenuRenderer(self.window).render()
             )
         )
 
-        layout.addWidget(self.no)
+        layout.addWidget(self.yes)
 
         self.label.setLayout(layout)
 
