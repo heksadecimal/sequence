@@ -1,16 +1,18 @@
-from PyQt6.QtCore import QParallelAnimationGroup, QPointF, QRect, Qt , QEvent
+from PyQt6.QtCore import QParallelAnimationGroup, QPointF, QRect, Qt, QEvent
 from PyQt6.QtGui import QColor, QPaintEvent, QPainter, QPainterPath
 from PyQt6.QtWidgets import QLabel, QLineEdit, QWidget
 from assets.animations import Animation
 
+
 class Triangle(QWidget):
     """Creates a triangular widget"""
-    def __init__(self , parent: QWidget):
+
+    def __init__(self, parent: QWidget):
         # Initialize thre parent class
         super().__init__(parent)
 
-        # Create an array of points 
-        self.points = [QPointF(0 , 0) , QPointF(10 , 0) , QPointF(5 , 5)]
+        # Create an array of points
+        self.points = [QPointF(0, 0), QPointF(10, 0), QPointF(5, 5)]
 
         # Color of the triangle
         self.color = "#4C566A"
@@ -34,13 +36,15 @@ class Triangle(QWidget):
         painter = QPainter(self)
 
         # Fill the path
-        painter.fillPath(path , QColor(self.color))
+        painter.fillPath(path, QColor(self.color))
 
         return super().paintEvent(a0)
 
+
 class Text_Input(QWidget):
     """A Modern PyQt6 Text Input"""
-    def __init__(self , parent: QWidget , labelText: str , placeholder: str):
+
+    def __init__(self, parent: QWidget, labelText: str, placeholder: str):
         # Initialize the super class
         super().__init__(parent)
 
@@ -59,33 +63,39 @@ class Text_Input(QWidget):
 
     def setStyles(self):
         # Set some stylings
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             background-color: #4C566A;
             color: #D8DEE9;
             border-radius: 5px
-        """)
+        """
+        )
 
     def drawInnerWidgets(self):
         # A Left label which will display the text
         self.leftLabel = QLabel(self)
 
         # Set stylings
-        self.leftLabel.setStyleSheet("background-color: #4C566A; border-radius: 0px; font-size: 12px; font-family: Comfortaa; font-weight: bold; border-top-left-radius: 10px; border-bottom-left-radius: 10px")
+        self.leftLabel.setStyleSheet(
+            "background-color: #4C566A; border-radius: 0px; font-size: 12px; font-family: Comfortaa; font-weight: bold; border-top-left-radius: 10px; border-bottom-left-radius: 10px"
+        )
 
         # Set Geometry
-        self.leftLabel.setGeometry(QRect(10 , 50 , 60 , 40))
+        self.leftLabel.setGeometry(QRect(10, 50, 60, 40))
 
         # Set the text
         self.leftLabel.setText(self.labelText)
 
         # Center Alignment (Vertically and Horizontally)
-        self.leftLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+        self.leftLabel.setAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter
+        )
 
         # Create a tooltip triangle
         self.tooltipTriangle = Triangle(self)
 
         # Set geometry
-        self.tooltipTriangle.setGeometry(QRect(33 , 80 , 70 , 70))
+        self.tooltipTriangle.setGeometry(QRect(33, 80, 70, 70))
 
         # Show the tooltip
         self.tooltipTriangle.show()
@@ -94,7 +104,7 @@ class Text_Input(QWidget):
         self.textEdit = QLineEdit(self)
 
         # Set geometry
-        self.textEdit.setGeometry(QRect(10 , 50 , 520 , 40))
+        self.textEdit.setGeometry(QRect(10, 50, 520, 40))
 
         # Set placeholder text
         self.textEdit.setText(self.placeholder)
@@ -102,7 +112,7 @@ class Text_Input(QWidget):
         # Stack it under the span box (To prevent input hide the left label)
         self.textEdit.stackUnder(self.leftLabel)
 
-        # Move tooltip up on mouse press 
+        # Move tooltip up on mouse press
         self.textEdit.mousePressEvent = self.moveLabelUp
 
         # Add some stylings
@@ -111,9 +121,10 @@ class Text_Input(QWidget):
         # Set height
         self.textEdit.setFixedHeight(40)
 
-    def moveLabelUp(self , event):
+    def moveLabelUp(self, event):
         # Check if the tooltip is alread activated
-        if(self.activated): return 
+        if self.activated:
+            return
 
         # Set activated to true
         self.activated = True
@@ -128,10 +139,28 @@ class Text_Input(QWidget):
         self.textEdit.setStyleSheet("border-radius: 4px; padding-left: 20px")
 
         # Move the left label above
-        positionAnimation = Animation.geometryAnimation(self.leftLabel , QRect(self.leftLabel.x() , self.leftLabel.y() - 40 , self.leftLabel.width() , self.leftLabel.height() - 11) , 350)
+        positionAnimation = Animation.geometryAnimation(
+            self.leftLabel,
+            QRect(
+                self.leftLabel.x(),
+                self.leftLabel.y() - 40,
+                self.leftLabel.width(),
+                self.leftLabel.height() - 11,
+            ),
+            350,
+        )
 
         # Move the triangle along with the left label
-        tooltipAnimation = Animation.geometryAnimation(self.tooltipTriangle , QRect(self.tooltipTriangle.x() , self.tooltipTriangle.y() - 42 , self.tooltipTriangle.width() , self.tooltipTriangle.height() - 11) , 350)
+        tooltipAnimation = Animation.geometryAnimation(
+            self.tooltipTriangle,
+            QRect(
+                self.tooltipTriangle.x(),
+                self.tooltipTriangle.y() - 42,
+                self.tooltipTriangle.width(),
+                self.tooltipTriangle.height() - 11,
+            ),
+            350,
+        )
 
         # Add animation to parallel animation
         self.animation.addAnimation(tooltipAnimation)
@@ -140,10 +169,11 @@ class Text_Input(QWidget):
 
         # Start the animation
         self.animation.start()
-    
+
     def leaveEvent(self, a0: QEvent) -> None:
         # Check if the tooltip is activated
-        if(not self.activated): return
+        if not self.activated:
+            return
 
         # Set activated to False
         self.activated = False
@@ -158,9 +188,13 @@ class Text_Input(QWidget):
         self.textEdit.setStyleSheet("border-radius: 4px; padding-left: 60px")
 
         # Animation for reseting the position of both the elements
-        positionAnimation = Animation.geometryAnimation(self.leftLabel , QRect(10 , 50 , 60 , 40) , 350)
+        positionAnimation = Animation.geometryAnimation(
+            self.leftLabel, QRect(10, 50, 60, 40), 350
+        )
 
-        tooltipAnimation = Animation.geometryAnimation(self.tooltipTriangle , QRect(33 , 80 , 70 , 70) , 350)
+        tooltipAnimation = Animation.geometryAnimation(
+            self.tooltipTriangle, QRect(33, 80, 70, 70), 350
+        )
 
         # Add animations to the parallel animation grouo
         self.animation.addAnimation(tooltipAnimation)

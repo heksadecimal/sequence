@@ -1,17 +1,29 @@
 # Import all the required modules
 from typing import Any
 from PyQt6.QtCore import QPointF, QSequentialAnimationGroup, QSize, Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QEnterEvent, QMouseEvent , QTransform
-from PyQt6.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene, QGraphicsView, QWidget
+from PyQt6.QtGui import QColor, QEnterEvent, QMouseEvent, QTransform
+from PyQt6.QtWidgets import (
+    QGraphicsColorizeEffect,
+    QGraphicsScene,
+    QGraphicsView,
+    QWidget,
+)
 from functools import partial
 from PyQt6.QtSvgWidgets import QGraphicsSvgItem
 from assets.animations import Animation
 
+
 class Rounded_Jolly_Button(QGraphicsView):
     # Signal for listening for user clicks
     clicked = pyqtSignal()
-    
-    def __init__(self , parent: QWidget , location: str , size: QSize = QSize(45 , 45) , padding: QPointF = QPointF(10 , 10)):
+
+    def __init__(
+        self,
+        parent: QWidget,
+        location: str,
+        size: QSize = QSize(45, 45),
+        padding: QPointF = QPointF(10, 10),
+    ):
         # Initialize the parent class
         super().__init__(parent)
 
@@ -21,7 +33,9 @@ class Rounded_Jolly_Button(QGraphicsView):
         self.padding = padding
 
         # Add in some stylings
-        self.setStyleSheet("background-color: #2E3440; border-radius: {}px".format(size.width() // 2))
+        self.setStyleSheet(
+            "background-color: #2E3440; border-radius: {}px".format(size.width() // 2)
+        )
 
         # Set the position
         self.setFixedSize(size)
@@ -36,7 +50,7 @@ class Rounded_Jolly_Button(QGraphicsView):
         self.setScene(self._scene)
 
         # Set scene rect
-        self._scene.setSceneRect(0 , 0 , 40 , 40)
+        self._scene.setSceneRect(0, 0, 40, 40)
 
         # Remove scrollbars
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -75,17 +89,59 @@ class Rounded_Jolly_Button(QGraphicsView):
         self.animations = QSequentialAnimationGroup()
 
         # Animations required for the effect
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(1.0 , 1.0) , QPointF(1.25 , 0.75) , 270 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(1.0, 1.0),
+                QPointF(1.25, 0.75),
+                270,
+                partial(self.updateTransform, svg),
+            )
+        )
 
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(1.25 , 0.75) , QPointF(.75 , 1.25) , 90 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(1.25, 0.75),
+                QPointF(0.75, 1.25),
+                90,
+                partial(self.updateTransform, svg),
+            )
+        )
 
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(.75 , 1.25) , QPointF(1.15 , .85) , 90 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(0.75, 1.25),
+                QPointF(1.15, 0.85),
+                90,
+                partial(self.updateTransform, svg),
+            )
+        )
 
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(1.15 , 0.85) , QPointF(.95 , 1.05) , 135 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(1.15, 0.85),
+                QPointF(0.95, 1.05),
+                135,
+                partial(self.updateTransform, svg),
+            )
+        )
 
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(.95 , 1.05) , QPointF(1.05 , 0.95) , 90 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(0.95, 1.05),
+                QPointF(1.05, 0.95),
+                90,
+                partial(self.updateTransform, svg),
+            )
+        )
 
-        self.animations.addAnimation(Animation.variantAnimation(QPointF(1.05 , 0.95) , QPointF(1 , 1) , 225 , partial(self.updateTransform , svg)))
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                QPointF(1.05, 0.95),
+                QPointF(1, 1),
+                225,
+                partial(self.updateTransform, svg),
+            )
+        )
 
     def enterEvent(self, event: QEnterEvent) -> None:
         # Run the animation on hover
@@ -95,13 +151,13 @@ class Rounded_Jolly_Button(QGraphicsView):
 
     def mousePressEvent(self, ev: QMouseEvent) -> None:
         # Check for mouse clicks
-        if(ev.button() == Qt.MouseButton.LeftButton):
+        if ev.button() == Qt.MouseButton.LeftButton:
             # Emit the clicked event
             self.clicked.emit()
 
         return super().mousePressEvent(ev)
 
-    def updateTransform(self , target: QGraphicsSvgItem , newValue: Any):
+    def updateTransform(self, target: QGraphicsSvgItem, newValue: Any):
         origin = target.transformOriginPoint()
 
         transform = QTransform().translate(origin.x(), origin.y())

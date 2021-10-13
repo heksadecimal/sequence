@@ -1,15 +1,17 @@
 from PyQt6.QtCore import QEvent
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QMouseEvent 
+from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtWidgets import QGraphicsOpacityEffect, QLabel, QWidget
 from components.AngledLabel import AngledLabel
 
+
 class QLightReflectionButton(QLabel):
-    """A Light Reflection """
+    """A Light Reflection"""
+
     # Signal for user click
     clicked = pyqtSignal()
 
-    def __init__(self , parent: QWidget = None) -> None:
+    def __init__(self, parent: QWidget = None) -> None:
         super().__init__(parent)
 
         # Set default styles to the button
@@ -26,7 +28,8 @@ class QLightReflectionButton(QLabel):
 
     def setStyles(self):
         # Stylings
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             QLabel{
                 letter-spacing: 0.1em;
                 font-size: 14px;
@@ -45,7 +48,8 @@ class QLightReflectionButton(QLabel):
                 border: 4px solid #2E3440;
                 background-color: #4C566A;
             }
-        """)
+        """
+        )
 
         # Create an instance of Angled Label
         self.lightReflection = AngledLabel(self)
@@ -58,7 +62,7 @@ class QLightReflectionButton(QLabel):
 
     def mousePressEvent(self, ev: QMouseEvent) -> None:
         # Check if the press event was with the left mouse button
-        if(ev.button() == Qt.MouseButton.LeftButton):
+        if ev.button() == Qt.MouseButton.LeftButton:
 
             # Send the signal
             self.clicked.emit()

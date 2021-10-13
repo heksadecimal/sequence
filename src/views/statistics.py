@@ -6,7 +6,7 @@ import views
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QPieSlice
 from PyQt6.QtCore import QParallelAnimationGroup, QPoint, QRect, Qt
 from PyQt6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPixmap
-from PyQt6.QtWidgets import QLabel , QMainWindow , QVBoxLayout , QWidget
+from PyQt6.QtWidgets import QLabel, QMainWindow, QVBoxLayout, QWidget
 
 
 class Statistics_Renderer:
@@ -66,7 +66,7 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.layoutWin.addWidget(self.labelWin , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.layoutWin.addWidget(self.labelWin, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.labelWinCount = QLabel()
         self.labelWinCount.setText("0")
@@ -74,7 +74,9 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.layoutWin.addWidget(self.labelWinCount , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.layoutWin.addWidget(
+            self.labelWinCount, alignment=Qt.AlignmentFlag.AlignCenter
+        )
 
         layout.addLayout(self.layoutWin)
 
@@ -86,7 +88,9 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.lostLayout.addWidget(self.labelLost , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.lostLayout.addWidget(
+            self.labelLost, alignment=Qt.AlignmentFlag.AlignCenter
+        )
 
         self.labelWinCount = QLabel()
         self.labelWinCount.setText("0")
@@ -94,7 +98,9 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.lostLayout.addWidget(self.labelWinCount , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.lostLayout.addWidget(
+            self.labelWinCount, alignment=Qt.AlignmentFlag.AlignCenter
+        )
 
         layout.addLayout(self.lostLayout)
 
@@ -106,7 +112,7 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.seqLayout.addWidget(self.seqLabel , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.seqLayout.addWidget(self.seqLabel, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.seqMade = QLabel()
         self.seqMade.setText("0")
@@ -114,7 +120,7 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.seqLayout.addWidget(self.seqMade , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.seqLayout.addWidget(self.seqMade, alignment=Qt.AlignmentFlag.AlignCenter)
 
         layout.addLayout(self.seqLayout)
 
@@ -126,7 +132,7 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.ratioLayout.addWidget(self.wRation , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.ratioLayout.addWidget(self.wRation, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.wRatioC = QLabel()
         self.wRatioC.setText("0")
@@ -134,10 +140,10 @@ class Statistics_Renderer:
             "background-color: transparent; font-size: 25px; font-family: Comfortaa; color: #ebcb8b"
         )
 
-        self.ratioLayout.addWidget(self.wRatioC , alignment=Qt.AlignmentFlag.AlignCenter)
+        self.ratioLayout.addWidget(self.wRatioC, alignment=Qt.AlignmentFlag.AlignCenter)
 
         layout.addLayout(self.ratioLayout)
-        
+
         self.pushButton = QPushButton(self.mainPage)
         self.pushButton.setGeometry(QRect(710, 670, 271, 61))
         self.pushButton.setFont(font)
@@ -146,14 +152,6 @@ class Statistics_Renderer:
             "color: #ebcb8b;\n" "background-color: rgb(125, 125, 125);"
         )
 
-        #self.pushButton.clicked.connect(
-        #    lambda: self.window.setCentralWidget(
-        #        views.profile.Profile_Renderer(self.window).render()
-        #    )
-        #)
-        #self.pushButton = QPushButton(self.mainPage)
-        #self.pushButton.setFont(font)
-        #self.pushButton.setText("Back to Main Menu")
         self.pushButton.clicked.connect(
             lambda: self.window.setCentralWidget(
                 views.profile.Profile_Renderer(self.window).render()
@@ -243,11 +241,11 @@ class Statistics_Renderer:
         self.chartview.show()
 
         self.chartview.setStyleSheet("background-color: transparent")
-        
+
         self.chartview.setGeometry(
             QRect(
                 0.25 * self.mainPage.width(),
-                .1 * self.mainPage.height(),
+                0.1 * self.mainPage.height(),
                 0.4 * self.mainPage.width(),
                 400,
             )
@@ -256,14 +254,22 @@ class Statistics_Renderer:
     def startAnimation(self, target: QPieSlice):
         self.animations = QParallelAnimationGroup()
         for slice in self.pieSlices:
-            if(slice != target and slice.explodeDistanceFactor() != 0):
-                self.animations.addAnimation(Animation.variantAnimation(0.2 , 0.0 , 100 , partial(self.parseFunc , slice)))
-        
-        self.animations.addAnimation(Animation.variantAnimation(0.0 , 0.2 , 100 , lambda newVal: target.setExplodeDistanceFactor(newVal)))
+            if slice != target and slice.explodeDistanceFactor() != 0:
+                self.animations.addAnimation(
+                    Animation.variantAnimation(
+                        0.2, 0.0, 100, partial(self.parseFunc, slice)
+                    )
+                )
+
+        self.animations.addAnimation(
+            Animation.variantAnimation(
+                0.0, 0.2, 100, lambda newVal: target.setExplodeDistanceFactor(newVal)
+            )
+        )
 
         self.animations.start()
 
-    def parseFunc(self , target: QPieSlice , data):
+    def parseFunc(self, target: QPieSlice, data):
         target.setExplodeDistanceFactor(data)
 
     def responser(self, geometry: QRect):
@@ -272,14 +278,6 @@ class Statistics_Renderer:
 
         self.label.setGeometry(self.statsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.label.width(), 50))
-        # self.labelWin.setGeometry(0.42 * self.mainPage.width(), 250, 350, 50)
-        # self.labelLost.setGeometry(0.42 * self.mainPage.width(), 340, 350, 50)
-        # self.labelSeqs.setGeometry(0.42 * self.mainPage.width(), 440, 350, 50)
-        # self.labelWinRatio.setGeometry(0.42 * self.mainPage.width(), 540, 350, 50)
-        # self.labelSeqsCount.setGeometry(0.6 * self.mainPage.width(), 440, 350, 50)
-        # self.labelWinCount.setGeometry(0.6 * self.mainPage.width(), 250, 350, 50)
-        # self.labelLostCount.setGeometry(0.6 * self.mainPage.width(), 340, 350, 50)
-        # self.labelWinRatioCount.setGeometry(0.6 * self.mainPage.width(), 540, 350, 50)
 
         self.blackFrame.setGeometry(
             QRect(
@@ -293,11 +291,10 @@ class Statistics_Renderer:
         self.chartview.setGeometry(
             QRect(
                 0.3 * self.mainPage.width(),
-                .1 * self.mainPage.height(),
+                0.1 * self.mainPage.height(),
                 0.4 * self.mainPage.width(),
                 400,
             )
         )
-
 
         self.pushButton.setGeometry(QRect(0.25 * self.mainPage.width(), 910, 900, 61))

@@ -24,7 +24,7 @@ from PyQt6.QtWidgets import (
 from components.QLight import QLightReflectionButton
 
 
-def mask_image(imageData, imgtype="png", size=64):
+def circled_image(imageData, imgtype="png", size=64):
 
     image = QImage.fromData(imageData, imgtype)
     image.convertToFormat(QImage.Format.Format_ARGB32)
@@ -46,15 +46,14 @@ def mask_image(imageData, imgtype="png", size=64):
 
     painter = QPainter(out_img)
     painter.setBrush(brush)
-
     painter.setPen(Qt.PenStyle.NoPen)
-
     painter.drawEllipse(0, 0, imgsize, imgsize)
-
     painter.end()
+
     pr = QWindow().devicePixelRatio()
     pm = QPixmap.fromImage(out_img)
     pm.setDevicePixelRatio(pr)
+
     size *= pr
     pm = pm.scaled(
         size,
@@ -62,7 +61,6 @@ def mask_image(imageData, imgtype="png", size=64):
         Qt.AspectRatioMode.KeepAspectRatio,
         Qt.TransformationMode.SmoothTransformation,
     )
-
     return pm
 
 
@@ -105,7 +103,7 @@ class Profile_Renderer:
         self.mainBM = QLabel(self.mainPage)
         self.mainBM.setStyleSheet("background-color: rgba(0, 0, 0, 120);")
         self.mainBM.raise_()
-        self.animation.addAnimation(Animation.unfade(self.mainBM , 300))
+        self.animation.addAnimation(Animation.unfade(self.mainBM, 300))
 
         # Profile Picture
         self.lableLogo = QLabel(self.mainPage)
@@ -117,28 +115,29 @@ class Profile_Renderer:
 
         # Logo
         file = QFileDialog(self.mainPage)
-        self.cat = Clickable_Label(self.mainPage)
-        self.cat.setStyleSheet("border-radius: 50%;background-color: transparent")
-        self.cat.setGeometry(QRect(1500, 80, 90, 90))
+        self.gameProfilePicture = Clickable_Label(self.mainPage)
+        self.gameProfilePicture.setStyleSheet(
+            "border-radius: 50%;background-color: transparent"
+        )
+        self.gameProfilePicture.setGeometry(QRect(1500, 80, 90, 90))
         self.img = open("../img/cat.png", "rb").read()
-        self.cat.setPixmap(mask_image(self.img))
-        self.cat.setScaledContents(True)
-        self.cat.clicked.connect(self.updatePicture)
-        self.cat.raise_()
+        self.gameProfilePicture.setPixmap(circled_image(self.img))
+        self.gameProfilePicture.setScaledContents(True)
+        self.gameProfilePicture.clicked.connect(self.updatePicture)
+        self.gameProfilePicture.raise_()
 
         # fade animation
-        self.animation.addAnimation(Animation.unfade(self.lableLogo , 500))
-        self.buttons = QLabel(self.mainPage)
-        self.buttons.setGeometry(0, 0, 650, 500)
-        self.buttons.setStyleSheet("background-color: transparent")
-        self.buttons.show()
+        self.animation.addAnimation(Animation.unfade(self.lableLogo, 500))
+        self.menuButton = QLabel(self.mainPage)
+        self.menuButton.setGeometry(0, 0, 650, 500)
+        self.menuButton.setStyleSheet("background-color: transparent")
+        self.menuButton.show()
 
         # menu layout
         self.layout = QVBoxLayout()
         buttons = [
             ["Profile", self.openStats],
             ["New Game", self.newGame],
-            # ["Load Saved Games", self.loadSaves],
             ["Awards", self.openAwards],
             [
                 "Settings",
@@ -153,43 +152,74 @@ class Profile_Renderer:
             widget.setFixedSize(600, 70)
             widget.clicked.connect(func)
             widget.setText(text)
-            self.layout.addWidget(widget , alignment=Qt.AlignmentFlag.AlignCenter)
+            self.layout.addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        self.buttons.setLayout(self.layout)
+        self.menuButton.setLayout(self.layout)
         self.animation.start()
         return self.mainPage
 
     def responser(self, geometry: QRect):
         self.geometryAnimation = QParallelAnimationGroup()
 
-        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.mainBG.geometry() , QRect(0 , 0 , geometry.width() , geometry.height()) , 300 , lambda newValue: self.mainBG.setGeometry(newValue)))
+        self.geometryAnimation.addAnimation(
+            Animation.variantAnimation(
+                self.mainBG.geometry(),
+                QRect(0, 0, geometry.width(), geometry.height()),
+                300,
+                lambda newValue: self.mainBG.setGeometry(newValue),
+            )
+        )
 
-        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.mainBM.geometry() , QRect(0 , 0 , geometry.width() , geometry.height()) , 300 , lambda newValue: self.mainBM.setGeometry(newValue)))
+        self.geometryAnimation.addAnimation(
+            Animation.variantAnimation(
+                self.mainBM.geometry(),
+                QRect(0, 0, geometry.width(), geometry.height()),
+                300,
+                lambda newValue: self.mainBM.setGeometry(newValue),
+            )
+        )
 
-        self.geometryAnimation.addAnimation(Animation.moveAnimation(self.cat , QPoint(self.mainPage.width() - 110 , 30) , 300))
-
+        self.geometryAnimation.addAnimation(
+            Animation.moveAnimation(
+                self.gameProfilePicture, QPoint(self.mainPage.width() - 110, 30), 300
+            )
+        )
 
         # Move the label logo
         x = 0.5 * (geometry.width() - 181)
         y = 0.17 * (geometry.height() - 151)
-        
-        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.lableLogo.geometry() , QRect(x, y, 181, 151) , 300 , lambda newValue: self.lableLogo.setGeometry(newValue)))
+
+        self.geometryAnimation.addAnimation(
+            Animation.variantAnimation(
+                self.lableLogo.geometry(),
+                QRect(x, y, 181, 151),
+                300,
+                lambda newValue: self.lableLogo.setGeometry(newValue),
+            )
+        )
 
         # The buttons
         x = 0
         y = 0.4 * (geometry.height() - 151)
 
-        self.geometryAnimation.addAnimation(Animation.variantAnimation(self.buttons.geometry() , QRect(x, y, geometry.width(), self.buttons.height()) , 300 , lambda newValue: self.buttons.setGeometry(newValue)))
+        self.geometryAnimation.addAnimation(
+            Animation.variantAnimation(
+                self.menuButton.geometry(),
+                QRect(x, y, geometry.width(), self.menuButton.height()),
+                300,
+                lambda newValue: self.menuButton.setGeometry(newValue),
+            )
+        )
 
         self.geometryAnimation.start()
 
     def openStats(self):
         def second():
             self.window.setCentralWidget(Statistics_Renderer(self.window).render())
-            self.animation = Animation.unfade(self.window.centralWidget() , 300)
+            self.animation = Animation.unfade(self.window.centralWidget(), 300)
             self.animation.start()
 
-        self.animation = Animation.fade(self.window.centralWidget() , 300)
+        self.animation = Animation.fade(self.window.centralWidget(), 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -197,10 +227,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Game_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(self.window.centralWidget() , 300)
+            self.animation = Animation.unfade(self.window.centralWidget(), 300)
             self.animation.start()
 
-        self.animation = Animation.fade(self.window.centralWidget() , 300)
+        self.animation = Animation.fade(self.window.centralWidget(), 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -208,10 +238,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Award_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(self.window.centralWidget() , 300)
+            self.animation = Animation.unfade(self.window.centralWidget(), 300)
             self.animation.start()
 
-        self.animation = Animation.fade(self.window.centralWidget() , 300)
+        self.animation = Animation.fade(self.window.centralWidget(), 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -219,10 +249,10 @@ class Profile_Renderer:
         def second():
             self.window.setCentralWidget(Settings_Renderer(self.window).render())
 
-            self.animation = Animation.unfade(self.window.centralWidget() , 300)
+            self.animation = Animation.unfade(self.window.centralWidget(), 300)
             self.animation.start()
 
-        self.animation = Animation.fade( self.window.centralWidget(), 300)
+        self.animation = Animation.fade(self.window.centralWidget(), 300)
         self.animation.finished.connect(second)
         self.animation.start()
 
@@ -234,12 +264,11 @@ class Profile_Renderer:
     def updatePicture(self):
         self.fDialog = QFileDialog()
 
-        imagePath, *args = self.fDialog.getOpenFileName(
+        imagePath, *_ = self.fDialog.getOpenFileName(
             self.mainPage, "Choose picture", "."
         )
-        # imagePath = str(imagePath)
         with open(imagePath, "rb") as image:
-            newImage = mask_image(
+            newImage = circled_image(
                 image.read(), imgtype=imagePath[imagePath.rindex(".") + 1 :]
             )
-            self.cat.setPixmap(newImage)
+            self.gameProfilePicture.setPixmap(newImage)

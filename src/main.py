@@ -1,14 +1,7 @@
-from functools import partial
-from backend.sound import changeVol, play
-
+from backend.sound import play
+from views.profile import Profile_Renderer
 
 from PyQt6.QtGui import QCloseEvent
-from views.game import Game_Renderer
-from views.settings import Settings_Renderer
-from views.statistics import Statistics_Renderer
-from views.awards import Award_Renderer
-from views.profile import Profile_Renderer
-from PyQt6.QtCore import QPoint, QRect, QUrl, Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QDialog,
@@ -17,30 +10,28 @@ from PyQt6.QtWidgets import (
     QPushButton,
 )
 
-from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
-
 
 class Main:
     def __init__(self, window: QMainWindow) -> None:
         self.window = window
         play()
         self.quit = 0
-        
+
     def create(self):
         self.window.setCentralWidget(Profile_Renderer(self.window).render())
 
     def cleanClose(self, event: QCloseEvent):
-        self.ok = QDialog(self.window)
-        self.ok.setWindowTitle("Quit Sequece")
-        self.ok.setGeometry(
+        self.closeDialog = QDialog(self.window)
+        self.closeDialog.setWindowTitle("Quit Sequece")
+        self.closeDialog.setGeometry(
             0.4 * self.window.geometry().width(),
             0.4 * self.window.geometry().height(),
             500,
             200,
         )
-        self.ok.setStyleSheet("background-color: #3b4252")
+        self.closeDialog.setStyleSheet("background-color: #3b4252")
 
-        self.quitLabel = QLabel(self.ok)
+        self.quitLabel = QLabel(self.closeDialog)
         self.quitLabel.setGeometry(
             self.quitLabel.geometry().x() + 100,
             self.quitLabel.geometry().y() + 10,
@@ -52,7 +43,7 @@ class Main:
             "color: #ebcb8b; font-size: 18px; font-style: comfortaa"
         )
 
-        self.yes = QPushButton(self.ok)
+        self.yes = QPushButton(self.closeDialog)
         self.yes.setText("YES")
         self.yes.setGeometry(
             self.yes.geometry().x() + 100,
@@ -62,8 +53,7 @@ class Main:
         )
         self.yes.show()
 
-
-        self.no = QPushButton(self.ok)
+        self.no = QPushButton(self.closeDialog)
         self.no.setText("NO")
         self.no.setGeometry(
             self.no.geometry().x() + 250,
@@ -73,9 +63,9 @@ class Main:
         )
         self.no.show()
         self.yes.clicked.connect(exit)
-        self.no.clicked.connect(self.ok.hide)
+        self.no.clicked.connect(self.closeDialog.hide)
         self.quitLabel.show()
-        self.ok.exec()
+        self.closeDialog.exec()
         event.ignore()
 
 

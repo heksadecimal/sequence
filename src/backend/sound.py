@@ -4,7 +4,7 @@ from PyQt6.QtMultimedia import QSoundEffect
 bgSound = QSoundEffect()
 
 
-def play(sound = "casino1", volume = 1):
+def play(sound="casino1", volume=1):
     bgSound.stop()
 
     file = f"../sounds/{sound}.wav"
