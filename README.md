@@ -18,6 +18,14 @@ pip install pyqt6-charts
 
 ## How to play
 
+After following the above steps, you can first move to the src directory and then execute main.py to start the game
+
+```bash
+cd src/
+python main.py
+```
+
+
 ### Game Rules
 
 - Each card is pictured twice on the game board, and Jacks (while necessary for game strategy) do not appear on the board.
@@ -38,6 +46,6 @@ pip install pyqt6-charts
 
 ### Winning 
 
-- The game ends when a player completes 2 sequences.
+- The game ends when a player complete a sequence of five cards. Cheers!
 
 
