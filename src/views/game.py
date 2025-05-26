@@ -126,7 +126,7 @@ class Game_Renderer:
         # back-button
         self.menuPushButton = QPushButton(self.mainPage)
         self.menuPushButton.setGeometry(
-            0.04 * self.mainPage.width(), 0.12 * self.mainPage.height(), 120, 90
+            int(0.04 * self.mainPage.width()), int(0.12 * self.mainPage.height()), 120, 90
         )
         self.menuPushButton.setText("Go Back")
         self.menuPushButton.setStyleSheet(
@@ -140,7 +140,7 @@ class Game_Renderer:
         self.currentCards.setLayout(self.currentCardsLayout)
         self.currentCards.show()
 
-        constX = 0.31 * self.window.width()
+        constX = int(0.31 * self.window.width())
 
         x, y = constX, 10
 
@@ -261,7 +261,7 @@ class Game_Renderer:
         flash = QDialog(self.mainPage)
         message = QLabel(flash)
         flash.setGeometry(
-            0.35 * self.mainPage.width(), 0.4 * self.mainPage.height(), 700, 300
+            int(0.35 * self.mainPage.width()), int(0.4 * self.mainPage.height()), 700, 300
         )
         flash.setStyleSheet("background-color: #3b4252")
 
@@ -365,10 +365,10 @@ class Game_Renderer:
         self.mainBM.setGeometry(self.mainBG.geometry())
         self.currentCards.setGeometry(
             QRect(
-                0.27 * self.window.width(),
-                0.85 * self.window.height(),
-                0.45 * self.window.width(),
-                0.1 * self.window.height(),
+                int(0.27 * self.window.width()),
+                int(0.85 * self.window.height()),
+                int(0.45 * self.window.width()),
+                int(0.1 * self.window.height()),
             )
         )
 
@@ -379,10 +379,10 @@ class Game_Renderer:
         self.currentCards.setStyleSheet("background-color: #ebcb8b")
         self.currentCards.setGeometry(
             QRect(
-                0.27 * self.window.width(),
-                0.85 * self.window.height(),
-                0.45 * self.window.width(),
-                0.1 * self.window.height(),
+                int(0.27 * self.window.width()),
+                int(0.85 * self.window.height()),
+                int(0.45 * self.window.width()),
+                int(0.1 * self.window.height()),
             )
         )
 

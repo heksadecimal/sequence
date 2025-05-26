@@ -217,9 +217,9 @@ class Statistics_Renderer:
         self.chartview.setStyleSheet("background-color: transparent")
         self.chartview.setGeometry(
             QRect(
-                0.25 * self.mainPage.width(),
-                0.1 * self.mainPage.height(),
-                0.4 * self.mainPage.width(),
+                int(0.25 * self.mainPage.width()),
+                int(0.1 * self.mainPage.height()),
+                int(0.4 * self.mainPage.width()),
                 400,
             )
         )
@@ -254,20 +254,20 @@ class Statistics_Renderer:
 
         self.blackFrame.setGeometry(
             QRect(
-                0.3 * self.mainPage.width(),
+                int(0.3 * self.mainPage.width()),
                 500,
-                0.4 * self.mainPage.width(),
+                int(0.4 * self.mainPage.width()),
                 400,
             )
         )
 
         self.chartview.setGeometry(
             QRect(
-                0.3 * self.mainPage.width(),
-                0.1 * self.mainPage.height(),
-                0.4 * self.mainPage.width(),
+                int(0.3 * self.mainPage.width()),
+                int(0.1 * self.mainPage.height()),
+                int(0.4 * self.mainPage.width()),
                 400,
             )
         )
 
-        self.pushButton.setGeometry(QRect(0.25 * self.mainPage.width(), 910, 900, 61))
+        self.pushButton.setGeometry(QRect(int(0.25 * self.mainPage.width()), 910, 900, 61))
