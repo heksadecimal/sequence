@@ -170,26 +170,26 @@ class Settings_Renderer:
         self.settingsBM.setGeometry(self.settingsBG.geometry())
         self.header.setGeometry(QRect(0, 70, self.window.width(), 100))
         self.gameBackgroundMusic.setGeometry(
-            QRect(0.35 * self.settingsBG.width(), 250, 200, 61)
+            QRect(int(0.35 * self.settingsBG.width()), 250, 200, 61)
         )
         self.inGameMusic.setGeometry(
-            QRect(0.35 * self.settingsBG.width(), 340, 200, 61)
+            QRect(int(0.35 * self.settingsBG.width()), 340, 200, 61)
         )
         self.songBoxLabel.setGeometry(
-            QRect(0.35 * self.settingsBG.width(), 460, 200, 61)
+            QRect(int(0.35 * self.settingsBG.width()), 460, 200, 61)
         )
         self.inGameMusicSlider.setGeometry(
-            QRect(0.6 * self.settingsBG.width(), 250, 0.1 * self.settingsBG.width(), 20)
+            QRect(int(0.6 * self.settingsBG.width()), 250, int(0.1 * self.settingsBG.width()), 20)
         )
 
         self.backgroundMusicSlider.setGeometry(
-            QRect(0.6 * self.settingsBG.width(), 340, 0.1 * self.settingsBG.width(), 20)
+            QRect(int(0.6 * self.settingsBG.width()), 340, int(0.1 * self.settingsBG.width()), 20)
         )
 
         self.songBox.setGeometry(
-            QRect(0.6 * self.settingsBG.width(), 440, 0.1 * self.settingsBG.width(), 61)
+            QRect(int(0.6 * self.settingsBG.width()), 440, int(0.1 * self.settingsBG.width()), 61)
         )
 
         self.menuPushButton.setGeometry(
-            QRect(0.43 * self.settingsBG.width(), 670, 271, 61)
+            QRect(int(0.43 * self.settingsBG.width()), 670, 271, 61)
         )

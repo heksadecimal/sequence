@@ -37,8 +37,8 @@ def circled_image(imageData, imgtype, size=64):
 
     imgsize = min(image.width(), image.height())
     rect = QRect(
-        (image.width() - imgsize) / 2,
-        (image.height() - imgsize) / 2,
+        (image.width() - imgsize) // 2,
+        (image.height() - imgsize) // 2,
         imgsize,
         imgsize,
     )
@@ -60,7 +60,7 @@ def circled_image(imageData, imgtype, size=64):
     pm = QPixmap.fromImage(out_img)
     pm.setDevicePixelRatio(pr)
 
-    size *= pr
+    size *= int(pr)
     pm = pm.scaled(
         size,
         size,
@@ -194,8 +194,8 @@ class MenuRenderer:
         )
 
         # Move the label logo
-        x = 0.5 * (geometry.width() - 181)
-        y = 0.17 * (geometry.height() - 151)
+        x = int(0.5 * (geometry.width() - 181))
+        y = int(0.17 * (geometry.height() - 151))
 
         self.geometryAnimation.addAnimation(
             Animation.variantAnimation(
@@ -207,8 +207,8 @@ class MenuRenderer:
         )
 
         # The buttons
-        x = 0
-        y = 0.4 * (geometry.height() - 151)
+        x = int(0)
+        y = int(0.4 * (geometry.height() - 151))
 
         self.geometryAnimation.addAnimation(
             Animation.variantAnimation(

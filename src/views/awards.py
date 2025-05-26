@@ -192,7 +192,7 @@ class Award_Renderer:
             QRect(0, 90, self.window.width(), self.window.height() - 90)
         )
         self.menuPushButton.setGeometry(
-            0.02 * self.mainPage.width(), 50, 0.1 * self.mainPage.width(), 70
+            int(0.02 * self.mainPage.width()), 50, int(0.1 * self.mainPage.width()), 70
         )
 
     def showData(self, data, pixmap):
